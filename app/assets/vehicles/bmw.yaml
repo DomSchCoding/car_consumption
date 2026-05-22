@@ -1,0 +1,232 @@
+# BMW vehicles (EV + ICE reference)
+# Last updated: 2026-05-23
+
+vehicles:
+  - id: bmw_i4_edrive40
+    make: BMW
+    model: i4
+    variant: "eDrive40"
+    year_from: 2021
+    vehicle_type: ev
+    mass_kg: 2050
+    frontal_area_m2: 2.50
+    drag_coefficient_cd: 0.24
+    tire_class: standard
+    battery_usable_kwh: 80.7
+    ac_charging_kw: 11
+    dc_charging_kw: 200
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 200
+      - soc_percent: 10
+        power_kw: 200
+      - soc_percent: 20
+        power_kw: 200
+      - soc_percent: 30
+        power_kw: 195
+      - soc_percent: 50
+        power_kw: 165
+      - soc_percent: 70
+        power_kw: 115
+      - soc_percent: 80
+        power_kw: 70
+      - soc_percent: 90
+        power_kw: 32
+      - soc_percent: 100
+        power_kw: 8
+    has_heat_pump: true
+    hvac_cop_heat: 2.3
+    wltp_consumption_kwh_100km:
+      value: 16.1
+      source_ref: wltp
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+
+  - id: bmw_i4_m50
+    make: BMW
+    model: i4
+    variant: "M50"
+    year_from: 2021
+    vehicle_type: ev
+    mass_kg: 2185
+    frontal_area_m2: 2.50
+    drag_coefficient_cd: 0.25
+    tire_class: sport
+    battery_usable_kwh: 80.7
+    ac_charging_kw: 11
+    dc_charging_kw: 210
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 210
+      - soc_percent: 10
+        power_kw: 210
+      - soc_percent: 20
+        power_kw: 210
+      - soc_percent: 30
+        power_kw: 205
+      - soc_percent: 50
+        power_kw: 175
+      - soc_percent: 70
+        power_kw: 120
+      - soc_percent: 80
+        power_kw: 75
+      - soc_percent: 90
+        power_kw: 35
+      - soc_percent: 100
+        power_kw: 9
+    has_heat_pump: true
+    hvac_cop_heat: 2.3
+    wltp_consumption_kwh_100km:
+      value: 19.1
+      source_ref: wltp
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+
+  - id: bmw_i5_edrive40
+    make: BMW
+    model: i5
+    variant: "eDrive40"
+    year_from: 2023
+    vehicle_type: ev
+    mass_kg: 2215
+    frontal_area_m2: 2.55
+    drag_coefficient_cd: 0.24
+    tire_class: standard
+    battery_usable_kwh: 81.2
+    ac_charging_kw: 11
+    dc_charging_kw: 205
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 205
+      - soc_percent: 10
+        power_kw: 205
+      - soc_percent: 20
+        power_kw: 205
+      - soc_percent: 30
+        power_kw: 200
+      - soc_percent: 50
+        power_kw: 170
+      - soc_percent: 70
+        power_kw: 118
+      - soc_percent: 80
+        power_kw: 72
+      - soc_percent: 90
+        power_kw: 34
+      - soc_percent: 100
+        power_kw: 8
+    has_heat_pump: true
+    hvac_cop_heat: 2.3
+    wltp_consumption_kwh_100km:
+      value: 17.5
+      source_ref: wltp
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+
+  - id: bmw_ix_xdrive40
+    make: BMW
+    model: iX
+    variant: "xDrive40"
+    year_from: 2021
+    vehicle_type: ev
+    mass_kg: 2365
+    frontal_area_m2: 2.85
+    drag_coefficient_cd: 0.25
+    tire_class: suv
+    battery_usable_kwh: 71.0
+    ac_charging_kw: 11
+    dc_charging_kw: 200
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 200
+      - soc_percent: 10
+        power_kw: 200
+      - soc_percent: 20
+        power_kw: 200
+      - soc_percent: 30
+        power_kw: 195
+      - soc_percent: 50
+        power_kw: 165
+      - soc_percent: 70
+        power_kw: 115
+      - soc_percent: 80
+        power_kw: 70
+      - soc_percent: 90
+        power_kw: 32
+      - soc_percent: 100
+        power_kw: 8
+    has_heat_pump: true
+    hvac_cop_heat: 2.3
+    wltp_consumption_kwh_100km:
+      value: 19.6
+      source_ref: wltp
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+
+  - id: bmw_i7_xdrive60
+    make: BMW
+    model: i7
+    variant: "xDrive60"
+    year_from: 2022
+    vehicle_type: ev
+    mass_kg: 2630
+    frontal_area_m2: 2.75
+    drag_coefficient_cd: 0.24
+    tire_class: standard
+    battery_usable_kwh: 101.7
+    ac_charging_kw: 11
+    dc_charging_kw: 200
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 200
+      - soc_percent: 10
+        power_kw: 200
+      - soc_percent: 20
+        power_kw: 200
+      - soc_percent: 30
+        power_kw: 195
+      - soc_percent: 50
+        power_kw: 165
+      - soc_percent: 70
+        power_kw: 115
+      - soc_percent: 80
+        power_kw: 70
+      - soc_percent: 90
+        power_kw: 32
+      - soc_percent: 100
+        power_kw: 8
+    has_heat_pump: true
+    hvac_cop_heat: 2.3
+    wltp_consumption_kwh_100km:
+      value: 20.3
+      source_ref: wltp
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+
+  - id: bmw_320d
+    make: BMW
+    model: 320d
+    variant: "G20"
+    year_from: 2019
+    vehicle_type: ice
+    mass_kg: 1560
+    frontal_area_m2: 2.30
+    drag_coefficient_cd: 0.26
+    tire_class: standard
+    fuel_type: diesel
+    real_consumption_l_100km:
+      value: 5.5
+      source_ref: demo
+    source_refs:
+      demo:
+        name: "Demo estimate"
+        confidence: low

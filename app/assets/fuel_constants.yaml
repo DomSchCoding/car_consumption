@@ -1,0 +1,10 @@
+# Fuel constants for ICE comparison
+# Energy density values are lower heating values (LHV)
+
+gasoline_kwh_per_liter: 8.9
+diesel_kwh_per_liter: 9.7
+
+# Typical thermal efficiency ranges for reference (not used directly in calculations)
+# Modern Otto engine: 0.25 - 0.40
+# Modern Diesel engine: 0.35 - 0.45
+# Combined drivetrain (engine + transmission): 0.20 - 0.35

@@ -1,0 +1,558 @@
+# Hyundai vehicles
+# Last updated: 2026-05-23
+
+vehicles:
+  # ===== IONIQ ELECTRIC VFL (2016-2019) =====
+  - id: hyundai_ioniq_28
+    make: Hyundai
+    model: Ioniq Electric
+    variant: "28 kWh"
+    year_from: 2016
+    year_to: 2019
+    vehicle_type: ev
+    mass_kg: 1435
+    frontal_area_m2: 2.31
+    drag_coefficient_cd: 0.24
+    tire_class: eco_lrr
+    battery_usable_kwh: 28.0
+    ac_charging_kw: 7.4
+    dc_charging_kw: 44
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 44
+      - soc_percent: 10
+        power_kw: 44
+      - soc_percent: 20
+        power_kw: 44
+      - soc_percent: 30
+        power_kw: 42
+      - soc_percent: 50
+        power_kw: 38
+      - soc_percent: 70
+        power_kw: 30
+      - soc_percent: 80
+        power_kw: 22
+      - soc_percent: 90
+        power_kw: 12
+      - soc_percent: 100
+        power_kw: 5
+    has_heat_pump: true
+    hvac_cop_heat: 3.5
+    wltp_consumption_kwh_100km:
+      value: 13.8
+      source_ref: wltp
+    real_consumption_kwh_100km:
+      - value: 14.5
+        source_ref: evdb
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+        comment: "Manufacturer-declared WLTP combined"
+      evdb:
+        name: "EV Database"
+        url: "https://ev-database.org"
+        confidence: medium
+
+  # ===== IONIQ ELECTRIC FL (2019-2022) =====
+  - id: hyundai_ioniq_38
+    make: Hyundai
+    model: Ioniq Electric
+    variant: "38 kWh"
+    year_from: 2019
+    year_to: 2022
+    vehicle_type: ev
+    mass_kg: 1490
+    frontal_area_m2: 2.31
+    drag_coefficient_cd: 0.24
+    tire_class: eco_lrr
+    battery_usable_kwh: 38.3
+    ac_charging_kw: 7.4
+    dc_charging_kw: 55
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 55
+      - soc_percent: 10
+        power_kw: 55
+      - soc_percent: 20
+        power_kw: 55
+      - soc_percent: 30
+        power_kw: 52
+      - soc_percent: 50
+        power_kw: 45
+      - soc_percent: 70
+        power_kw: 35
+      - soc_percent: 80
+        power_kw: 25
+      - soc_percent: 90
+        power_kw: 14
+      - soc_percent: 100
+        power_kw: 5
+    has_heat_pump: true
+    hvac_cop_heat: 3.5
+    wltp_consumption_kwh_100km:
+      value: 13.8
+      source_ref: wltp
+    real_consumption_kwh_100km:
+      - value: 14.0
+        source_ref: evdb
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+      evdb:
+        name: "EV Database"
+        url: "https://ev-database.org"
+        confidence: medium
+
+  # ===== IONIQ 5 =====
+  - id: hyundai_ioniq5_rwd
+    make: Hyundai
+    model: Ioniq 5
+    variant: "RWD 58 kWh"
+    year_from: 2021
+    year_to: 2024
+    vehicle_type: ev
+    mass_kg: 1890
+    frontal_area_m2: 2.57
+    drag_coefficient_cd: 0.288
+    tire_class: suv
+    battery_usable_kwh: 58.0
+    ac_charging_kw: 7.4
+    dc_charging_kw: 170
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 170
+      - soc_percent: 10
+        power_kw: 170
+      - soc_percent: 20
+        power_kw: 170
+      - soc_percent: 30
+        power_kw: 165
+      - soc_percent: 50
+        power_kw: 140
+      - soc_percent: 70
+        power_kw: 100
+      - soc_percent: 80
+        power_kw: 65
+      - soc_percent: 90
+        power_kw: 30
+      - soc_percent: 100
+        power_kw: 8
+    has_heat_pump: true
+    hvac_cop_heat: 2.5
+    wltp_consumption_kwh_100km:
+      value: 16.0
+      source_ref: wltp
+    real_consumption_kwh_100km:
+      - value: 16.5
+        source_ref: evdb
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+      evdb:
+        name: "EV Database"
+        url: "https://ev-database.org"
+        confidence: medium
+
+  - id: hyundai_ioniq5_awd
+    make: Hyundai
+    model: Ioniq 5
+    variant: "AWD 77.4 kWh"
+    year_from: 2021
+    year_to: 2024
+    vehicle_type: ev
+    mass_kg: 2085
+    frontal_area_m2: 2.57
+    drag_coefficient_cd: 0.288
+    tire_class: suv
+    battery_usable_kwh: 77.4
+    ac_charging_kw: 7.4
+    dc_charging_kw: 239
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 239
+      - soc_percent: 10
+        power_kw: 239
+      - soc_percent: 20
+        power_kw: 239
+      - soc_percent: 30
+        power_kw: 230
+      - soc_percent: 50
+        power_kw: 185
+      - soc_percent: 70
+        power_kw: 125
+      - soc_percent: 80
+        power_kw: 80
+      - soc_percent: 90
+        power_kw: 38
+      - soc_percent: 100
+        power_kw: 10
+    has_heat_pump: true
+    hvac_cop_heat: 2.5
+    wltp_consumption_kwh_100km:
+      value: 18.5
+      source_ref: wltp
+    real_consumption_kwh_100km:
+      - value: 19.0
+        source_ref: evdb
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+      evdb:
+        name: "EV Database"
+        url: "https://ev-database.org"
+        confidence: medium
+
+  # ===== IONIQ 6 =====
+  - id: hyundai_ioniq6_rwd
+    make: Hyundai
+    model: Ioniq 6
+    variant: "RWD 77.4 kWh"
+    year_from: 2023
+    vehicle_type: ev
+    mass_kg: 1885
+    frontal_area_m2: 2.40
+    drag_coefficient_cd: 0.21
+    tire_class: standard
+    battery_usable_kwh: 77.4
+    ac_charging_kw: 11
+    dc_charging_kw: 239
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 239
+      - soc_percent: 10
+        power_kw: 239
+      - soc_percent: 20
+        power_kw: 239
+      - soc_percent: 30
+        power_kw: 230
+      - soc_percent: 50
+        power_kw: 185
+      - soc_percent: 70
+        power_kw: 125
+      - soc_percent: 80
+        power_kw: 80
+      - soc_percent: 90
+        power_kw: 38
+      - soc_percent: 100
+        power_kw: 10
+    has_heat_pump: true
+    hvac_cop_heat: 2.7
+    wltp_consumption_kwh_100km:
+      value: 14.0
+      source_ref: wltp
+    real_consumption_kwh_100km:
+      - value: 15.5
+        source_ref: evdb
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+      evdb:
+        name: "EV Database"
+        url: "https://ev-database.org"
+        confidence: medium
+
+  # ===== KONA ELECTRIC VFL (2018-2021) =====
+  - id: hyundai_kona_ev_39
+    make: Hyundai
+    model: Kona Electric
+    variant: "39 kWh (VFL)"
+    year_from: 2018
+    year_to: 2021
+    vehicle_type: ev
+    mass_kg: 1545
+    frontal_area_m2: 2.45
+    drag_coefficient_cd: 0.29
+    tire_class: suv
+    battery_usable_kwh: 39.2
+    ac_charging_kw: 7.4
+    dc_charging_kw: 50
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 50
+      - soc_percent: 10
+        power_kw: 50
+      - soc_percent: 20
+        power_kw: 50
+      - soc_percent: 30
+        power_kw: 47
+      - soc_percent: 50
+        power_kw: 40
+      - soc_percent: 70
+        power_kw: 28
+      - soc_percent: 80
+        power_kw: 18
+      - soc_percent: 90
+        power_kw: 10
+      - soc_percent: 100
+        power_kw: 5
+    has_heat_pump: true
+    hvac_cop_heat: 2.8
+    wltp_consumption_kwh_100km:
+      value: 15.4
+      source_ref: wltp
+    real_consumption_kwh_100km:
+      - value: 15.5
+        source_ref: evdb
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+      evdb:
+        name: "EV Database"
+        url: "https://ev-database.org"
+        confidence: medium
+
+  - id: hyundai_kona_ev_64
+    make: Hyundai
+    model: Kona Electric
+    variant: "64 kWh (VFL)"
+    year_from: 2018
+    year_to: 2021
+    vehicle_type: ev
+    mass_kg: 1675
+    frontal_area_m2: 2.45
+    drag_coefficient_cd: 0.29
+    tire_class: suv
+    battery_usable_kwh: 64.0
+    ac_charging_kw: 7.4
+    dc_charging_kw: 64
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 64
+      - soc_percent: 10
+        power_kw: 64
+      - soc_percent: 20
+        power_kw: 64
+      - soc_percent: 30
+        power_kw: 60
+      - soc_percent: 50
+        power_kw: 50
+      - soc_percent: 70
+        power_kw: 35
+      - soc_percent: 80
+        power_kw: 22
+      - soc_percent: 90
+        power_kw: 12
+      - soc_percent: 100
+        power_kw: 5
+    has_heat_pump: true
+    hvac_cop_heat: 2.8
+    wltp_consumption_kwh_100km:
+      value: 15.7
+      source_ref: wltp
+    real_consumption_kwh_100km:
+      - value: 16.0
+        source_ref: evdb
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+      evdb:
+        name: "EV Database"
+        url: "https://ev-database.org"
+        confidence: medium
+
+  # ===== KONA ELECTRIC FL (2021-2023) =====
+  - id: hyundai_kona_ev_fl_48
+    make: Hyundai
+    model: Kona Electric
+    variant: "48 kWh (FL)"
+    year_from: 2021
+    year_to: 2023
+    vehicle_type: ev
+    mass_kg: 1625
+    frontal_area_m2: 2.45
+    drag_coefficient_cd: 0.29
+    tire_class: suv
+    battery_usable_kwh: 48.4
+    ac_charging_kw: 7.4
+    dc_charging_kw: 48
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 48
+      - soc_percent: 10
+        power_kw: 48
+      - soc_percent: 20
+        power_kw: 48
+      - soc_percent: 30
+        power_kw: 45
+      - soc_percent: 50
+        power_kw: 38
+      - soc_percent: 70
+        power_kw: 27
+      - soc_percent: 80
+        power_kw: 18
+      - soc_percent: 90
+        power_kw: 10
+      - soc_percent: 100
+        power_kw: 5
+    has_heat_pump: true
+    hvac_cop_heat: 2.8
+    wltp_consumption_kwh_100km:
+      value: 15.2
+      source_ref: wltp
+    real_consumption_kwh_100km:
+      - value: 15.8
+        source_ref: evdb
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+      evdb:
+        name: "EV Database"
+        url: "https://ev-database.org"
+        confidence: medium
+
+  - id: hyundai_kona_ev_fl_65
+    make: Hyundai
+    model: Kona Electric
+    variant: "65 kWh (FL)"
+    year_from: 2021
+    year_to: 2023
+    vehicle_type: ev
+    mass_kg: 1720
+    frontal_area_m2: 2.45
+    drag_coefficient_cd: 0.29
+    tire_class: suv
+    battery_usable_kwh: 65.0
+    ac_charging_kw: 7.4
+    dc_charging_kw: 65
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 65
+      - soc_percent: 10
+        power_kw: 65
+      - soc_percent: 20
+        power_kw: 65
+      - soc_percent: 30
+        power_kw: 62
+      - soc_percent: 50
+        power_kw: 52
+      - soc_percent: 70
+        power_kw: 36
+      - soc_percent: 80
+        power_kw: 24
+      - soc_percent: 90
+        power_kw: 13
+      - soc_percent: 100
+        power_kw: 5
+    has_heat_pump: true
+    hvac_cop_heat: 2.8
+    wltp_consumption_kwh_100km:
+      value: 15.7
+      source_ref: wltp
+    real_consumption_kwh_100km:
+      - value: 16.2
+        source_ref: evdb
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+      evdb:
+        name: "EV Database"
+        url: "https://ev-database.org"
+        confidence: medium
+
+  # ===== KONA ELECTRIC 2nd Gen (2024+) =====
+  - id: hyundai_kona_ev_48_n
+    make: Hyundai
+    model: Kona Electric
+    variant: "48 kWh (2024+)"
+    year_from: 2024
+    vehicle_type: ev
+    mass_kg: 1695
+    frontal_area_m2: 2.60
+    drag_coefficient_cd: 0.27
+    tire_class: suv
+    battery_usable_kwh: 48.4
+    ac_charging_kw: 11
+    dc_charging_kw: 84
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 84
+      - soc_percent: 10
+        power_kw: 84
+      - soc_percent: 20
+        power_kw: 84
+      - soc_percent: 30
+        power_kw: 80
+      - soc_percent: 50
+        power_kw: 68
+      - soc_percent: 70
+        power_kw: 48
+      - soc_percent: 80
+        power_kw: 30
+      - soc_percent: 90
+        power_kw: 16
+      - soc_percent: 100
+        power_kw: 6
+    has_heat_pump: true
+    hvac_cop_heat: 2.5
+    wltp_consumption_kwh_100km:
+      value: 15.0
+      source_ref: wltp
+    real_consumption_kwh_100km:
+      - value: 15.8
+        source_ref: evdb
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+      evdb:
+        name: "EV Database"
+        url: "https://ev-database.org"
+        confidence: medium
+
+  - id: hyundai_kona_ev_65_n
+    make: Hyundai
+    model: Kona Electric
+    variant: "65 kWh (2024+)"
+    year_from: 2024
+    vehicle_type: ev
+    mass_kg: 1795
+    frontal_area_m2: 2.60
+    drag_coefficient_cd: 0.27
+    tire_class: suv
+    battery_usable_kwh: 65.0
+    ac_charging_kw: 11
+    dc_charging_kw: 115
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 115
+      - soc_percent: 10
+        power_kw: 115
+      - soc_percent: 20
+        power_kw: 115
+      - soc_percent: 30
+        power_kw: 110
+      - soc_percent: 50
+        power_kw: 92
+      - soc_percent: 70
+        power_kw: 65
+      - soc_percent: 80
+        power_kw: 42
+      - soc_percent: 90
+        power_kw: 22
+      - soc_percent: 100
+        power_kw: 7
+    has_heat_pump: true
+    hvac_cop_heat: 2.5
+    wltp_consumption_kwh_100km:
+      value: 15.2
+      source_ref: wltp
+    real_consumption_kwh_100km:
+      - value: 16.0
+        source_ref: evdb
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+      evdb:
+        name: "EV Database"
+        url: "https://ev-database.org"
+        confidence: medium

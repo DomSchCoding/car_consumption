@@ -1,0 +1,129 @@
+# Cupra, Seat, Citroen vehicles
+# Last updated: 2026-05-23
+
+vehicles:
+  - id: cupra_tavascan_vz
+    make: Cupra
+    model: Tavascan
+    variant: "VZ"
+    year_from: 2024
+    vehicle_type: ev
+    mass_kg: 2230
+    frontal_area_m2: 2.70
+    drag_coefficient_cd: 0.26
+    tire_class: suv
+    battery_usable_kwh: 77.0
+    ac_charging_kw: 11
+    dc_charging_kw: 135
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 135
+      - soc_percent: 10
+        power_kw: 135
+      - soc_percent: 20
+        power_kw: 135
+      - soc_percent: 30
+        power_kw: 130
+      - soc_percent: 50
+        power_kw: 110
+      - soc_percent: 70
+        power_kw: 80
+      - soc_percent: 80
+        power_kw: 50
+      - soc_percent: 90
+        power_kw: 25
+      - soc_percent: 100
+        power_kw: 7
+    has_heat_pump: true
+    hvac_cop_heat: 2.0
+    wltp_consumption_kwh_100km:
+      value: 18.5
+      source_ref: wltp
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+
+  - id: seat_mii_electric
+    make: Seat
+    model: Mii Electric
+    variant: ""
+    year_from: 2020
+    year_to: 2021
+    vehicle_type: ev
+    mass_kg: 1190
+    frontal_area_m2: 2.15
+    drag_coefficient_cd: 0.31
+    tire_class: standard
+    battery_usable_kwh: 32.3
+    ac_charging_kw: 7.4
+    dc_charging_kw: 40
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 40
+      - soc_percent: 10
+        power_kw: 40
+      - soc_percent: 20
+        power_kw: 40
+      - soc_percent: 30
+        power_kw: 38
+      - soc_percent: 50
+        power_kw: 32
+      - soc_percent: 70
+        power_kw: 22
+      - soc_percent: 80
+        power_kw: 14
+      - soc_percent: 90
+        power_kw: 8
+      - soc_percent: 100
+        power_kw: 4
+    has_heat_pump: false
+    wltp_consumption_kwh_100km:
+      value: 13.5
+      source_ref: wltp
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+
+  - id: citroen_ec4_50
+    make: Citroen
+    model: e-C4
+    variant: "50 kWh"
+    year_from: 2021
+    vehicle_type: ev
+    mass_kg: 1555
+    frontal_area_m2: 2.45
+    drag_coefficient_cd: 0.28
+    tire_class: standard
+    battery_usable_kwh: 50.0
+    ac_charging_kw: 7.4
+    dc_charging_kw: 50
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 50
+      - soc_percent: 10
+        power_kw: 50
+      - soc_percent: 20
+        power_kw: 50
+      - soc_percent: 30
+        power_kw: 47
+      - soc_percent: 50
+        power_kw: 40
+      - soc_percent: 70
+        power_kw: 28
+      - soc_percent: 80
+        power_kw: 18
+      - soc_percent: 90
+        power_kw: 10
+      - soc_percent: 100
+        power_kw: 5
+    has_heat_pump: true
+    hvac_cop_heat: 2.0
+    wltp_consumption_kwh_100km:
+      value: 16.0
+      source_ref: wltp
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high

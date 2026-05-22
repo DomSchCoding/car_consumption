@@ -1,0 +1,7 @@
+services:
+  car-consumption:
+    build: .
+    container_name: car-consumption
+    ports:
+      - "8089:8080"
+    restart: unless-stopped
