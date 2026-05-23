@@ -6,11 +6,11 @@ Ziel: Agenten koennen sicher weiterarbeiten.
 
 Tasks:
 
-- [ ] Knowledge Base v2 einchecken
-- [ ] AGENTS.md mergen/ersetzen
-- [ ] bestehende Tests laufen lassen
-- [ ] `main.py` grob vermessen: Laenge, Funktionen, Verantwortlichkeiten
-- [ ] Refactoring-Plan mit kleinen PRs erstellen
+- [x] Knowledge Base v2 einchecken
+- [x] AGENTS.md mergen/ersetzen
+- [x] bestehende Tests laufen lassen
+- [x] `main.py` grob vermessen: Laenge, Funktionen, Verantwortlichkeiten
+- [x] Refactoring-Plan mit kleinen PRs erstellen
 
 ## Phase 1 - UI/Core-Refactoring ohne Funktionsaenderung
 
@@ -18,13 +18,13 @@ Ziel: Wachstum vorbereiten.
 
 Tasks:
 
-- [ ] `ui/charts.py` anlegen
-- [ ] `build_chart()` aus `main.py` extrahieren
-- [ ] `build_table()` aus `main.py` extrahieren
-- [ ] `ui/state.py` einfuehren
-- [ ] Vehicle Selector Komponente extrahieren
-- [ ] Import-/Smoke-Tests
-- [ ] Knowledge aktualisieren
+- [x] `ui/charts.py` anlegen
+- [x] `build_chart()` aus `main.py` extrahieren
+- [x] `build_table()` aus `main.py` extrahieren
+- [x] `ui/state.py` einfuehren
+- [x] Vehicle Selector Komponente extrahieren
+- [x] Import-/Smoke-Tests
+- [x] Knowledge aktualisieren
 
 ## Phase 2 - Route MVP / Pendelstrecke
 
@@ -32,17 +32,17 @@ Ziel: Route als Kernfeature.
 
 Tasks:
 
-- [ ] `RouteSegment`, `Route`, `CommuteScenario`, `RouteEnergyBreakdown` Modelle
-- [ ] `core/route_energy.py`
-- [ ] flache Segmentberechnung
-- [ ] Hoehenenergie
-- [ ] Hinweg/Rueckweg-Generator
-- [ ] Stop-and-go vereinfachtes Modell
-- [ ] Aux-Zeitmodell
-- [ ] Tests
-- [ ] NiceGUI-Seite "Route / Pendeln"
-- [ ] Checkbox "Hin und Retour"
-- [ ] Tabelle und Breakdown-Chart
+- [x] `RouteSegment`, `Route`, `CommuteScenario`, `RouteEnergyBreakdown` Modelle
+- [x] `core/route_energy.py`
+- [x] flache Segmentberechnung
+- [x] Hoehenenergie
+- [x] Hinweg/Rueckweg-Generator
+- [x] Stop-and-go vereinfachtes Modell
+- [x] Aux-Zeitmodell
+- [x] Tests (23 Tests in test_route_energy.py)
+- [x] NiceGUI-Seite "Route / Pendeln"
+- [x] Checkbox "Hin und Retour"
+- [x] Tabelle mit Breakdown-Komponenten
 
 MVP-Eingaben:
 

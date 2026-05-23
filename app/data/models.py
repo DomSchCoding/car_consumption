@@ -163,3 +163,81 @@ class PhysicsParams(BaseModel):
 class FuelConstants(BaseModel):
     gasoline_kwh_per_liter: float = 8.9
     diesel_kwh_per_liter: float = 9.7
+
+
+class RoadType(str, Enum):
+    city = "city"
+    suburban = "suburban"
+    rural = "rural"
+    highway = "highway"
+    mixed = "mixed"
+
+
+class DirectionMode(str, Enum):
+    one_way = "one_way"
+    return_trip = "return_trip"
+
+
+class RouteSegment(BaseModel):
+    name: str = ""
+    distance_km: float
+    avg_speed_kmh: float
+    road_type: RoadType = RoadType.mixed
+    elevation_gain_m: float = 0.0
+    elevation_loss_m: float = 0.0
+    stops: float = 0.0
+    stop_speed_kmh: float | None = None
+    dwell_time_min: float = 0.0
+    headwind_kmh: float = 0.0
+    payload_kg: float = 0.0
+    aux_power_kw: float | None = None
+
+    @field_validator("distance_km", "avg_speed_kmh", mode="after")
+    @classmethod
+    def must_be_positive(cls, v: float) -> float:
+        if v <= 0:
+            raise ValueError("Must be positive")
+        return v
+
+
+DEFAULT_ROAD_STOP_SPEED: dict[RoadType, float] = {
+    RoadType.city: 35.0,
+    RoadType.suburban: 50.0,
+    RoadType.rural: 70.0,
+    RoadType.highway: 90.0,
+    RoadType.mixed: 50.0,
+}
+
+
+class Route(BaseModel):
+    id: str
+    name: str
+    description: str | None = None
+    segments: list[RouteSegment]
+    source_refs: dict[str, SourceRef] = Field(default_factory=dict)
+    notes: str | None = None
+
+
+class CommuteScenario(BaseModel):
+    route: Route
+    direction_mode: DirectionMode = DirectionMode.one_way
+    invert_wind_on_return: bool = True
+    days_per_week: float = 5
+    weeks_per_year: float = 46
+    energy_price_eur_per_kwh: float | None = None
+    fuel_price_eur_per_liter: float | None = None
+
+
+class RouteEnergyBreakdown(BaseModel):
+    distance_km: float
+    duration_h: float
+    aero_kwh: float
+    roll_kwh: float
+    aux_kwh: float
+    climb_kwh: float
+    descent_recovered_kwh: float
+    stop_go_kwh: float
+    drivetrain_loss_kwh: float
+    total_wheel_kwh: float
+    total_battery_kwh: float
+    kwh_per_100km: float

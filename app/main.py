@@ -136,6 +136,9 @@ def index(sort: str = "") -> None:
                     ui.label("Physics-based EV & ICE comparison").style(
                         "font-size:0.85em; color:#888; line-height:1.1;"
                     )
+                ui.link("🗺️ Route", "/route").style(
+                    "font-size:0.85em; color:#636EFA; text-decoration:none; margin-left:12px;"
+                )
 
             def toggle_dark() -> None:
                 SESSION["dark"] = not SESSION["dark"]
@@ -501,6 +504,13 @@ def index(sort: str = "") -> None:
     rebuild_make_select()
     update_selected_list()
     ui.timer(0.1, update, once=True)
+
+
+@ui.page("/route")
+def route_page_wrapper() -> None:
+    from app.ui.pages.route_planner import route_page
+
+    route_page()
 
 
 if __name__ in {"__main__", "__mp_main__"}:
