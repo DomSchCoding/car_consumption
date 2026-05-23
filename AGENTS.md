@@ -6,10 +6,25 @@ Stand: 2026-05-23
 
 Physics-based vehicle consumption analyzer with two route modes:
 
-- **v2 Route** = Expert Mode (manual parameter input, already implemented)
-- **v3 Route** = Map Route (Google-Maps-like UX, to be built)
+- **Manual Route (v2)** — expert mode with direct parameter input (already implemented)
+- **Map Route (v3)** — Google-Maps-like UX (to be built)
 
-The manual route planner stays as `/route/manual`. The map route planner becomes `/route`.
+## Route transition state
+
+**Current state:**
+
+- `/route` points to the existing manual/expert route planner
+- `/route/manual` does not yet exist as a stable alias
+- The map route planner has not been built yet
+
+**Transition plan:**
+
+1. Add `/route/manual` as a stable path for the manual/expert route planner (Phase A)
+2. Build the map route MVP with `/route/map` or a temporary path (Phase B)
+3. Switch `/route` to the map route planner only after the map MVP works and all tests pass
+4. Keep `/route/manual` permanently for expert/debug use
+
+**Rule:** Do not break `/route` until the replacement is tested and working.
 
 ## Knowledge base
 
@@ -28,15 +43,21 @@ knowledge/current/07_roadmap.md          phases A-G and prioritized implementati
 
 ## Mandatory agent principles
 
-1. Core first: route/geocoding/elevation/provider logic must be implemented outside UI modules.
+1. Core first: route/geocoding/elevation/provider logic must be implemented outside
+   UI modules.
 2. No network calls in unit tests. Use fixtures and mock providers.
 3. Keep the existing manual route planner working while adding the map route planner.
-4. API keys must never be hard-coded. Use environment variables and visible provider status.
+4. API keys must never be hard-coded. Use environment variables and visible provider
+   status.
 5. Implement provider abstraction before deeply integrating any single API.
-6. Cache external route/elevation responses to reduce quota usage and to make debugging reproducible.
-7. Distinguish route geometry, route metadata, speed profile, elevation profile and physical energy calculation.
-8. Do not pretend precision: provider-derived speed and elevation are estimates unless sourced from detailed route annotations.
-9. Preserve one-way vs return-trip handling. Return route is not simply 2x outward if elevation, wind or route asymmetry are involved.
+6. Cache external route/elevation responses to reduce quota usage and to make debugging
+   reproducible.
+7. Distinguish route geometry, route metadata, speed profile, elevation profile and
+   physical energy calculation.
+8. Do not pretend precision: provider-derived speed and elevation are estimates unless
+   sourced from detailed route annotations.
+9. Preserve one-way vs return-trip handling. Return route is not simply 2x outward if
+   elevation, wind or route asymmetry are involved.
 10. Every new route model or formula needs tests.
 
 ## Definition of Done
