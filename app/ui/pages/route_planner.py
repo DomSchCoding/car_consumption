@@ -182,16 +182,16 @@ def route_page() -> None:
             return
 
         params = PhysicsParams()
-        params.temperature_c = temp_route.value
+        params.temperature_c = temp_route.value or 20.0
         params.cabin_target_temp_c = 21.0
-        SESSION["_route_temp"] = temp_route.value
+        SESSION["_route_temp"] = params.temperature_c
 
-        distance_km = dist_input.value
-        speed_kmh = speed_input.value
-        net_elevation = elevation_input.value
+        distance_km = dist_input.value or 25.0
+        speed_kmh = speed_input.value or 80.0
+        net_elevation = elevation_input.value or 0
 
-        gain_m = gain_input.value if gain_input.value > 0 else max(0, net_elevation)
-        loss_m = loss_input.value if loss_input.value > 0 else max(0, -net_elevation)
+        gain_m = gain_input.value if (gain_input.value is not None and gain_input.value > 0) else max(0, net_elevation)
+        loss_m = loss_input.value if (loss_input.value is not None and loss_input.value > 0) else max(0, -net_elevation)
 
         segment = RouteSegment(
             name="Main segment",
@@ -200,10 +200,10 @@ def route_page() -> None:
             road_type=RoadType.mixed,
             elevation_gain_m=gain_m,
             elevation_loss_m=loss_m,
-            stops=stops_input.value,
+            stops=stops_input.value or 0.0,
             stop_speed_kmh=None,
-            dwell_time_min=dwell_input.value,
-            headwind_kmh=wind_input.value,
+            dwell_time_min=dwell_input.value or 0.0,
+            headwind_kmh=wind_input.value or 0.0,
             payload_kg=0.0,
             aux_power_kw=None,
         )

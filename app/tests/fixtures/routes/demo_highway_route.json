@@ -1,0 +1,43 @@
+{
+  "provider": "demo",
+  "profile": "car_fastest",
+  "start": {"lat": 48.174, "lon": 16.38},
+  "destination": {"lat": 47.81, "lon": 16.242},
+  "start_label": "Vienna Sued",
+  "destination_label": "Wiener Neustadt",
+  "geometry": [
+    {"lat": 48.174, "lon": 16.38, "elevation_m": 170.0, "distance_from_start_km": 0.0},
+    {"lat": 48.05, "lon": 16.35, "elevation_m": 195.0, "distance_from_start_km": 14.0},
+    {"lat": 47.95, "lon": 16.3, "elevation_m": 220.0, "distance_from_start_km": 27.0},
+    {"lat": 47.88, "lon": 16.27, "elevation_m": 210.0, "distance_from_start_km": 35.0},
+    {"lat": 47.81, "lon": 16.242, "elevation_m": 175.0, "distance_from_start_km": 42.5}
+  ],
+  "steps": [
+    {
+      "name": "Highway A2 south",
+      "distance_km": 42.5,
+      "duration_s": 1800,
+      "road_type": "highway",
+      "speed_kmh": 85.0,
+      "geometry": [
+        {"lat": 48.174, "lon": 16.38, "elevation_m": 170.0, "distance_from_start_km": 0.0},
+        {"lat": 47.81, "lon": 16.242, "elevation_m": 175.0, "distance_from_start_km": 42.5}
+      ]
+    }
+  ],
+  "summary_distance_km": 42.5,
+  "summary_duration_s": 1800,
+  "elevation_gain_m": 45.0,
+  "elevation_loss_m": 50.0,
+  "warnings": ["Demo route: speed and elevation are estimated"],
+  "expected": {
+    "distance_km_min": 40.0,
+    "distance_km_max": 50.0,
+    "elevation_gain_m_min": 30.0,
+    "elevation_gain_m_max": 80.0,
+    "duration_s_min": 1500,
+    "duration_s_max": 2200,
+    "segment_count_min": 1,
+    "segment_count_max": 3
+  }
+}

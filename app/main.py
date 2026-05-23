@@ -507,7 +507,14 @@ def index(sort: str = "") -> None:
 
 
 @ui.page("/route")
-def route_page_wrapper() -> None:
+def map_route_page() -> None:
+    from app.ui.pages.map_route_planner import map_route_page
+
+    map_route_page()
+
+
+@ui.page("/route/manual")
+def manual_route_page() -> None:
     from app.ui.pages.route_planner import route_page
 
     route_page()

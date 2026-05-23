@@ -28,52 +28,43 @@ forbidden:
 ## Current modules
 
 ```text
-app/core/physics.py          aero, roll, aux, drivetrain, fuel conversions
-app/core/route_energy.py     segment energy, route energy, commute scenarios
-app/data/models.py           Vehicle, Route, RouteSegment, CommuteScenario, PhysicsParams
-app/data/repository.py       YAML loading, vehicle queries
-app/ui/charts.py             Plotly chart construction
-app/ui/tables.py             HTML table construction
-app/ui/state.py              session state
-app/ui/components/            reusable UI components
-app/ui/pages/route_planner.py manual/expert route planner
-app/main.py                  NiceGUI entry point, dashboard page, route page wrapper
+app/core/physics.py                aero, roll, aux, drivetrain, fuel conversions
+app/core/route_energy.py            segment energy, route energy, commute scenarios
+app/core/route_geometry.py         haversine, cumulative distance, resampling, bearing
+app/core/route_segmentizer.py      provider route to RouteSegment conversion
+app/data/models.py                 Vehicle, Route, RouteSegment, CommuteScenario, PhysicsParams
+app/data/repository.py             YAML loading, vehicle queries
+app/services/__init__.py
+app/services/provider_models.py    shared provider DTOs (GeoPoint, ProviderRoute, etc.)
+app/services/route_cache.py        file cache for provider responses
+app/services/routing.py            DemoRoutingProvider (offline, deterministic)
+app/ui/charts.py                   Plotly chart construction
+app/ui/tables.py                   HTML table construction
+app/ui/state.py                    session state
+app/ui/components/vehicle_selector.py  reusable vehicle selector
+app/ui/components/map_widget.py        NiceGUI Leaflet wrapper helpers
+app/ui/components/route_controls.py    address inputs, provider selection, route options
+app/ui/components/route_summary.py    summary cards, provider status, warnings, energy table
+app/ui/pages/route_planner.py          manual/expert route planner (/route/manual)
+app/ui/pages/map_route_planner.py      map-based route planner (/route)
+app/main.py                           NiceGUI entry point, dashboard, route pages
 ```
 
-## Target modules (additive, not replacing)
+## Planned modules (not yet implemented)
 
 ```text
-app/services/
-  __init__.py
-  provider_models.py           shared provider DTOs (GeoPoint, ProviderRoute, etc.)
-  geocoding.py                Geocoder protocol + implementations
-  routing.py                  RoutingProvider protocol + implementations
-  elevation.py                ElevationProvider protocol + implementations
-  route_cache.py              file cache for provider responses
-
-app/core/
-  route_geometry.py           geometry helpers: haversine, cumulative distance, resampling
-  route_segmentizer.py        converts route geometry into RouteSegment list
-  route_energy.py             existing energy calculation (extend, don't rewrite)
-
-app/ui/
-  pages/route_planner.py      keep as manual/expert page
-  pages/map_route_planner.py  new map-based route page
-  components/map_widget.py   NiceGUI Leaflet wrapper helpers
-  components/route_controls.py address inputs, provider selection, route options
-  components/route_summary.py summary cards, provider status, warnings
+app/services/geocoding.py           Geocoder protocol + ORS implementation
+app/services/elevation.py           ElevationProvider protocol + implementations
 ```
 
 ## Page routing
 
 ```text
 /                 dashboard (vehicle comparison)
-/route            map route planner (new default)
-/route/manual     manual/expert route planner (existing)
+/route            map route planner (default)
+/route/manual     manual/expert route planner
 /vehicle/{vid}    vehicle detail page
 ```
-
-During transition, `/route` continues pointing to the old page until the new page works; then switch.
 
 ## Provider status UI
 

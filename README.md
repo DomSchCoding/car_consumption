@@ -27,55 +27,78 @@ Open http://localhost:8080 in your browser.
 
 ```
 app/
-  main.py                # NiceGUI web application entry point
+  main.py                    # NiceGUI web application entry point
   core/
-    physics.py           # Pure physics calculation functions
-    route_energy.py      # Route energy calculation, commute scenarios
+    physics.py               # Pure physics calculation functions
+    route_energy.py          # Route energy calculation, commute scenarios
+    route_geometry.py         # Haversine, elevation gain/loss, resampling
+    route_segmentizer.py     # Provider route to RouteSegment conversion
   data/
-    models.py            # Pydantic data models (Vehicle, Route, PhysicsParams, ...)
-    repository.py         # Vehicle data loading from YAML
+    models.py                # Pydantic data models (Vehicle, Route, PhysicsParams, ...)
+    repository.py            # Vehicle data loading from YAML
+  services/
+    __init__.py
+    provider_models.py       # GeoPoint, ProviderRoute, RouteRequest DTOs
+    route_cache.py           # File-based route response cache
+    routing.py               # Demo routing provider (offline, deterministic)
   ui/
-    charts.py            # Plotly chart construction
-    state.py             # Session state management
-    tables.py            # HTML table construction
+    charts.py                # Plotly chart construction
+    state.py                 # Session state management
+    tables.py                # HTML table construction
     components/
-      vehicle_selector.py # Reusable vehicle selection component
+      vehicle_selector.py    # Reusable vehicle selection component
+      map_widget.py          # NiceGUI Leaflet map helpers
+      route_controls.py      # Route search form component
+      route_summary.py       # Route result cards and tables
     pages/
-      route_planner.py   # Manual/expert route planner (current /route)
+      route_planner.py       # Manual/expert route planner (/route/manual)
+      map_route_planner.py   # Map-based route planner (/route)
   tests/
-    test_physics.py       # Physics module tests
-    test_repository.py    # Repository tests
-    test_route_energy.py  # Route energy tests
-    test_ui_smoke.py      # UI smoke tests
+    test_physics.py           # Physics module tests
+    test_repository.py       # Repository tests
+    test_route_energy.py     # Route energy tests
+    test_ui_smoke.py         # UI smoke tests
+    test_provider_models.py  # Provider model tests
+    test_route_cache.py      # Route cache tests
+    test_route_geometry.py  # Geometry helper tests
+    test_route_segmentizer.py # Segmentizer tests
+    test_map_route_smoke.py  # Map route smoke tests
+    fixtures/routes/         # Demo route fixture JSON files
   assets/
-    sample_vehicles.yaml  # Demo vehicle data
-    fuel_constants.yaml   # Fuel energy densities
+    sample_vehicles.yaml     # Demo vehicle data
+    fuel_constants.yaml      # Fuel energy densities
+  .cache/routes/             # Cached provider responses (gitignored)
 knowledge/
-  current/                # Authoritative agent context (see AGENTS.md)
-  archive/                # Historical knowledge files
-AGENTS.md                  # Agent guidance and project rules
+  current/                   # Authoritative agent context (see AGENTS.md)
+  archive/                   # Historical knowledge files
+AGENTS.md                     # Agent guidance and project rules
 ```
 
 ## Route Planner
 
-### Current: Manual Route Planner (`/route`)
+### Map Route Planner (`/route`)
 
-Enter route parameters directly:
+The primary route planner with a Google-Maps-like experience:
+
+- enter start and destination addresses
+- choose from demo routes (city, hilly, highway)
+- see route on an interactive map with polyline and markers
+- automatic distance, duration, elevation, and speed derivation
+- one-way or return-trip mode with proper elevation handling
+- energy comparison for selected vehicles
+- elevation and energy breakdown charts
+- provider status and data quality warnings
+- works fully offline using the built-in demo provider
+
+### Manual Route Planner (`/route/manual`)
+
+Expert mode with direct parameter entry:
 
 - distance, average speed, elevation gain/loss per segment
 - stops per km, dwell time, wind, temperature
 - one-way or return trip with wind inversion
 - segment editor for detailed routes
 - energy breakdown: aero, roll, aux, climb, stop-go, regen, drivetrain loss
-
-### Planned: Map Route Planner (`/route`, replacing manual)
-
-Google-Maps-like experience:
-
-- enter start and destination addresses
-- see route on map with automatic distance, elevation, speed derivation
-- one-way / round-trip toggle
-- manual route planner remains at `/route/manual` for experts
 
 ## Physics Model
 
@@ -226,14 +249,25 @@ The `knowledge/current/` directory contains the authoritative knowledge base
 for agentic development. See `AGENTS.md` for the full index and mandatory
 agent principles.
 
+## Environment Variables
+
+Reserved for future route providers (not required for demo mode):
+
+```
+ORS_API_KEY=...          # OpenRouteService API key
+ROUTING_PROVIDER=ors     # or osrm, valhalla (default: demo)
+OSRM_BASE_URL=...       # Self-hosted OSRM URL
+ELEVATION_PROVIDER=open_meteo  # or open_elevation
+```
+
+Route provider cache is stored in `.cache/routes/` (gitignored).
+
 ## Planned Features
 
-- Map-based route planner with geocoding and elevation
-- Real route providers (OpenRouteService, OSRM)
-- Route caching and offline demo mode
-- Acceleration profiles and regenerative braking
-- Temperature effects on battery and consumption
-- Wind and elevation profiles from route geometry
-- Tire model selection
-- Payload effects
+- OpenRouteService live routing provider
+- OSRM and elevation provider fallback
+- More detailed speed and stop estimation from route data
+- Bearing-based wind projection
+- Return trip as separate route request
+- Saved commute routes and economics
 - GPX/CSV import

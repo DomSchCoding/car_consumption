@@ -1,0 +1,45 @@
+{
+  "provider": "demo",
+  "profile": "car_fastest",
+  "start": {"lat": 48.2082, "lon": 16.3738},
+  "destination": {"lat": 48.2154, "lon": 16.3988},
+  "start_label": "Vienna City Center",
+  "destination_label": "Vienna Donauinsel",
+  "geometry": [
+    {"lat": 48.2082, "lon": 16.3738, "elevation_m": 172.0, "distance_from_start_km": 0.0},
+    {"lat": 48.2100, "lon": 16.3800, "elevation_m": 174.0, "distance_from_start_km": 0.5},
+    {"lat": 48.2120, "lon": 16.3860, "elevation_m": 176.0, "distance_from_start_km": 1.1},
+    {"lat": 48.2135, "lon": 16.3910, "elevation_m": 175.0, "distance_from_start_km": 1.6},
+    {"lat": 48.2140, "lon": 16.3950, "elevation_m": 172.0, "distance_from_start_km": 2.3},
+    {"lat": 48.2148, "lon": 16.3970, "elevation_m": 168.0, "distance_from_start_km": 2.9},
+    {"lat": 48.2154, "lon": 16.3988, "elevation_m": 164.0, "distance_from_start_km": 3.8}
+  ],
+  "steps": [
+    {
+      "name": "City center to Donauinsel",
+      "distance_km": 3.8,
+      "duration_s": 480,
+      "road_type": "city",
+      "speed_kmh": 28.5,
+      "geometry": [
+        {"lat": 48.2082, "lon": 16.3738, "elevation_m": 172.0, "distance_from_start_km": 0.0},
+        {"lat": 48.2154, "lon": 16.3988, "elevation_m": 164.0, "distance_from_start_km": 3.8}
+      ]
+    }
+  ],
+  "summary_distance_km": 3.8,
+  "summary_duration_s": 480,
+  "elevation_gain_m": 12.0,
+  "elevation_loss_m": 8.0,
+  "warnings": ["Demo route: speed and elevation are estimated"],
+  "expected": {
+    "distance_km_min": 3.5,
+    "distance_km_max": 4.5,
+    "elevation_gain_m_min": 8.0,
+    "elevation_gain_m_max": 20.0,
+    "duration_s_min": 400,
+    "duration_s_max": 600,
+    "segment_count_min": 1,
+    "segment_count_max": 4
+  }
+}

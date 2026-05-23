@@ -1,0 +1,45 @@
+{
+  "provider": "demo",
+  "profile": "car_fastest",
+  "start": {"lat": 48.305, "lon": 16.309},
+  "destination": {"lat": 48.267, "lon": 16.35},
+  "start_label": "Klosterneuburg",
+  "destination_label": "Vienna Kahlenbergerdorf",
+  "geometry": [
+    {"lat": 48.305, "lon": 16.309, "elevation_m": 250.0, "distance_from_start_km": 0.0},
+    {"lat": 48.295, "lon": 16.315, "elevation_m": 290.0, "distance_from_start_km": 1.2},
+    {"lat": 48.285, "lon": 16.322, "elevation_m": 330.0, "distance_from_start_km": 2.8},
+    {"lat": 48.280, "lon": 16.328, "elevation_m": 350.0, "distance_from_start_km": 4.0},
+    {"lat": 48.275, "lon": 16.335, "elevation_m": 310.0, "distance_from_start_km": 5.5},
+    {"lat": 48.270, "lon": 16.342, "elevation_m": 220.0, "distance_from_start_km": 7.0},
+    {"lat": 48.267, "lon": 16.35, "elevation_m": 180.0, "distance_from_start_km": 8.2}
+  ],
+  "steps": [
+    {
+      "name": "Hilly climb and descent",
+      "distance_km": 8.2,
+      "duration_s": 720,
+      "road_type": "rural",
+      "speed_kmh": 41.0,
+      "geometry": [
+        {"lat": 48.305, "lon": 16.309, "elevation_m": 250.0, "distance_from_start_km": 0.0},
+        {"lat": 48.267, "lon": 16.35, "elevation_m": 180.0, "distance_from_start_km": 8.2}
+      ]
+    }
+  ],
+  "summary_distance_km": 8.2,
+  "summary_duration_s": 720,
+  "elevation_gain_m": 150.0,
+  "elevation_loss_m": 120.0,
+  "warnings": ["Demo route: speed and elevation are estimated"],
+  "expected": {
+    "distance_km_min": 7.5,
+    "distance_km_max": 9.5,
+    "elevation_gain_m_min": 100.0,
+    "elevation_gain_m_max": 200.0,
+    "duration_s_min": 600,
+    "duration_s_max": 900,
+    "segment_count_min": 1,
+    "segment_count_max": 5
+  }
+}
