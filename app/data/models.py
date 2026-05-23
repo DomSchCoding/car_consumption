@@ -118,10 +118,7 @@ class Vehicle(BaseModel):
 
     @property
     def has_dc_charging_data(self) -> bool:
-        return (
-            self.dc_charging_kw is not None
-            and self.battery_usable_kwh is not None
-        )
+        return self.dc_charging_kw is not None and self.battery_usable_kwh is not None
 
     @property
     def charge_time_20_80_min(self) -> float | None:

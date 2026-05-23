@@ -342,9 +342,7 @@ def charging_curve_points(
         points = []
         for i in range(num_points):
             soc = soc_min + (soc_max - soc_min) * i / (num_points - 1)
-            power = _interpolate_charging_curve(
-                [p[0] for p in curve], [p[1] for p in curve], soc
-            )
+            power = _interpolate_charging_curve([p[0] for p in curve], [p[1] for p in curve], soc)
             points.append((soc, power))
         return points
 
