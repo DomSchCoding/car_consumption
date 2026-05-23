@@ -1,147 +1,54 @@
-# AGENTS.md - Arbeitsweise fuer opencode
+# AGENTS.md - car_consumption
 
 Stand: 2026-05-23
 
-## Projektziel
+## Project overview
 
-Entwickle `car_consumption` zu einer physikbasierten NiceGUI-Webapp zur Analyse, Erklaerung und Kaufunterstuetzung von Fahrzeugverbraeuchen.
+Physics-based vehicle consumption analyzer with two route modes:
 
-Schwerpunkt:
+- **v2 Route** = Expert Mode (manual parameter input, already implemented)
+- **v3 Route** = Map Route (Google-Maps-like UX, to be built)
 
-- Elektroautos, aber mit sauberem Verbrennervergleich
-- Aerodynamik, Rollwiderstand, Nebenverbraucher, Antriebseffizienz
-- Fahrprofile und konkrete Routen inklusive Pendelstrecken
-- Hoehenprofil, Wind, Temperatur, Stop-and-go und Rekuperation
-- reale Verbrauchsdaten, Preise, Gebrauchtmarkt und TCO
-- transparente Datenqualitaet und nachvollziehbare Quellen
+The manual route planner stays as `/route/manual`. The map route planner becomes `/route`.
 
-Die App soll nicht nur WLTP/EPA/Realwerte anzeigen, sondern erklaeren, welcher Teil des Verbrauchs aus welcher physikalischen Ursache entsteht.
+## Knowledge base
 
-## Kernprinzipien
-
-1. Physik zuerst, reale Daten danach zur Plausibilisierung.
-2. Keine stillen Annahmen: Jeder Default ist sichtbar, editierbar und dokumentiert.
-3. Jede Fahrzeug-, Verbrauchs-, Preis- und Routendatenquelle braucht Quelle, Datum, Einheit, Kontext und Confidence-Level.
-4. Core-Logik bleibt frei von UI-Code.
-5. Jede neue Formel bekommt Unit-Tests.
-6. Jede neue UI-Funktion bekommt mindestens eine robuste Daten-/Core-Schicht darunter.
-7. Nicht blind scrapen. Nutzungsbedingungen, robots.txt, Lizenz und Caching-Konzept pruefen.
-8. Wenn eine Annahme unsicher ist: konservativ waehlen, dokumentieren, in UI editierbar machen.
-9. Zwischen Radenergie, Batterieenergie und chemischer Energie immer klar unterscheiden.
-10. Bei Routen nie nur Netto-Hoehendifferenz verrechnen: Hinweg/Rueckweg und Rekuperationsverluste getrennt modellieren.
-
-## Knowledge-Entry-Points
-
-Vor groesseren Arbeiten lesen:
-
-- `knowledge/00_project_overview.md`
-- `knowledge/01_architecture_v2.md`
-- `knowledge/02_physics_model_v2.md`
-- `knowledge/03_route_and_commute_model.md`
-- `knowledge/10_roadmap_backlog.md`
-
-Bei Datenarbeiten:
-
-- `knowledge/04_data_model_v2.md`
-- `knowledge/05_data_sources_and_quality.md`
-
-Bei UI-Arbeiten:
-
-- `knowledge/06_ui_ux_v2.md`
-
-Bei Preisen/TCO:
-
-- `knowledge/07_economics_price_tco.md`
-
-Bei Tests/Qualitaet:
-
-- `knowledge/08_testing_strategy_v2.md`
-
-## Zielarchitektur
+Only `knowledge/current/` is authoritative. `knowledge/archive/` is historical context only.
 
 ```text
-app/
-  main.py                         # nur Startpunkt, Routing, globale App-Konfiguration
-  core/
-    physics.py                    # bestehende Grundformeln
-    route_energy.py               # Routen-/Segmentberechnung
-    drive_profiles.py             # Stadt/Land/Autobahn/Pendelprofile
-    regeneration.py               # Stop-and-go, Rekuperationsmodell
-    environment.py                # Luftdichte, Temperatur, Wind, Wetter
-    economics.py                  # Preise, TCO, Kostenmetriken
-    units.py                      # Einheitenumrechnung
-  data/
-    models.py                     # Pydantic-Domainmodelle
-    repository.py                 # Laden, Validieren, Query
-    importers/
-      epa.py
-      ev_database_manual.py
-      price_csv.py
-      gpx.py
-  ui/
-    pages/
-      dashboard.py
-      vehicles.py
-      route_planner.py
-      economics.py
-      data_quality.py
-    components/
-      vehicle_selector.py
-      chart_cards.py
-      parameter_panels.py
-      source_badges.py
-    charts.py
-    state.py
-  assets/
-    vehicles/
-      hyundai.yaml
-      volkswagen.yaml
-      ...
-    route_profiles.yaml
-    tire_profiles.yaml
-    fuel_constants.yaml
-    price_samples_demo.yaml
-  tests/
-    test_physics.py
-    test_route_energy.py
-    test_regeneration.py
-    test_economics.py
-    test_repository.py
-    test_importers.py
+knowledge/current/00_project_state.md    repository structure, what works, gaps, tech stack
+knowledge/current/01_product_vision.md   users, principles, two route concepts, energy output
+knowledge/current/02_architecture.md      layering, modules, dependencies, page routing
+knowledge/current/03_physics_model.md     formulas, elevation, stops, regen, return trip
+knowledge/current/04_route_map_feature.md user flow, providers, data model, caching, map, security
+knowledge/current/05_ui_ux.md            pages, layouts, charts, wording, progressive disclosure
+knowledge/current/06_testing_strategy.md  test layers, fixtures, regression, DoD
+knowledge/current/07_roadmap.md          phases A-G and prioritized implementation order
 ```
+
+## Mandatory agent principles
+
+1. Core first: route/geocoding/elevation/provider logic must be implemented outside UI modules.
+2. No network calls in unit tests. Use fixtures and mock providers.
+3. Keep the existing manual route planner working while adding the map route planner.
+4. API keys must never be hard-coded. Use environment variables and visible provider status.
+5. Implement provider abstraction before deeply integrating any single API.
+6. Cache external route/elevation responses to reduce quota usage and to make debugging reproducible.
+7. Distinguish route geometry, route metadata, speed profile, elevation profile and physical energy calculation.
+8. Do not pretend precision: provider-derived speed and elevation are estimates unless sourced from detailed route annotations.
+9. Preserve one-way vs return-trip handling. Return route is not simply 2x outward if elevation, wind or route asymmetry are involved.
+10. Every new route model or formula needs tests.
 
 ## Definition of Done
 
-Ein Task ist erst fertig, wenn:
+A task is complete only if:
 
-- relevante Knowledge-Datei aktualisiert ist
-- Tests fuer neue Core-Logik existieren
-- `pytest` erfolgreich ist
-- `ruff check` erfolgreich ist
-- `ruff format` angewandt oder geprueft wurde
-- Typpruefung fuer Core/Data gruene Ergebnisse liefert oder eine Ausnahme dokumentiert ist
-- keine unklaren Einheiten in UI oder Code bleiben
-- Quellen, Confidence und Datenkontext bei neuen Daten gepflegt sind
-- die App lokal mit `python -m app.main` startet
-
-## Arbeitsmodus fuer opencode
-
-Arbeite in kleinen, lauffaehigen Schritten:
-
-1. Relevante Knowledge-Dateien lesen.
-2. Minimalen Implementierungsplan in 5-10 Punkten schreiben.
-3. Bestehende Tests ausfuehren.
-4. Erst Core/Data aendern, dann UI.
-5. Neue Tests hinzufuegen.
-6. UI integrieren.
-7. README/Knowledge aktualisieren.
-8. Kurzen Abschlussbericht mit Aenderungen, Tests und bekannten Grenzen schreiben.
-
-## Nicht tun
-
-- Keine komplexe Scraping-Pipeline bauen, bevor Datenmodell und manuelle Imports stabil sind.
-- Keine Werte aus Webseiten ohne Quelle/Datum/Confidence hart codieren.
-- Keine WLTP-, EPA-, Real- und Modellwerte ohne Kontext direkt gleichsetzen.
-- Keine Magic Numbers in UI-Code verstecken.
-- Kein UI-State-Chaos durch vermischte globale Listen, Chartlogik und Datenmodelllogik.
-- Keine Route mit Hoehenprofil als blossen Durchschnittsverbrauch behandeln.
+- app still starts with `python -m app.main`
+- existing manual route planner still works
+- new map route page has a working offline/demo provider
+- real provider integration is optional and guarded by env config
+- route results are cached
+- tests cover provider parsing, caching, segmentization and energy calculation
+- `pytest`, `ruff check`, and `ruff format --check` have been run
+- no API key or personal location is committed
+- README and knowledge files are updated
