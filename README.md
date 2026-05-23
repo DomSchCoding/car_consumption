@@ -1,6 +1,8 @@
 # Vehicle Consumption Analyzer
 
-Physics-based web application for analyzing and comparing vehicle energy consumption, with focus on electric vehicles, aerodynamics, rolling resistance, auxiliary consumers, and ICE comparison.
+Physics-based web application for analyzing and comparing vehicle energy
+consumption, with focus on electric vehicles, aerodynamics, rolling resistance,
+auxiliary consumers, and ICE comparison.
 
 ## Quick Start
 
@@ -25,18 +27,55 @@ Open http://localhost:8080 in your browser.
 
 ```
 app/
-  main.py              # NiceGUI web application entry point
+  main.py                # NiceGUI web application entry point
   core/
-    physics.py         # Pure physics calculation functions
+    physics.py           # Pure physics calculation functions
+    route_energy.py      # Route energy calculation, commute scenarios
   data/
-    models.py          # Pydantic data models
-    repository.py      # Vehicle data loading from YAML
+    models.py            # Pydantic data models (Vehicle, Route, PhysicsParams, ...)
+    repository.py         # Vehicle data loading from YAML
+  ui/
+    charts.py            # Plotly chart construction
+    state.py             # Session state management
+    tables.py            # HTML table construction
+    components/
+      vehicle_selector.py # Reusable vehicle selection component
+    pages/
+      route_planner.py   # Manual/expert route planner (current /route)
+  tests/
+    test_physics.py       # Physics module tests
+    test_repository.py    # Repository tests
+    test_route_energy.py  # Route energy tests
+    test_ui_smoke.py      # UI smoke tests
   assets/
     sample_vehicles.yaml  # Demo vehicle data
     fuel_constants.yaml   # Fuel energy densities
-  tests/
-    test_physics.py    # Physics module tests
+knowledge/
+  current/                # Authoritative agent context (see AGENTS.md)
+  archive/                # Historical knowledge files
+AGENTS.md                  # Agent guidance and project rules
 ```
+
+## Route Planner
+
+### Current: Manual Route Planner (`/route`)
+
+Enter route parameters directly:
+
+- distance, average speed, elevation gain/loss per segment
+- stops per km, dwell time, wind, temperature
+- one-way or return trip with wind inversion
+- segment editor for detailed routes
+- energy breakdown: aero, roll, aux, climb, stop-go, regen, drivetrain loss
+
+### Planned: Map Route Planner (`/route`, replacing manual)
+
+Google-Maps-like experience:
+
+- enter start and destination addresses
+- see route on map with automatic distance, elevation, speed derivation
+- one-way / round-trip toggle
+- manual route planner remains at `/route/manual` for experts
 
 ## Physics Model
 
@@ -90,11 +129,13 @@ battery_kWh = wheel_kWh / eta_drivetrain
 ### ICE Comparison
 
 Chemical energy from fuel:
+
 ```
 kWh/100km = liters/100km * kWh_per_liter
 ```
 
 Estimated wheel energy:
+
 ```
 wheel_kWh = chemical_kWh * thermal_efficiency
 ```
@@ -103,7 +144,18 @@ wheel_kWh = chemical_kWh * thermal_efficiency
 - Diesel: ~9.7 kWh/liter (LHV)
 - Typical thermal efficiency: 0.25-0.40 (Otto), 0.35-0.45 (Diesel)
 
-**Important**: 1 l/100 km is NOT directly comparable to battery kWh/100 km because thermal efficiency differs significantly.
+**Important**: 1 l/100 km is NOT directly comparable to battery kWh/100 km
+because thermal efficiency differs significantly.
+
+### Route Energy
+
+The route model extends the basic physics with:
+
+- Per-segment calculation (distance, speed, elevation, stops, wind)
+- Elevation gain/loss with regenerative recovery
+- Stop-and-go energy modeling
+- One-way and return-trip modes (return swaps gain/loss)
+- Wind component per segment
 
 ## Unit Conversions
 
@@ -127,7 +179,8 @@ The included `sample_vehicles.yaml` contains demo data for:
 - **VW Golf 2.0 TDI** - Diesel ICE reference
 - **VW Crafter 35** - Delivery van reference
 
-Values without verified sources are marked as "demo" and should be treated as conservative estimates.
+Values without verified sources are marked as "demo" and should be treated as
+conservative estimates.
 
 ## Configuration
 
@@ -167,12 +220,20 @@ pyright app/
 
 **Never scrape blindly** - always check robots.txt, terms of use, and license.
 
-## Planned Features (Phase 2)
+## Agent Context
 
+The `knowledge/current/` directory contains the authoritative knowledge base
+for agentic development. See `AGENTS.md` for the full index and mandatory
+agent principles.
+
+## Planned Features
+
+- Map-based route planner with geocoding and elevation
+- Real route providers (OpenRouteService, OSRM)
+- Route caching and offline demo mode
 - Acceleration profiles and regenerative braking
 - Temperature effects on battery and consumption
-- Wind and elevation profiles
+- Wind and elevation profiles from route geometry
 - Tire model selection
 - Payload effects
-- Data import from EPA/fueleconomy.gov
-- Data quality dashboard
+- GPX/CSV import
