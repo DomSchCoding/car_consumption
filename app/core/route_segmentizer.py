@@ -19,7 +19,7 @@ from app.data.models import (
     Route,
     RouteSegment,
 )
-from app.services.provider_models import ProviderRoute
+from app.services.provider_models import ProviderRoute, RouteStep
 
 DEFAULT_CITY_STOP_PER_KM = 2.0
 DEFAULT_RURAL_STOP_PER_KM = 0.2
@@ -68,6 +68,49 @@ def _stops_per_km_for_road_type(road_type: RoadType, settings: SegmentizationSet
     return settings.default_stops_per_km.get(key, 0.5)
 
 
+def _route_has_elevation(geometry: list) -> bool:
+    """Check if any point in geometry has a non-None elevation value."""
+    return any(p.elevation_m is not None for p in geometry)
+
+
+def _compute_step_elevation_from_route(
+    step: RouteStep,
+    provider_route: ProviderRoute,
+    route_total_gain: float,
+    route_total_loss: float,
+) -> tuple[float, float]:
+    """Compute step-level elevation gain/loss from enriched route geometry.
+
+    If the step has its own elevation data (from step.geometry), use it directly.
+    If the step lacks elevation but the route has enriched geometry with elevation,
+    distribute the route-level totals proportionally by step distance.
+    """
+    step_geom = step.geometry
+    has_step_elevation = step_geom and len(step_geom) > 1 and any(p.elevation_m is not None for p in step_geom)
+
+    if has_step_elevation:
+        gain, loss = compute_elevation_gain_loss(step_geom)
+        if gain > 0 or loss > 0:
+            return gain, loss
+
+    route_geom = provider_route.geometry
+    has_route_elevation = _route_has_elevation(route_geom)
+
+    if has_route_elevation and (route_total_gain > 0 or route_total_loss > 0):
+        total_step_dist = sum(s.distance_km for s in provider_route.steps) or 1.0
+        step_frac = step.distance_km / total_step_dist if total_step_dist > 0 else 0.0
+        return round(route_total_gain * step_frac, 1), round(route_total_loss * step_frac, 1)
+
+    if provider_route.elevation_gain_m is not None or provider_route.elevation_loss_m is not None:
+        total_step_dist = sum(s.distance_km for s in provider_route.steps) or 1.0
+        step_frac = step.distance_km / total_step_dist if total_step_dist > 0 else 0.0
+        return round((provider_route.elevation_gain_m or 0.0) * step_frac, 1), round(
+            (provider_route.elevation_loss_m or 0.0) * step_frac, 1
+        )
+
+    return 0.0, 0.0
+
+
 def provider_route_to_segments(
     provider_route: ProviderRoute,
     settings: SegmentizationSettings | None = None,
@@ -76,6 +119,13 @@ def provider_route_to_segments(
         settings = SegmentizationSettings()
 
     steps = provider_route.steps
+    route_total_gain = 0.0
+    route_total_loss = 0.0
+    if _route_has_elevation(provider_route.geometry):
+        route_total_gain, route_total_loss = compute_elevation_gain_loss(
+            provider_route.geometry, settings.noise_threshold_m
+        )
+
     if steps:
         segments: list[RouteSegment] = []
         for i, step in enumerate(steps):
@@ -100,16 +150,7 @@ def provider_route_to_segments(
             except ValueError:
                 road_type = _speed_to_road_type(speed)
 
-            geom = step.geometry if step.geometry else provider_route.geometry
-            gain, loss = 0.0, 0.0
-            if geom and len(geom) > 1:
-                computed_gain, computed_loss = compute_elevation_gain_loss(geom, settings.noise_threshold_m)
-                if computed_gain > 0 or computed_loss > 0:
-                    gain, loss = computed_gain, computed_loss
-                elif provider_route.elevation_gain_m is not None or provider_route.elevation_loss_m is not None:
-                    n_steps = len(steps) if steps else 1
-                    gain = (provider_route.elevation_gain_m or 0.0) / n_steps if n_steps > 0 else 0.0
-                    loss = (provider_route.elevation_loss_m or 0.0) / n_steps if n_steps > 0 else 0.0
+            gain, loss = _compute_step_elevation_from_route(step, provider_route, route_total_gain, route_total_loss)
 
             stops_per_km = _stops_per_km_for_road_type(road_type, settings)
 

@@ -77,8 +77,9 @@ def resample_route_points(
 ) -> list[tuple[float, float]]:
     """Select route points with approximately `spacing_km` between them, capped at `max_points`.
 
-    Always includes the first and last point. Returns (lat, lon) tuples
-    for the elevation API.
+    Always includes the first and last point. The max_points cap applies to
+    intermediate points only, so start and destination are never dropped.
+    Returns (lat, lon) tuples for the elevation API.
     """
     if not points:
         return []
@@ -92,25 +93,29 @@ def resample_route_points(
     total_km = distances[-1] if distances else 0
 
     if total_km <= 0:
-        return [(p.lat, p.lon) for p in points[:max_points]]
+        result = [(p.lat, p.lon) for p in points[: max_points - 1]]
+        if result[-1] != (points[-1].lat, points[-1].lon):
+            result.append((points[-1].lat, points[-1].lon))
+        return result
 
-    step_km = max(spacing_km, total_km / max_points)
+    intermediate_budget = max_points - 2
+    step_km = max(spacing_km, total_km / max(intermediate_budget, 1))
 
     selected: list[tuple[float, float]] = [(points[0].lat, points[0].lon)]
     next_dist = step_km
 
-    for i in range(1, len(points)):
+    for i in range(1, len(points) - 1):
         d = distances[i]
-        if d >= next_dist or i == len(points) - 1:
+        if d >= next_dist:
             selected.append((points[i].lat, points[i].lon))
             next_dist = d + step_km
-            if len(selected) >= max_points:
+            if len(selected) - 1 >= intermediate_budget:
                 break
 
     if selected[-1] != (points[-1].lat, points[-1].lon):
         selected.append((points[-1].lat, points[-1].lon))
 
-    return selected[:max_points]
+    return selected
 
 
 def fetch_elevation(points: list[tuple[float, float]]) -> list[float] | None:

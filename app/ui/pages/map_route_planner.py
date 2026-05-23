@@ -2,11 +2,22 @@
 
 from __future__ import annotations
 
+import asyncio
+
 import plotly.graph_objects as go
 from nicegui import ui
 
 from app.core.route_energy import commute_energy
-from app.core.route_segmentizer import provider_route_to_commute_scenario, provider_route_to_segments
+from app.core.route_geometry import (
+    elevation_stats,
+    expected_climb_battery_kwh,
+    expected_descent_recovered_kwh,
+    potential_energy_kwh,
+)
+from app.core.route_segmentizer import (
+    provider_route_to_commute_scenario,
+    provider_route_to_segments,
+)
 from app.data.models import DirectionMode, PhysicsParams
 from app.data.repository import VehicleRepository
 from app.services.provider_config import (
@@ -31,6 +42,16 @@ from app.ui.state import SESSION
 
 MAX_COMPARE_ROUTE = 8
 
+_GEOCODE_DEBOUNCE_MS = 1000
+
+
+class GeocodeStatus:
+    unresolved = "unresolved"
+    searching = "searching"
+    resolved = "resolved"
+    not_found = "not found"
+    provider_disabled = "provider disabled"
+
 
 def _provider_status_text() -> str:
     live = is_live_routing_enabled()
@@ -54,6 +75,9 @@ def map_route_page() -> None:
     demo_provider = DemoRoutingProvider()
 
     current_route_result: dict = {"provider_route": None, "segments": None, "messages": []}
+
+    resolved_start: dict = {"point": None, "label": None, "status": GeocodeStatus.unresolved}
+    resolved_dest: dict = {"point": None, "label": None, "status": GeocodeStatus.unresolved}
 
     DEMO_ROUTE_ADDRESSES: dict[str, tuple[str, str]] = {
         "city_commute": ("demo city start", "demo city destination"),
@@ -104,39 +128,41 @@ def map_route_page() -> None:
                 start_input = ui.input("Start address", value="Demo city start").style("width:100%;")
                 dest_input = ui.input("Destination address", value="Demo city destination").style("width:100%;")
 
-                geocode_status = ui.label("").style("font-size:0.78em; color:#888; margin-top:2px;")
+                start_status_label = ui.label("").style(
+                    "font-size:0.75em; color:#888; margin-top:1px; min-height:1.1em;"
+                )
+                dest_status_label = ui.label("").style(
+                    "font-size:0.75em; color:#888; margin-top:1px; min-height:1.1em;"
+                )
 
-                def try_geocode_addresses() -> None:
-                    """Geocode start/destination when in live mode and show markers on map."""
-                    if provider_mode.value != "live":
-                        geocode_status.set_text("")
-                        return
-                    from app.services.geocoding import geocode as nominatim_geocode
+                geocode_timer = {"start": None, "dest": None}
 
-                    start_val = (start_input.value or "").strip()
-                    dest_val = (dest_input.value or "").strip()
-                    if not start_val and not dest_val:
-                        geocode_status.set_text("Enter start and destination addresses")
-                        return
-                    start_pt = None
-                    dest_pt = None
-                    msgs: list[str] = []
-                    if start_val:
-                        candidates, err = nominatim_geocode(start_val)
-                        if candidates:
-                            start_pt = candidates[0].point
-                            msgs.append(f"Start: {candidates[0].label}")
+                def _update_status_labels() -> None:
+                    for label, key in [(start_status_label, "start"), (dest_status_label, "dest")]:
+                        resolved = resolved_start if key == "start" else resolved_dest
+                        status = resolved["status"]
+                        name = "Start" if key == "start" else "Destination"
+                        if status == GeocodeStatus.resolved:
+                            lbl = resolved["label"] or name
+                            label.set_text(f"✓ {name}: {lbl}")
+                            label.style("font-size:0.75em; color:#2E7D32; margin-top:1px; min-height:1.1em;")
+                        elif status == GeocodeStatus.searching:
+                            label.set_text(f"◌ {name}: searching...")
+                            label.style("font-size:0.75em; color:#1976D2; margin-top:1px; min-height:1.1em;")
+                        elif status == GeocodeStatus.not_found:
+                            label.set_text(f"✗ {name}: not found")
+                            label.style("font-size:0.75em; color:#C62828; margin-top:1px; min-height:1.1em;")
+                        elif status == GeocodeStatus.provider_disabled:
+                            label.set_text(f"— {name}: provider disabled")
+                            label.style("font-size:0.75em; color:#888; margin-top:1px; min-height:1.1em;")
                         else:
-                            msgs.append(f"Start not found: {err}" if err else "Start not found")
-                    if dest_val:
-                        candidates, err = nominatim_geocode(dest_val)
-                        if candidates:
-                            dest_pt = candidates[0].point
-                            msgs.append(f"Dest: {candidates[0].label}")
-                        else:
-                            msgs.append(f"Dest not found: {err}" if err else "Dest not found")
-                    geocode_status.set_text(" | ".join(msgs) if msgs else "")
+                            label.set_text(f"  {name}: unresolved")
+                            label.style("font-size:0.75em; color:#888; margin-top:1px; min-height:1.1em;")
+
+                def _update_markers() -> None:
                     clear_route_layer(route_map)
+                    start_pt = resolved_start.get("point")
+                    dest_pt = resolved_dest.get("point")
                     if start_pt and dest_pt:
                         set_start_end_markers(route_map, (start_pt.lat, start_pt.lon), (dest_pt.lat, dest_pt.lon))
                         fit_bounds(route_map, [(start_pt.lat, start_pt.lon), (dest_pt.lat, dest_pt.lon)])
@@ -149,8 +175,67 @@ def map_route_page() -> None:
                         route_map.set_center((dest_pt.lat, dest_pt.lon))
                         route_map.set_zoom(13)
 
-                start_input.on("keydown.enter", lambda: try_geocode_addresses())
-                dest_input.on("keydown.enter", lambda: try_geocode_addresses())
+                async def _geocode_address(address: str, which: str) -> None:
+                    if provider_mode.value != "live":
+                        return
+
+                    if not is_nominatim_enabled():
+                        resolved = resolved_start if which == "start" else resolved_dest
+                        resolved["status"] = GeocodeStatus.provider_disabled
+                        resolved["point"] = None
+                        resolved["label"] = None
+                        _update_status_labels()
+                        return
+
+                    resolved = resolved_start if which == "start" else resolved_dest
+                    address = address.strip()
+                    if not address:
+                        resolved["status"] = GeocodeStatus.unresolved
+                        resolved["point"] = None
+                        resolved["label"] = None
+                        _update_status_labels()
+                        return
+
+                    resolved["status"] = GeocodeStatus.searching
+                    _update_status_labels()
+
+                    try:
+                        from app.services.geocoding import geocode as nominatim_geocode
+
+                        candidates, err = await asyncio.to_thread(nominatim_geocode, address)
+                        if candidates:
+                            resolved["point"] = candidates[0].point
+                            resolved["label"] = candidates[0].label
+                            resolved["status"] = GeocodeStatus.resolved
+                        else:
+                            resolved["point"] = None
+                            resolved["label"] = None
+                            resolved["status"] = GeocodeStatus.not_found
+                    except Exception:
+                        resolved["point"] = None
+                        resolved["label"] = None
+                        resolved["status"] = GeocodeStatus.not_found
+
+                    _update_status_labels()
+                    _update_markers()
+
+                def _schedule_geocode(which: str) -> None:
+                    if provider_mode.value != "live":
+                        return
+                    key = which
+                    if geocode_timer[key] is not None:
+                        geocode_timer[key].cancel()
+                    address = start_input.value if which == "start" else dest_input.value
+                    geocode_timer[key] = ui.timer(
+                        _GEOCODE_DEBOUNCE_MS / 1000.0,
+                        lambda w=which, a=address: _geocode_address(a, w),
+                        once=True,
+                    )
+
+                start_input.on("keydown.enter", lambda: _geocode_address(start_input.value, "start"))
+                dest_input.on("keydown.enter", lambda: _geocode_address(dest_input.value, "dest"))
+                start_input.on_value_change(lambda: _schedule_geocode("start"))
+                dest_input.on_value_change(lambda: _schedule_geocode("dest"))
 
                 ui.label("Demo Routes").style(
                     "font-weight:600; font-size:0.85em; color:#555; margin-top:8px; margin-bottom:4px;"
@@ -178,6 +263,13 @@ def map_route_page() -> None:
                         dest_input.set_value("")
                         start_input.props('placeholder="z.B. Landstraße 1, 4020 Linz"')
                         dest_input.props('placeholder="z.B. Eidenberger Alm"')
+                        resolved_start["status"] = GeocodeStatus.unresolved
+                        resolved_start["point"] = None
+                        resolved_start["label"] = None
+                        resolved_dest["status"] = GeocodeStatus.unresolved
+                        resolved_dest["point"] = None
+                        resolved_dest["label"] = None
+                        _update_status_labels()
                     else:
                         demo_select.enable()
                         if demo_select.value and demo_select.value in DEMO_ROUTE_ADDRESSES:
@@ -186,6 +278,13 @@ def map_route_page() -> None:
                             dest_input.set_value(dest_addr)
                         start_input.props('placeholder=""')
                         dest_input.props('placeholder=""')
+                        resolved_start["status"] = GeocodeStatus.unresolved
+                        resolved_start["point"] = None
+                        resolved_start["label"] = None
+                        resolved_dest["status"] = GeocodeStatus.unresolved
+                        resolved_dest["point"] = None
+                        resolved_dest["label"] = None
+                        _update_status_labels()
 
                 provider_mode.on_value_change(on_provider_change)
 
@@ -247,9 +346,60 @@ def map_route_page() -> None:
         messages: list[str] = []
 
         if mode == "live":
+            start_coord = resolved_start.get("point")
+            dest_coord = resolved_dest.get("point")
+
+            if start_coord is None or dest_coord is None:
+                from app.services.geocoding import geocode as nominatim_geocode
+
+                if start_coord is None and start_input.value:
+                    resolved_start["status"] = GeocodeStatus.searching
+                    _update_status_labels()
+                    candidates, geo_err = nominatim_geocode(start_input.value)
+                    if candidates:
+                        start_coord = candidates[0].point
+                        resolved_start["point"] = start_coord
+                        resolved_start["label"] = candidates[0].label
+                        resolved_start["status"] = GeocodeStatus.resolved
+                        messages.append(f"Geocoded start: {candidates[0].label}")
+                    else:
+                        resolved_start["status"] = GeocodeStatus.not_found
+                        detail = geo_err if geo_err else "No results found"
+                        messages.append(f"Could not geocode start address '{start_input.value}': {detail}")
+
+                if dest_coord is None and dest_input.value:
+                    resolved_dest["status"] = GeocodeStatus.searching
+                    _update_status_labels()
+                    candidates, geo_err = nominatim_geocode(dest_input.value)
+                    if candidates:
+                        dest_coord = candidates[0].point
+                        resolved_dest["point"] = dest_coord
+                        resolved_dest["label"] = candidates[0].label
+                        resolved_dest["status"] = GeocodeStatus.resolved
+                        messages.append(f"Geocoded destination: {candidates[0].label}")
+                    else:
+                        resolved_dest["status"] = GeocodeStatus.not_found
+                        detail = geo_err if geo_err else "No results found"
+                        messages.append(f"Could not geocode destination '{dest_input.value}': {detail}")
+
+                _update_status_labels()
+
+                if start_coord is None or dest_coord is None:
+                    route_summary_container.clear()
+                    with route_summary_container:
+                        ui.label("Live routing failed.").style("color:#EF553B; font-weight:600;")
+                        for msg in messages:
+                            ui.label(f"  {msg}").style("font-size:0.82em; color:#FFA15A;")
+                        ui.label("Switch to 'Demo offline' mode or enter valid addresses.").style(
+                            "font-size:0.82em; color:#888; margin-top:4px;"
+                        )
+                    return
+
             request = RouteRequest(
                 start_text=start_input.value,
                 destination_text=dest_input.value,
+                start_coord=start_coord,
+                destination_coord=dest_coord,
                 profile="car_fastest",
                 provider="osrm",
             )
@@ -480,6 +630,92 @@ def map_route_page() -> None:
                         plot_bgcolor="rgba(0,0,0,0)",
                     )
                     ui.plotly(fig_elev).style("width:100%; height:300px;")
+
+            _render_elevation_debug(provider_route, results, params)
+
+    def _render_elevation_debug(provider_route, results: list, params: PhysicsParams) -> None:
+        with ui.expansion("Elevation / Physics Debug", icon="science").style("width:100%; margin-top:8px;"):
+            geometry = provider_route.geometry
+            stats = elevation_stats(geometry)
+
+            provider_name = provider_route.provider
+            elevation_source = "enriched" if any(p.elevation_m is not None for p in geometry) else "none"
+            geometry_points = len(geometry)
+
+            start_elev = stats.get("start_elevation")
+            end_elev = stats.get("end_elevation")
+            net_diff = stats.get("net_elevation_diff")
+            min_elev = stats.get("min_elevation")
+            max_elev = stats.get("max_elevation")
+            acc_gain = stats.get("accumulated_gain", 0)
+            acc_loss = stats.get("accumulated_loss", 0)
+            sample_count = stats.get("sample_count", 0)
+
+            rows = [
+                ("Provider", provider_name),
+                ("Elevation source", elevation_source),
+                ("Geometry points", str(geometry_points)),
+                ("Sample count", str(sample_count)),
+                ("Start elevation", f"{start_elev} m" if start_elev is not None else "N/A"),
+                ("Destination elevation", f"{end_elev} m" if end_elev is not None else "N/A"),
+                ("Net elevation diff", f"{net_diff} m" if net_diff is not None else "N/A"),
+                ("Min elevation", f"{min_elev} m" if min_elev is not None else "N/A"),
+                ("Max elevation", f"{max_elev} m" if max_elev is not None else "N/A"),
+                ("Accumulated gain", f"{acc_gain} m"),
+                ("Accumulated loss", f"{acc_loss} m"),
+            ]
+
+            if results:
+                v = results[0]["vehicle"]
+                mass_kg = v.mass_kg + (payload.value or 0)
+                eta_dt = params.eta_drivetrain
+                eta_regen = regen_downhill.value or 0.65
+
+                height_m = acc_gain if acc_gain else 0
+                net_h = abs(end_elev - start_elev) if start_elev is not None and end_elev is not None else 0
+
+                e_pot = potential_energy_kwh(mass_kg, height_m) if height_m else 0
+                e_climb_bat = expected_climb_battery_kwh(mass_kg, height_m, eta_dt) if height_m else 0
+                e_regen_val = expected_descent_recovered_kwh(mass_kg, acc_loss if acc_loss else 0, eta_regen)
+
+                model_climb = results[0]["breakdown"].climb_kwh
+                model_descent = results[0]["breakdown"].descent_recovered_kwh
+
+                rows += [
+                    ("Vehicle mass (+ payload)", f"{mass_kg:.0f} kg"),
+                    ("Net elev diff (start/end)", f"{net_h:.0f} m" if net_h else "N/A"),
+                    ("m·g·h climb (potential)", f"{e_pot:.3f} kWh" if e_pot else "N/A"),
+                    ("m·g·h / η_dt (battery)", f"{e_climb_bat:.3f} kWh" if e_climb_bat else "N/A"),
+                    ("Model climb kWh", f"{model_climb:.3f} kWh"),
+                    ("Model descent recovered", f"{model_descent:.3f} kWh"),
+                    ("Expected descent recovered", f"{e_regen_val:.3f} kWh"),
+                    ("η_dt / η_regen", f"{eta_dt} / {eta_regen}"),
+                ]
+
+            warnings: list[str] = []
+            if start_elev is not None and end_elev is not None and net_diff is not None:
+                distance_km = provider_route.summary_distance_km
+                if distance_km > 10 and all(p.elevation_m is None for p in geometry):
+                    warnings.append("Route > 10 km but all elevation values are None")
+                if abs(net_diff) > 50 and acc_gain < abs(net_diff) and acc_loss < abs(net_diff):
+                    warnings.append(
+                        f"Start/end elevation difference ({net_diff:.0f} m) exceeds "
+                        f"computed gain/loss (gain={acc_gain:.0f}, loss={acc_loss:.0f})"
+                    )
+                if any(p.elevation_m is not None for p in geometry) and acc_gain == 0 and acc_loss == 0:
+                    warnings.append("Elevation values present but accumulated gain/loss is 0")
+
+            rows.append(("Warnings", "; ".join(warnings) if warnings else "None"))
+
+            tc = "width:100%; border-collapse:collapse; font-size:0.8em; font-family:monospace;"
+            th_style = "border-bottom:1px solid #ddd; padding:3px 8px; background:#f5f5f5; text-align:left; color:#555;"
+            td_style = "padding:3px 8px; border-bottom:1px solid #eee;"
+            thead = f'<thead><tr><th style="{th_style}">Field</th><th style="{th_style}">Value</th></tr></thead>'
+            html = f'<table style="{tc}">{thead}<tbody>'
+            for label, value in rows:
+                html += f'<tr><td style="{td_style}">{label}</td><td style="{td_style}">{value}</td></tr>'
+            html += "</tbody></table>"
+            ui.html(html)
 
     def _build_energy_table(results: list) -> str:
         from app.ui.components.route_summary import build_energy_table

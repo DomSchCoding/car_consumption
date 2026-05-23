@@ -7,8 +7,12 @@ import pytest
 from app.core.route_geometry import (
     compute_elevation_gain_loss,
     cumulative_distances_km,
+    elevation_stats,
     estimate_bearing_degrees,
+    expected_climb_battery_kwh,
+    expected_descent_recovered_kwh,
     haversine_distance_km,
+    potential_energy_kwh,
     resample_route_points,
 )
 from app.services.provider_models import GeoPoint, GeoPoint3D
@@ -155,3 +159,144 @@ class TestBearing:
         b = GeoPoint(lat=49.0, lon=16.0)
         bearing = estimate_bearing_degrees(a, b)
         assert bearing > 350 or bearing < 10
+
+
+class TestElevationStats:
+    def test_flat_route(self):
+        points = [
+            GeoPoint3D(lat=48.0, lon=16.0, elevation_m=200, distance_from_start_km=0.0),
+            GeoPoint3D(lat=48.01, lon=16.01, elevation_m=200, distance_from_start_km=1.0),
+            GeoPoint3D(lat=48.02, lon=16.02, elevation_m=200, distance_from_start_km=2.0),
+        ]
+        stats = elevation_stats(points)
+        assert stats["start_elevation"] == 200.0
+        assert stats["end_elevation"] == 200.0
+        assert stats["net_elevation_diff"] == 0.0
+        assert stats["min_elevation"] == 200.0
+        assert stats["max_elevation"] == 200.0
+        assert stats["accumulated_gain"] == 0.0
+        assert stats["accumulated_loss"] == 0.0
+        assert stats["sample_count"] == 3
+        assert stats["noise_threshold"] == 3.0
+
+    def test_uphill_route(self):
+        points = [
+            GeoPoint3D(lat=48.0, lon=16.0, elevation_m=260, distance_from_start_km=0.0),
+            GeoPoint3D(lat=48.01, lon=16.01, elevation_m=400, distance_from_start_km=1.0),
+            GeoPoint3D(lat=48.02, lon=16.02, elevation_m=600, distance_from_start_km=2.0),
+        ]
+        stats = elevation_stats(points, noise_threshold_m=1.0)
+        assert stats["start_elevation"] == 260.0
+        assert stats["end_elevation"] == 600.0
+        assert stats["net_elevation_diff"] == 340.0
+        assert stats["accumulated_gain"] > 0
+        assert stats["accumulated_loss"] >= 0
+
+    def test_none_elevation_returns_nones(self):
+        points = [
+            GeoPoint3D(lat=48.0, lon=16.0, elevation_m=None),
+            GeoPoint3D(lat=48.01, lon=16.01, elevation_m=None),
+        ]
+        stats = elevation_stats(points)
+        assert stats["start_elevation"] is None
+        assert stats["end_elevation"] is None
+        assert stats["net_elevation_diff"] is None
+        assert stats["min_elevation"] is None
+        assert stats["max_elevation"] is None
+        assert stats["accumulated_gain"] == 0.0
+        assert stats["accumulated_loss"] == 0.0
+
+    def test_sample_count_includes_all_points(self):
+        points = [GeoPoint3D(lat=48.0 + i * 0.01, lon=16.0, elevation_m=200 + i * 10) for i in range(10)]
+        stats = elevation_stats(points)
+        assert stats["sample_count"] == 10
+
+
+class TestPotentialEnergy:
+    def test_known_value(self):
+        result = potential_energy_kwh(1700, 400)
+        assert result == pytest.approx(1.85, abs=0.01)
+
+    def test_1000kg_100m(self):
+        result = potential_energy_kwh(1000, 100)
+        assert result == pytest.approx(0.2725, abs=0.005)
+
+    def test_zero_height(self):
+        assert potential_energy_kwh(1700, 0) == pytest.approx(0.0, abs=1e-10)
+
+
+class TestClimbBatteryKwh:
+    def test_divides_by_eta(self):
+        e_pot = potential_energy_kwh(1700, 400)
+        e_bat = expected_climb_battery_kwh(1700, 400, 0.92)
+        assert e_bat == pytest.approx(e_pot / 0.92, rel=0.001)
+
+    def test_known_value(self):
+        result = expected_climb_battery_kwh(1700, 400, 0.92)
+        assert result == pytest.approx(2.011, abs=0.01)
+
+
+class TestDescentRecovered:
+    def test_multiplies_by_eta(self):
+        e_pot = potential_energy_kwh(1700, 400)
+        e_rec = expected_descent_recovered_kwh(1700, 400, 0.65)
+        assert e_rec == pytest.approx(e_pot * 0.65, rel=0.001)
+
+    def test_known_value(self):
+        result = expected_descent_recovered_kwh(1700, 400, 0.65)
+        assert result == pytest.approx(1.2025, abs=0.01)
+
+
+class TestElevationResampleEndpoint:
+    def test_last_point_always_retained_when_over_max(self):
+        n = 100
+        points = [
+            GeoPoint3D(
+                lat=48.0 + i * 0.001,
+                lon=16.0 + i * 0.001,
+                elevation_m=200 + i * 5,
+                distance_from_start_km=i * 0.1,
+            )
+            for i in range(n)
+        ]
+        from app.services.elevation import resample_route_points
+
+        result = resample_route_points(points, spacing_km=1.0, max_points=50)
+        first_point = (points[0].lat, points[0].lon)
+        last_point = (points[-1].lat, points[-1].lon)
+        assert result[0] == pytest.approx(first_point, abs=1e-6)
+        assert result[-1] == pytest.approx(last_point, abs=1e-6)
+
+    def test_small_route_preserved_under_max(self):
+        points = [
+            GeoPoint3D(lat=48.0, lon=16.0, elevation_m=200, distance_from_start_km=0.0),
+            GeoPoint3D(lat=48.01, lon=16.01, elevation_m=250, distance_from_start_km=1.3),
+            GeoPoint3D(lat=48.02, lon=16.02, elevation_m=300, distance_from_start_km=2.6),
+        ]
+        from app.services.elevation import resample_route_points
+
+        result = resample_route_points(points, spacing_km=1.0, max_points=50)
+        assert len(result) == 3
+        assert result[0] == (points[0].lat, points[0].lon)
+        assert result[-1] == (points[-1].lat, points[-1].lon)
+
+    def test_max_points_applies_to_intermediates_not_endpoints(self):
+        n = 200
+        points = [
+            GeoPoint3D(
+                lat=48.0 + i * 0.0005,
+                lon=16.0 + i * 0.0005,
+                elevation_m=200 + i * 2,
+                distance_from_start_km=i * 0.05,
+            )
+            for i in range(n)
+        ]
+        from app.services.elevation import resample_route_points
+
+        max_pts = 20
+        result = resample_route_points(points, spacing_km=0.5, max_points=max_pts)
+        first_point = (points[0].lat, points[0].lon)
+        last_point = (points[-1].lat, points[-1].lon)
+        assert result[0] == pytest.approx(first_point, abs=1e-6)
+        assert result[-1] == pytest.approx(last_point, abs=1e-6)
+        assert len(result) <= max_pts + 1

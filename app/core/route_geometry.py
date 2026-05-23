@@ -124,6 +124,66 @@ def _interpolate_at_distance(points: list[GeoPoint3D], dists: list[float], targe
     return None
 
 
+def elevation_stats(points: list[GeoPoint3D], noise_threshold_m: float = 3.0) -> dict[str, float | int | None]:
+    """Compute elevation statistics from a sequence of 3D route points.
+
+    Returns a dict with: start_elevation, end_elevation, net_elevation_diff,
+    min_elevation, max_elevation, accumulated_gain, accumulated_loss,
+    sample_count, noise_threshold.
+    """
+    elevations = [p.elevation_m for p in points if p.elevation_m is not None]
+    if not elevations:
+        return {
+            "start_elevation": None,
+            "end_elevation": None,
+            "net_elevation_diff": None,
+            "min_elevation": None,
+            "max_elevation": None,
+            "accumulated_gain": 0.0,
+            "accumulated_loss": 0.0,
+            "sample_count": len(points),
+            "noise_threshold": noise_threshold_m,
+        }
+
+    start_elev = elevations[0]
+    end_elev = elevations[-1]
+
+    gain, loss = compute_elevation_gain_loss(points, noise_threshold_m)
+
+    return {
+        "start_elevation": round(start_elev, 1),
+        "end_elevation": round(end_elev, 1),
+        "net_elevation_diff": round(end_elev - start_elev, 1),
+        "min_elevation": round(min(elevations), 1),
+        "max_elevation": round(max(elevations), 1),
+        "accumulated_gain": gain,
+        "accumulated_loss": loss,
+        "sample_count": len(points),
+        "noise_threshold": noise_threshold_m,
+    }
+
+
+def potential_energy_kwh(mass_kg: float, height_m: float) -> float:
+    """Compute gravitational potential energy in kWh: E = m * g * h / 3_600_000."""
+    return mass_kg * 9.81 * height_m / 3_600_000
+
+
+def expected_climb_battery_kwh(mass_kg: float, height_m: float, eta_drivetrain: float = 0.92) -> float:
+    """Battery energy required to climb height_m at mass_kg, accounting for drivetrain loss.
+
+    E_battery = E_potential / eta_drivetrain
+    """
+    return potential_energy_kwh(mass_kg, height_m) / eta_drivetrain
+
+
+def expected_descent_recovered_kwh(mass_kg: float, height_m: float, eta_regen: float = 0.65) -> float:
+    """Battery energy recovered descending height_m at mass_kg with regen efficiency.
+
+    E_recovered = E_potential * eta_regen
+    """
+    return potential_energy_kwh(mass_kg, height_m) * eta_regen
+
+
 def estimate_bearing_degrees(a: GeoPoint, b: GeoPoint) -> float:
     lat1, lon1 = math.radians(a.lat), math.radians(a.lon)
     lat2, lon2 = math.radians(b.lat), math.radians(b.lon)
