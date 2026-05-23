@@ -79,8 +79,10 @@ def provider_route_to_segments(
     if steps:
         segments: list[RouteSegment] = []
         for i, step in enumerate(steps):
+            if step.distance_km <= 0:
+                continue
             speed = step.speed_kmh
-            if speed is None:
+            if speed is None or speed <= 0:
                 total_d = step.distance_km
                 total_t = step.duration_s
                 if total_d > 0 and total_t is not None and total_t > 0:

@@ -265,3 +265,46 @@ class TestDemoProvider:
         status = provider.status()
         assert status.name == "demo"
         assert status.available is True
+
+
+class TestZeroDistanceSteps:
+    def test_zero_distance_step_skipped(self):
+        route = ProviderRoute(
+            provider="test",
+            profile="car_fastest",
+            start=GeoPoint(lat=48.0, lon=16.0),
+            destination=GeoPoint(lat=48.1, lon=16.1),
+            geometry=[
+                GeoPoint3D(lat=48.0, lon=16.0, elevation_m=200, distance_from_start_km=0.0),
+                GeoPoint3D(lat=48.1, lon=16.1, elevation_m=200, distance_from_start_km=10.0),
+            ],
+            steps=[
+                RouteStep(name="Departure", distance_km=0.0, duration_s=0.0, road_type="city", speed_kmh=0.0),
+                RouteStep(name="Main road", distance_km=10.0, duration_s=450.0, road_type="suburban", speed_kmh=80.0),
+            ],
+            summary_distance_km=10.0,
+            summary_duration_s=450.0,
+        )
+        segments = provider_route_to_segments(route)
+        assert len(segments) == 1
+        assert segments[0].distance_km > 0
+        assert segments[0].name == "Main road"
+
+    def test_all_zero_distance_steps_falls_back_to_geometry(self):
+        route = ProviderRoute(
+            provider="test",
+            profile="car_fastest",
+            start=GeoPoint(lat=48.0, lon=16.0),
+            destination=GeoPoint(lat=48.1, lon=16.1),
+            geometry=[
+                GeoPoint3D(lat=48.0, lon=16.0, elevation_m=200, distance_from_start_km=0.0),
+                GeoPoint3D(lat=48.1, lon=16.1, elevation_m=200, distance_from_start_km=10.0),
+            ],
+            steps=[
+                RouteStep(name="Departure", distance_km=0.0, duration_s=0.0, road_type="city", speed_kmh=0.0),
+            ],
+            summary_distance_km=10.0,
+            summary_duration_s=450.0,
+        )
+        segments = provider_route_to_segments(route)
+        assert all(s.distance_km > 0 for s in segments)

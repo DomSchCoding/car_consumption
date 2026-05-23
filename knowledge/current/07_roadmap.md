@@ -22,21 +22,22 @@
 - [x] Round-trip / one-way toggle
 - [x] Demo route selection
 
-## Phase C - OpenRouteService integration
+## Phase C - Live route prototype: Nominatim + OSRM + Open-Meteo (DONE)
 
-- [ ] Add `httpx` dependency
-- [ ] Implement ORS geocoder
-- [ ] Implement ORS routing provider
+- [x] Add `httpx` and `geopy` dependencies
+- [x] Implement Nominatim geocoding (rate-limited to 1 req/s, cached)
+- [x] Implement OSRM routing provider (cached, GeoJSON parsing)
+- [x] Implement Open-Meteo elevation provider (resampled, capped at 50 pts, cached)
+- [x] Add env-based feature flags (all disabled by default)
+- [x] Chain geocode → route → elevation in `route_live()`
+- [x] Provider mode selector in UI (Demo offline / Live prototype)
+- [x] Provider warnings and attribution in UI
+- [x] 42 new tests (config, parsing, caching, disabled providers, demo back-compat)
+
+## Phase D - ORS integration (future)
+
+- [ ] Implement ORS routing provider (requires API key)
 - [ ] Implement ORS elevation or elevation enrichment
-- [ ] Add env-based API key loading
-- [ ] Use route cache for ORS responses
-- [ ] Add provider status UI for real provider
-
-## Phase D - OSRM + elevation fallback
-
-- [ ] Implement OSRM route provider
-- [ ] Implement Open-Meteo or Open-Elevation provider
-- [ ] Add warning when elevation is sampled separately
 - [ ] Compare ORS vs OSRM route-derived energy on same start/destination
 
 ## Phase E - Better route physics
@@ -62,4 +63,4 @@
 
 ## Current priorities
 
-Next up: Phase C (ORS integration) when ready. No rush — demo provider covers offline use.
+Phase C complete. Next: Phase D (ORS with API key) or Phase E (better physics).

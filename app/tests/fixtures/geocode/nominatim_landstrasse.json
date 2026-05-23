@@ -1,0 +1,19 @@
+{
+  "place_id": 23456,
+  "licence": "Data © OpenStreetMap contributors",
+  "osm_type": "way",
+  "osm_id": 11223,
+  "lat": "48.3042616",
+  "lon": "14.2884444",
+  "display_name": "1, Landstraße, Rathausviertel, Innere Stadt, Linz, 4020, Österreich",
+  "importance": 0.5,
+  "type": "house",
+  "address": {
+    "house_number": "1",
+    "road": "Landstraße",
+    "city": "Linz",
+    "state": "Oberösterreich",
+    "country": "Österreich",
+    "country_code": "at"
+  }
+}

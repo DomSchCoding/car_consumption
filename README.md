@@ -17,11 +17,22 @@ pip install -e ".[dev]"
 # Run tests
 pytest
 
-# Start the web application
+# Start the web application (offline demo mode)
 python -m app.main
 ```
 
 Open http://localhost:8080 in your browser.
+
+For live routing (geocoding + routing + elevation), set environment variables:
+
+```bash
+# Enable all live providers
+CAR_CONSUMPTION_ENABLE_LIVE_ROUTING=true \
+CAR_CONSUMPTION_ENABLE_NOMINATIM=true \
+CAR_CONSUMPTION_ENABLE_PUBLIC_OSRM=true \
+CAR_CONSUMPTION_ENABLE_OPEN_METEO_ELEVATION=true \
+python -m app.main
+```
 
 ## Project Structure
 
@@ -38,9 +49,13 @@ app/
     repository.py            # Vehicle data loading from YAML
   services/
     __init__.py
+    provider_config.py       # Environment-based feature flags for live providers
     provider_models.py       # GeoPoint, ProviderRoute, RouteRequest DTOs
     route_cache.py           # File-based route response cache
-    routing.py               # Demo routing provider (offline, deterministic)
+    routing.py               # Demo routing provider + live route chain
+    geocoding.py             # Nominatim geocoding (rate-limited, cached)
+    osrm_routing.py          # OSRM routing provider (cached, GeoJSON parsing)
+    elevation.py             # Open-Meteo elevation (rate-limited, cached, resampling)
   ui/
     charts.py                # Plotly chart construction
     state.py                 # Session state management
@@ -59,15 +74,21 @@ app/
     test_route_energy.py     # Route energy tests
     test_ui_smoke.py         # UI smoke tests
     test_provider_models.py  # Provider model tests
+    test_provider_config.py  # Environment flag tests
     test_route_cache.py      # Route cache tests
     test_route_geometry.py  # Geometry helper tests
     test_route_segmentizer.py # Segmentizer tests
+    test_live_providers.py   # OSRM parsing, geocoding, elevation, disabled providers
     test_map_route_smoke.py  # Map route smoke tests
-    fixtures/routes/         # Demo route fixture JSON files
+    fixtures/
+      routes/                # Demo route fixture JSON files
+      geocode/               # Nominatim geocode fixture JSON files
+      osrm/                   # OSRM response fixture JSON files
+      elevation/              # Open-Meteo elevation fixture JSON files
   assets/
     sample_vehicles.yaml     # Demo vehicle data
     fuel_constants.yaml      # Fuel energy densities
-  .cache/routes/             # Cached provider responses (gitignored)
+  .cache/                     # Cached provider responses (gitignored)
 knowledge/
   current/                   # Authoritative agent context (see AGENTS.md)
   archive/                   # Historical knowledge files
@@ -99,6 +120,54 @@ Expert mode with direct parameter entry:
 - one-way or return trip with wind inversion
 - segment editor for detailed routes
 - energy breakdown: aero, roll, aux, climb, stop-go, regen, drivetrain loss
+
+## Live Routing
+
+The app supports live geocoding and routing using free public APIs.
+**All live providers are disabled by default** and must be enabled via environment variables.
+
+### Enabling Live Routing
+
+```bash
+# Required for geocoding (address → coordinates)
+CAR_CONSUMPTION_ENABLE_NOMINATIM=true
+
+# Required for routing (coordinates → road path)
+CAR_CONSUMPTION_ENABLE_PUBLIC_OSRM=true
+
+# Optional: elevation enrichment (adds height profile)
+CAR_CONSUMPTION_ENABLE_OPEN_METEO_ELEVATION=true
+
+# Master switch (enables the "Live" option in the UI)
+CAR_CONSUMPTION_ENABLE_LIVE_ROUTING=true
+
+# Custom user agent for Nominatim (required by their policy)
+CAR_CONSUMPTION_USER_AGENT=your_app_name/1.0
+```
+
+### Rate Limits and Usage Policy
+
+The live providers use free public APIs with strict usage policies:
+
+| Provider | Service | Rate Limit | Policy |
+|----------|---------|------------|--------|
+| **Nominatim** | Geocoding | 1 request/second | Requires custom User-Agent. No bulk queries. See [Nominatim Usage Policy](https://operations.osmfoundation.org/policies/nominatim/) |
+| **OSRM** | Routing | 1 request/second | Public demo server. Not for production use. See [OSRM Wiki](https://github.com/Project-OSRM/osrm-backend/wiki) |
+| **Open-Meteo** | Elevation | 0.5 requests/second | Free for non-commercial use. See [Open-Meteo Terms](https://open-meteo.com/en/terms) |
+
+**Important:** All responses are cached locally in `.cache/`. Repeated queries
+for the same route are served from cache without hitting the API again.
+
+### Attribution
+
+When using live routing, results include data from:
+
+- **OpenStreetMap** via Nominatim (geocoding) — © OpenStreetMap contributors
+- **OSRM** (routing) — Map data © OpenStreetMap contributors
+- **Open-Meteo** (elevation) — Non-commercial use
+
+If you use this application with live routing enabled, you must attribute
+OpenStreetMap as required by the [ODbL license](https://opendatacommons.org/licenses/odbl/).
 
 ## Physics Model
 
@@ -251,23 +320,62 @@ agent principles.
 
 ## Environment Variables
 
-Reserved for future route providers (not required for demo mode):
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `CAR_CONSUMPTION_ENABLE_LIVE_ROUTING` | `false` | Master switch for live routing UI |
+| `CAR_CONSUMPTION_ENABLE_NOMINATIM` | `false` | Enable Nominatim geocoding |
+| `CAR_CONSUMPTION_ENABLE_PUBLIC_OSRM` | `false` | Enable OSRM routing |
+| `CAR_CONSUMPTION_ENABLE_OPEN_METEO_ELEVATION` | `false` | Enable Open-Meteo elevation |
+| `CAR_CONSUMPTION_USER_AGENT` | `car_consumption_private_dev/0.1` | User-Agent for Nominatim |
+| `CAR_CONSUMPTION_OSRM_BASE_URL` | `https://router.project-osrm.org` | OSRM server URL |
+| `CAR_CONSUMPTION_OPEN_METEO_ELEVATION_URL` | `https://api.open-meteo.com/v1/elevation` | Open-Meteo API URL |
 
-```
-ORS_API_KEY=...          # OpenRouteService API key
-ROUTING_PROVIDER=ors     # or osrm, valhalla (default: demo)
-OSRM_BASE_URL=...       # Self-hosted OSRM URL
-ELEVATION_PROVIDER=open_meteo  # or open_elevation
-```
-
-Route provider cache is stored in `.cache/routes/` (gitignored).
+Route provider caches are stored in `.cache/` (gitignored).
 
 ## Planned Features
 
 - OpenRouteService live routing provider
-- OSRM and elevation provider fallback
-- More detailed speed and stop estimation from route data
+- Better speed and stop estimation from route data
 - Bearing-based wind projection
 - Return trip as separate route request
 - Saved commute routes and economics
 - GPX/CSV import
+
+## License
+
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+### What this means
+
+- **You can** use, study, modify, and run this software freely
+- **You can** share and redistribute it
+- **You must** license any modifications under AGPL-3.0 as well
+- **If you offer this software as a network service** (including SaaS or
+  commercial deployment), **you must make the complete source code available**
+  to all users at no additional charge
+- **Attribution** is required
+
+This ensures that anyone benefiting from the software — including through
+commercial hosting — must contribute their changes back to the community.
+
+### Third-party licenses
+
+All direct dependencies use permissive licenses (MIT or BSD-3) that are
+compatible with AGPL-3.0:
+
+| Package | License |
+|---------|---------|
+| NiceGUI | MIT |
+| Plotly | MIT |
+| Pydantic | BSD-3 |
+| Pandas | BSD-3 |
+| PyYAML | MIT |
+| Kaleido | MIT |
+| geopy | MIT |
+| httpx | BSD-3 |
+
+### Data attribution
+
+When using live routing, results include data from OpenStreetMap contributors
+(ODbL license), the OSRM project, and Open-Meteo. See the Live Routing section
+above for details.

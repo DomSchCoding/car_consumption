@@ -1,4 +1,4 @@
-"""Map-based route planner page using demo provider."""
+"""Map-based route planner page with demo and live provider support."""
 
 from __future__ import annotations
 
@@ -9,20 +9,38 @@ from app.core.route_energy import commute_energy
 from app.core.route_segmentizer import provider_route_to_commute_scenario, provider_route_to_segments
 from app.data.models import DirectionMode, PhysicsParams
 from app.data.repository import VehicleRepository
+from app.services.provider_config import (
+    is_live_routing_enabled,
+    is_nominatim_enabled,
+    is_open_meteo_elevation_enabled,
+    is_osrm_enabled,
+)
 from app.services.provider_models import RouteRequest
-from app.services.routing import DemoRoutingProvider
+from app.services.routing import DemoRoutingProvider, route_live
 from app.ui.charts import VEHICLE_COLORS
 from app.ui.components.map_widget import (
     clear_route_layer,
     create_route_map,
     draw_route_polyline,
     fit_bounds,
+    set_single_marker,
     set_start_end_markers,
 )
 from app.ui.components.vehicle_selector import make_vehicle_label
 from app.ui.state import SESSION
 
 MAX_COMPARE_ROUTE = 8
+
+
+def _provider_status_text() -> str:
+    live = is_live_routing_enabled()
+    if not live:
+        return "Demo offline mode"
+    parts = []
+    parts.append(f"Nominatim: {'on' if is_nominatim_enabled() else 'off'}")
+    parts.append(f"OSRM: {'on' if is_osrm_enabled() else 'off'}")
+    parts.append(f"Elevation: {'on' if is_open_meteo_elevation_enabled() else 'off'}")
+    return "Live prototype: " + ", ".join(parts)
 
 
 def map_route_page() -> None:
@@ -35,7 +53,13 @@ def map_route_page() -> None:
     selected_ids: list[str] = list(SESSION.get("selected", []))
     demo_provider = DemoRoutingProvider()
 
-    current_route_result = {"provider_route": None, "segments": None}
+    current_route_result: dict = {"provider_route": None, "segments": None, "messages": []}
+
+    DEMO_ROUTE_ADDRESSES: dict[str, tuple[str, str]] = {
+        "city_commute": ("demo city start", "demo city destination"),
+        "hilly_commute": ("demo hilly start", "demo hilly destination"),
+        "highway_route": ("demo highway start", "demo highway destination"),
+    }
 
     with ui.column().style("gap:16px; padding:20px; max-width:1400px; margin:0 auto; width:100%;"):
         with ui.row().style("width:100%; align-items:center; gap:8px;"):
@@ -44,23 +68,126 @@ def map_route_page() -> None:
                 "color:#888; text-decoration:none; font-size:0.85em; margin-left:8px;"
             )
         ui.label("Map Route Planner").style("font-size:1.5em; font-weight:700; color:#1a1a2e;")
-        ui.label("Calculate energy consumption for a real route (demo mode)").style("font-size:0.85em; color:#888;")
+        ui.label("Calculate energy consumption for a route").style("font-size:0.85em; color:#888;")
 
         with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):
             with ui.card().style("min-width:280px; max-width:320px; flex:1; padding:16px;"):
                 ui.label("Route Search").style("font-weight:700; font-size:1em; margin-bottom:8px;")
 
+                live_available = is_nominatim_enabled() and is_osrm_enabled()
+                provider_options = {"demo": "Demo offline"}
+                if live_available:
+                    provider_options["live"] = "Live (Nominatim+OSRM+Open-Meteo)"
+                elif is_live_routing_enabled():
+                    provider_options["live"] = "Live (partially enabled)"
+                default_mode = "live" if live_available else "demo"
+                provider_mode = ui.select(
+                    provider_options,
+                    value=default_mode,
+                    label="Provider",
+                ).style("width:100%;")
+
+                if not live_available:
+                    ui.label("Live routing disabled. Set env vars to enable:").style(
+                        "font-size:0.78em; color:#FFA15A; margin-top:2px;"
+                    )
+                    ui.label("CAR_CONSUMPTION_ENABLE_NOMINATIM=true").style(
+                        "font-family:monospace; font-size:0.72em; color:#888;"
+                    )
+                    ui.label("CAR_CONSUMPTION_ENABLE_PUBLIC_OSRM=true").style(
+                        "font-family:monospace; font-size:0.72em; color:#888;"
+                    )
+                    ui.label("CAR_CONSUMPTION_ENABLE_OPEN_METEO_ELEVATION=true").style(
+                        "font-family:monospace; font-size:0.72em; color:#888;"
+                    )
+
                 start_input = ui.input("Start address", value="Demo city start").style("width:100%;")
                 dest_input = ui.input("Destination address", value="Demo city destination").style("width:100%;")
+
+                geocode_status = ui.label("").style("font-size:0.78em; color:#888; margin-top:2px;")
+
+                def try_geocode_addresses() -> None:
+                    """Geocode start/destination when in live mode and show markers on map."""
+                    if provider_mode.value != "live":
+                        geocode_status.set_text("")
+                        return
+                    from app.services.geocoding import geocode as nominatim_geocode
+
+                    start_val = (start_input.value or "").strip()
+                    dest_val = (dest_input.value or "").strip()
+                    if not start_val and not dest_val:
+                        geocode_status.set_text("Enter start and destination addresses")
+                        return
+                    start_pt = None
+                    dest_pt = None
+                    msgs: list[str] = []
+                    if start_val:
+                        candidates, err = nominatim_geocode(start_val)
+                        if candidates:
+                            start_pt = candidates[0].point
+                            msgs.append(f"Start: {candidates[0].label}")
+                        else:
+                            msgs.append(f"Start not found: {err}" if err else "Start not found")
+                    if dest_val:
+                        candidates, err = nominatim_geocode(dest_val)
+                        if candidates:
+                            dest_pt = candidates[0].point
+                            msgs.append(f"Dest: {candidates[0].label}")
+                        else:
+                            msgs.append(f"Dest not found: {err}" if err else "Dest not found")
+                    geocode_status.set_text(" | ".join(msgs) if msgs else "")
+                    clear_route_layer(route_map)
+                    if start_pt and dest_pt:
+                        set_start_end_markers(route_map, (start_pt.lat, start_pt.lon), (dest_pt.lat, dest_pt.lon))
+                        fit_bounds(route_map, [(start_pt.lat, start_pt.lon), (dest_pt.lat, dest_pt.lon)])
+                    elif start_pt:
+                        set_single_marker(route_map, (start_pt.lat, start_pt.lon), title="Start")
+                        route_map.set_center((start_pt.lat, start_pt.lon))
+                        route_map.set_zoom(13)
+                    elif dest_pt:
+                        set_single_marker(route_map, (dest_pt.lat, dest_pt.lon), title="Destination")
+                        route_map.set_center((dest_pt.lat, dest_pt.lon))
+                        route_map.set_zoom(13)
+
+                start_input.on("keydown.enter", lambda: try_geocode_addresses())
+                dest_input.on("keydown.enter", lambda: try_geocode_addresses())
 
                 ui.label("Demo Routes").style(
                     "font-weight:600; font-size:0.85em; color:#555; margin-top:8px; margin-bottom:4px;"
                 )
                 available = demo_provider.list_routes()
                 route_options = {r: r.replace("_", " ").title() for r in available}
-                ui.select(route_options, value=available[0] if available else None, label="Demo route").style(
-                    "width:100%;"
-                )
+                demo_select = ui.select(
+                    route_options, value=available[0] if available else None, label="Demo route"
+                ).style("width:100%;")
+
+                def on_demo_route_change(e) -> None:
+                    route_key = e.value
+                    if route_key and route_key in DEMO_ROUTE_ADDRESSES:
+                        start_addr, dest_addr = DEMO_ROUTE_ADDRESSES[route_key]
+                        start_input.set_value(start_addr)
+                        dest_input.set_value(dest_addr)
+                        calculate_route()
+
+                demo_select.on_value_change(on_demo_route_change)
+
+                def on_provider_change(e) -> None:
+                    if e.value == "live":
+                        demo_select.disable()
+                        start_input.set_value("")
+                        dest_input.set_value("")
+                        start_input.props('placeholder="z.B. Landstraße 1, 4020 Linz"')
+                        dest_input.props('placeholder="z.B. Eidenberger Alm"')
+                    else:
+                        demo_select.enable()
+                        if demo_select.value and demo_select.value in DEMO_ROUTE_ADDRESSES:
+                            start_addr, dest_addr = DEMO_ROUTE_ADDRESSES[demo_select.value]
+                            start_input.set_value(start_addr)
+                            dest_input.set_value(dest_addr)
+                        start_input.props('placeholder=""')
+                        dest_input.props('placeholder=""')
+
+                provider_mode.on_value_change(on_provider_change)
 
                 ui.label("Options").style(
                     "font-weight:600; font-size:0.85em; color:#555; margin-top:8px; margin-bottom:4px;"
@@ -86,11 +213,7 @@ def map_route_page() -> None:
                     "width:100%; margin-top:8px;"
                 )
 
-                provider_status = demo_provider.status()
-                status_text = f"Provider: {provider_status.name}"
-                if provider_status.message:
-                    status_text += f" | {provider_status.message}"
-                ui.label(status_text).style("font-size:0.78em; color:#888; margin-top:4px;")
+                ui.label(_provider_status_text()).style("font-size:0.78em; color:#888; margin-top:4px;")
 
                 ui.label("Selected Vehicles").style(
                     "font-weight:600; font-size:0.85em; color:#555; margin-top:8px; margin-bottom:4px;"
@@ -120,24 +243,66 @@ def map_route_page() -> None:
                 )
 
     def calculate_route() -> None:
-        request = RouteRequest(
-            start_text=start_input.value,
-            destination_text=dest_input.value,
-            profile="car_fastest",
-            provider="demo",
-        )
+        mode = provider_mode.value
+        messages: list[str] = []
 
-        provider_route = demo_provider.route(request)
+        if mode == "live":
+            request = RouteRequest(
+                start_text=start_input.value,
+                destination_text=dest_input.value,
+                profile="car_fastest",
+                provider="osrm",
+            )
+            provider_route, messages = route_live(request)
+        else:
+            request = RouteRequest(
+                start_text=start_input.value,
+                destination_text=dest_input.value,
+                profile="car_fastest",
+                provider="demo",
+            )
+            provider_route = demo_provider.route(request)
+            if provider_route:
+                messages = list(provider_route.warnings)
+
         if provider_route is None:
             route_summary_container.clear()
             with route_summary_container:
-                ui.label("No route found. Try a different search.").style("color:#EF553B;")
+                if mode == "live":
+                    ui.label("Live routing failed.").style("color:#EF553B; font-weight:600;")
+                    nom_on = is_nominatim_enabled()
+                    osrm_on = is_osrm_enabled()
+                    elev_on = is_open_meteo_elevation_enabled()
+                    if not nom_on or not osrm_on:
+                        ui.label("Required providers are not enabled. Set these environment variables:").style(
+                            "font-size:0.85em; color:#FFA15A;"
+                        )
+                        if not nom_on:
+                            ui.label("CAR_CONSUMPTION_ENABLE_NOMINATIM=true").style(
+                                "font-family:monospace; font-size:0.82em; color:#888;"
+                            )
+                        if not osrm_on:
+                            ui.label("CAR_CONSUMPTION_ENABLE_PUBLIC_OSRM=true").style(
+                                "font-family:monospace; font-size:0.82em; color:#888;"
+                            )
+                        if not elev_on:
+                            ui.label("CAR_CONSUMPTION_ENABLE_OPEN_METEO_ELEVATION=true (optional)").style(
+                                "font-family:monospace; font-size:0.82em; color:#888;"
+                            )
+                    for msg in messages:
+                        ui.label(f"  {msg}").style("font-size:0.82em; color:#FFA15A;")
+                    ui.label("Switch to 'Demo offline' mode to use without live providers.").style(
+                        "font-size:0.82em; color:#888; margin-top:4px;"
+                    )
+                else:
+                    ui.label("No route found. Try a different search or demo route.").style("color:#EF553B;")
+                    for msg in messages:
+                        ui.label(f"  {msg}").style("font-size:0.82em; color:#FFA15A;")
             return
 
         current_route_result["provider_route"] = provider_route
-
-        segments = provider_route_to_segments(provider_route)
-        current_route_result["segments"] = segments
+        current_route_result["segments"] = provider_route_to_segments(provider_route)
+        current_route_result["messages"] = messages
 
         route_points = [(p.lat, p.lon) for p in provider_route.geometry]
 
@@ -167,9 +332,9 @@ def map_route_page() -> None:
                     _summary_card("Avg Speed", f"{avg_speed:.0f} km/h" if duration_s else "-")
                     _summary_card("Elevation", f"+{gain:.0f} / -{loss:.0f} m")
                     _summary_card("Provider", provider_route.provider)
-                if provider_route.warnings:
+                if messages:
                     with ui.row().style("margin-top:4px;"):
-                        for w in provider_route.warnings:
+                        for w in messages:
                             ui.label(f"⚠ {w}").style("font-size:0.78em; color:#FFA15A;")
 
         _calculate_energy()
@@ -189,7 +354,7 @@ def map_route_page() -> None:
             return
 
         params = PhysicsParams()
-        params.temperature_c = temperature.value
+        params.temperature_c = temperature.value or 20.0
         params.cabin_target_temp_c = 21.0
 
         direction_mode = DirectionMode.return_trip if return_cb.value else DirectionMode.one_way
@@ -201,14 +366,18 @@ def map_route_page() -> None:
         )
 
         for seg in commute.route.segments:
-            seg.headwind_kmh = headwind.value
-            seg.payload_kg = payload.value
+            seg.headwind_kmh = headwind.value or 0.0
+            seg.payload_kg = payload.value or 0.0
 
         results = []
         for v in vehicles:
             try:
                 result = commute_energy(
-                    v, commute, params, eta_regen_downhill=regen_downhill.value, eta_regen_stop=regen_downhill.value
+                    v,
+                    commute,
+                    params,
+                    eta_regen_downhill=regen_downhill.value or 0.65,
+                    eta_regen_stop=regen_downhill.value or 0.65,
                 )
                 results.append(
                     {
@@ -325,7 +494,6 @@ def map_route_page() -> None:
         )
         td = "padding:6px 8px; border-bottom:1px solid #f0f0f0;"
         nm = "padding:6px 8px; border-bottom:1px solid #f0f0f0; font-weight:600;"
-        from app.ui.components.vehicle_selector import make_vehicle_label
 
         chtml = f'<table style="{tc}"><thead><tr>'
         for h in ["Vehicle", "Outward (kWh)", "Return (kWh)", "Total (kWh)", "Total kWh/100km"]:

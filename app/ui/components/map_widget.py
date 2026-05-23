@@ -37,6 +37,11 @@ def set_start_end_markers(leaflet: ui.leaflet, start: tuple[float, float], end: 
     leaflet._route_layers.append(end_marker)
 
 
+def set_single_marker(leaflet: ui.leaflet, point: tuple[float, float], title: str = "Location") -> None:
+    marker = leaflet.marker(latlng=point, options={"title": title})
+    leaflet._route_layers.append(marker)
+
+
 def fit_bounds(leaflet: ui.leaflet, points: list[tuple[float, float]], padding: float = 0.01) -> None:
     if not points:
         return

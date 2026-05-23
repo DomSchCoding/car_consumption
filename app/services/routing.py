@@ -2,10 +2,14 @@
 
 The demo provider returns deterministic fixture routes for offline use
 and testing. It does not require network access or API keys.
+
+The live provider chains Nominatim geocoding + OSRM routing + Open-Meteo
+elevation when enabled via environment variables.
 """
 
 from __future__ import annotations
 
+import logging
 import math
 from pathlib import Path
 
@@ -18,6 +22,8 @@ from app.services.provider_models import (
     RouteRequest,
     RouteStep,
 )
+
+_logger = logging.getLogger(__name__)
 
 FIXTURES_DIR = Path(__file__).resolve().parent.parent / "tests" / "fixtures" / "routes"
 
@@ -227,5 +233,90 @@ def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     R = 6371.0
     dlat = math.radians(lat2 - lat1)
     dlon = math.radians(lon2 - lon1)
-    a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) ** 2
+    a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lon1)) * math.sin(dlon / 2) ** 2
     return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+
+def route_live(request: RouteRequest) -> tuple[ProviderRoute | None, list[str]]:
+    """Chain Nominatim geocoding + OSRM routing + Open-Meteo elevation.
+
+    Returns (provider_route, info_messages). Returns (None, messages) on failure.
+    All providers must be enabled via environment variables.
+    """
+    messages: list[str] = []
+
+    start_coord = request.start_coord
+    dest_coord = request.destination_coord
+
+    if start_coord is None or dest_coord is None:
+        from app.services.geocoding import geocode as nominatim_geocode
+
+        if start_coord is None and request.start_text:
+            candidates, geo_err = nominatim_geocode(request.start_text)
+            if candidates:
+                start_coord = candidates[0].point
+                messages.append(f"Geocoded start: {candidates[0].label}")
+            else:
+                detail = geo_err if geo_err else "No results found"
+                messages.append(f"Could not geocode start address '{request.start_text}': {detail}")
+                return None, messages
+
+        if dest_coord is None and request.destination_text:
+            candidates, geo_err = nominatim_geocode(request.destination_text)
+            if candidates:
+                dest_coord = candidates[0].point
+                messages.append(f"Geocoded destination: {candidates[0].label}")
+            else:
+                detail = geo_err if geo_err else "No results found"
+                messages.append(f"Could not geocode destination address '{request.destination_text}': {detail}")
+                return None, messages
+
+    if start_coord is None or dest_coord is None:
+        messages.append("Missing start or destination coordinates")
+        return None, messages
+
+    enriched_request = request.model_copy(update={"start_coord": start_coord, "destination_coord": dest_coord})
+
+    from app.services.osrm_routing import fetch_osrm_route
+
+    provider_route = fetch_osrm_route(enriched_request)
+    if provider_route is None:
+        messages.append("OSRM routing failed — no route found")
+        return None, messages
+
+    messages.append(f"OSRM route: {provider_route.summary_distance_km:.1f} km")
+
+    from app.services.elevation import enrich_route_with_elevation
+
+    enriched_geometry = enrich_route_with_elevation(provider_route.geometry)
+    if enriched_geometry and enriched_geometry[0].elevation_m is not None:
+        from app.core.route_geometry import compute_elevation_gain_loss
+
+        gain, loss = compute_elevation_gain_loss(enriched_geometry)
+        provider_route.geometry = enriched_geometry
+        provider_route.elevation_gain_m = gain
+        provider_route.elevation_loss_m = loss
+        messages.append(f"Elevation: +{gain:.0f}m / -{loss:.0f}m (approximate)")
+
+        from app.core.route_geometry import cumulative_distances_km
+
+        dists = cumulative_distances_km(enriched_geometry)
+        for i, pt in enumerate(enriched_geometry):
+            pt.distance_from_start_km = round(dists[i], 4) if i < len(dists) else None
+    else:
+        messages.append("Elevation data unavailable — using flat terrain")
+
+    from app.services.route_cache import compute_cache_key, write_route
+
+    if not provider_route.cache_key:
+        provider_route.cache_key = compute_cache_key(
+            provider="osrm+open_meteo",
+            profile=enriched_request.profile,
+            start_lat=start_coord.lat,
+            start_lon=start_coord.lon,
+            dest_lat=dest_coord.lat,
+            dest_lon=dest_coord.lon,
+        )
+    write_route(provider_route)
+
+    return provider_route, messages

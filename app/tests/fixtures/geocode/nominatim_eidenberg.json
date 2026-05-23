@@ -1,0 +1,19 @@
+{
+  "place_id": 34567,
+  "licence": "Data © OpenStreetMap contributors",
+  "osm_type": "way",
+  "osm_id": 44556,
+  "lat": "48.3982185",
+  "lon": "14.2380902",
+  "display_name": "Eidenberger Alm, Almstraße, Eidenberg, 4201, Österreich",
+  "importance": 0.4,
+  "type": "hamlet",
+  "address": {
+    "hamlet": "Eidenberger Alm",
+    "road": "Almstraße",
+    "village": "Eidenberg",
+    "state": "Oberösterreich",
+    "country": "Österreich",
+    "country_code": "at"
+  }
+}

@@ -6,25 +6,29 @@ Stand: 2026-05-23
 
 Physics-based vehicle consumption analyzer with two route modes:
 
-- **Manual Route (v2)** — expert mode with direct parameter input (already implemented)
-- **Map Route (v3)** — Google-Maps-like UX (to be built)
+- **Manual Route (v2)** — expert mode with direct parameter input (`/route/manual`)
+- **Map Route (v3)** — Google-Maps-like UX with demo + live providers (`/route`)
 
 ## Route transition state
 
 **Current state:**
 
-- `/route` points to the existing manual/expert route planner
-- `/route/manual` does not yet exist as a stable alias
-- The map route planner has not been built yet
+- `/route` points to the map route planner (demo + live)
+- `/route/manual` is the stable path for the manual/expert route planner
+- The map route planner supports both demo and live (Nominatim+OSRM+Open-Meteo) modes
+- Live providers are disabled by default; enable via env variables
 
-**Transition plan:**
+**Live provider env variables:**
 
-1. Add `/route/manual` as a stable path for the manual/expert route planner (Phase A)
-2. Build the map route MVP with `/route/map` or a temporary path (Phase B)
-3. Switch `/route` to the map route planner only after the map MVP works and all tests pass
-4. Keep `/route/manual` permanently for expert/debug use
-
-**Rule:** Do not break `/route` until the replacement is tested and working.
+```text
+CAR_CONSUMPTION_ENABLE_LIVE_ROUTING=false
+CAR_CONSUMPTION_ENABLE_NOMINATIM=false
+CAR_CONSUMPTION_ENABLE_PUBLIC_OSRM=false
+CAR_CONSUMPTION_ENABLE_OPEN_METEO_ELEVATION=false
+CAR_CONSUMPTION_USER_AGENT=car_consumption_private_dev/0.1
+CAR_CONSUMPTION_OSRM_BASE_URL=https://router.project-osrm.org
+CAR_CONSUMPTION_OPEN_METEO_ELEVATION_URL=https://api.open-meteo.com/v1/elevation
+```
 
 ## Knowledge base
 
@@ -67,7 +71,7 @@ A task is complete only if:
 - app still starts with `python -m app.main`
 - existing manual route planner still works
 - new map route page has a working offline/demo provider
-- real provider integration is optional and guarded by env config
+- live provider integration is optional and guarded by env config
 - route results are cached
 - tests cover provider parsing, caching, segmentization and energy calculation
 - `pytest`, `ruff check`, and `ruff format --check` have been run
