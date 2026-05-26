@@ -232,32 +232,41 @@ def render_ranking_list(
             badge_bg = "#00CC9622" if vtype == "EV" else "#EF553B22"
             badge_color = "#00CC96" if vtype == "EV" else "#EF553B"
 
-            with ui.row().style(
-                "align-items:center; gap:10px; padding:6px 8px; border-bottom:1px solid #f0f0f0;"
+            with ui.element("div").style(
+                "display:flex; align-items:center; gap:8px; padding:8px 10px; "
+                "border-bottom:1px solid #f0f0f0; border-radius:6px; margin-bottom:4px; "
+                "background:#fafafa; flex-wrap:wrap;"
             ):
-                ui.label(f"{rank}.").style("min-width:24px; color:#999; font-size:0.82em; text-align:right;")
-                badge_style = (
+                # Rank + badge row
+                ui.label(f"#{rank}").style(
+                    "min-width:28px; color:#666; font-size:0.78em; font-weight:700; text-align:center;"
+                )
+                ui.html(vtype).style(
                     f"min-width:28px; font-size:0.7em; font-weight:700; "
-                    f"padding:2px 5px; border-radius:4px; text-align:center; "
+                    f"padding:2px 6px; border-radius:4px; text-align:center; "
                     f"background:{badge_bg}; color:{badge_color};"
                 )
-                ui.html(vtype).style(badge_style)
+
+                # Vehicle name - always visible, takes remaining space
                 ui.label(name).style(
-                    "flex:1; font-size:0.88em; font-weight:500; "
+                    "flex:1; min-width:120px; font-size:0.9em; font-weight:600; "
                     "white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"
                 )
-                with ui.element("div").style("width:120px;"):
-                    ui.linear_progress(
-                        1.0 - (pct / 100),  # invert: lower consumption = more progress (better)
-                        color=color,
-                    ).style("height:8px;")
-                ui.label(f"{val:.1f}").style("min-width:65px; text-align:right; font-size:0.85em; font-weight:600;")
-                if rng is not None:
-                    ui.label(f"{rng:.0f} km").style(
-                        "min-width:65px; text-align:right; font-size:0.85em; font-weight:600;"
+
+                # Consumption value with slim progress bar underneath
+                with ui.column().style("align-items:flex-end; gap:2px; min-width:80px;"):
+                    ui.label(f"{val:.1f} kWh").style(
+                        "font-size:0.85em; font-weight:700; color:" + color + ";"
                     )
-                else:
-                    ui.label("-").style("min-width:65px; text-align:right; font-size:0.78em; color:#bbb;")
+                    # Slim progress bar - only 80px wide
+                    with ui.element("div").style("width:80px; height:6px; background:#e0e0e0; border-radius:3px; overflow:hidden;"):
+                        ui.element("div").style(
+                            f"width:{100 - pct:.0f}%; height:100%; background:{color}; border-radius:3px;"
+                        )
+                    if rng is not None:
+                        ui.label(f"{rng:.0f} km").style(
+                            "font-size:0.75em; color:#888; font-weight:500;"
+                        )
 
     # Footer
     cap_pct = battery_capacity_factor(params.temperature_c) * 100

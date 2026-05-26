@@ -69,45 +69,56 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 24px;
-    border-radius: 0 0 12px 12px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    padding: 10px 20px;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
     position: sticky;
     top: 0;
     z-index: 100;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
 }
 
 .app-nav-title {
-    font-size: 1.15em;
-    font-weight: 700;
+    font-size: 1.1em;
+    font-weight: 800;
     color: #1a1a2e;
     cursor: pointer;
+    letter-spacing: -0.02em;
 }
 
 .app-nav-links {
     display: flex;
-    gap: 16px;
+    gap: 4px;
     align-items: center;
 }
 
 .app-nav-link {
     color: #636EFA;
     text-decoration: none;
-    font-size: 0.9em;
-    font-weight: 500;
-    padding: 4px 8px;
-    border-radius: 6px;
-    transition: background 0.15s;
+    font-size: 0.88em;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.15s;
+    background: rgba(99, 110, 250, 0.06);
 }
 
 .app-nav-link:hover {
-    background: rgba(99, 110, 250, 0.1);
+    background: rgba(99, 110, 250, 0.15);
+    transform: translateY(-1px);
 }
 
 /* ── Cards ──────────────────────────────────────────────────────────────── */
 .q-card {
-    border-radius: 12px !important;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
+    border: 1px solid rgba(0,0,0,0.04) !important;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.q-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.10) !important;
 }
 
 /* ── Table Base ─────────────────────────────────────────────────────────── */
@@ -210,17 +221,30 @@ body {
 /* ── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
     .app-page-container {
-        padding: 12px;
+        padding: 8px;
     }
 
     .app-nav {
-        padding: 8px 12px;
-        flex-wrap: wrap;
-        gap: 8px;
+        padding: 8px 10px;
+        flex-direction: column;
+        gap: 6px;
+        align-items: stretch;
+    }
+
+    .app-nav-title {
+        text-align: center;
+        font-size: 1em;
     }
 
     .app-nav-links {
-        gap: 8px;
+        justify-content: center;
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+
+    .app-nav-link {
+        font-size: 0.82em;
+        padding: 4px 8px;
     }
 
     .app-summary-card {
@@ -239,18 +263,26 @@ body.dark-mode {
 }
 
 .dark-mode .app-nav {
-    background: #1e1e30 !important;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important;
+    background: linear-gradient(135deg, #1e1e30 0%, #1a1a28 100%) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4) !important;
 }
 
 .dark-mode .app-nav-title {
-    color: #e0e0e0 !important;
+    color: #e8e8e8 !important;
+}
+
+.dark-mode .app-nav-link {
+    background: rgba(130, 140, 250, 0.10) !important;
+}
+
+.dark-mode .app-nav-link:hover {
+    background: rgba(130, 140, 250, 0.22) !important;
 }
 
 .dark-mode .q-card {
     background: #1e1e30 !important;
     border-color: #333348 !important;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.20) !important;
 }
 
 .dark-mode .app-table thead th {
