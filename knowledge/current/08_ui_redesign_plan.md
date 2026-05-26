@@ -27,14 +27,13 @@ Komplettes UI-Redesign mit konsistentem Layout, zentralem Theme, NiceGUI-nativen
 - Alle Pages wrappen Inhalt in Shared Layout
 - CSS wird einmal via `ui.add_css()` injiziert
 
-### Phase 2: Dashboard Redesign (`/`)
+### Phase 2: Dashboard Redesign (`/`) ✅ DONE
 - **Tabs statt vertikaler Stapel:**
   - **Compare** (default): Vehicle Selector (links) + Chart (rechts)
   - **Table**: Consumption Table
   - **Ranking**: Full fleet ranking mit Filtern
   - **Settings**: Physics Params, Environment
-- Vehicle Selector: `ui.select` mit Search, Chips für ausgewählte Fahrzeuge
-- Speed Range Sliders in kompakter Control-Bar über Chart
+- Duplicate `nav_bar()` Calls entfernt (wird von `page_layout()` gehandhabt)
 
 ### Phase 3: NiceGUI Tables statt HTML
 - `build_table()` → `ui.aggrid` oder `ui.table`
@@ -79,7 +78,7 @@ Komplettes UI-Redesign mit konsistentem Layout, zentralem Theme, NiceGUI-nativen
 ## Fortschritt
 
 - [x] Phase 1: Layout + Theme (2026-05-26)
-- [ ] Phase 2: Dashboard Redesign
+- [x] Phase 2: Dashboard Redesign (2026-05-26)
 - [ ] Phase 3: NiceGUI Tables
 - [ ] Phase 4: Route Planner
 - [ ] Phase 5: Vehicle Detail
