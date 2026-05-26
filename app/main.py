@@ -62,19 +62,67 @@ def index(sort: str = "") -> None:
             ui.tab("table", label="📋 Table")
             ui.tab("ranking", label="🏆 Ranking")
             ui.tab("settings", label="⚙️ Settings")
+            # Route tab — navigates to /route on click
+            route_tab = ui.tab("route", label="🗺️ Route Planner")
+
+        def _go_to_route() -> None:
+            ui.navigate.to("/route")
+        route_tab.on("click", _go_to_route)
 
         dashboard_panels = ui.tab_panels(dashboard_tabs, value="compare").style("width:100%;")
 
         # --- COMPARE TAB ---
         with dashboard_panels, ui.tab_panel("compare"):
+            # Header bar with title, filters, and controls
+            with ui.element("div").style(
+                "display:flex; align-items:center; justify-content:space-between; "
+                "gap:12px; padding:12px 16px; margin-bottom:12px; "
+                "background:linear-gradient(135deg, #f8f9fc 0%, #f0f2f8 100%); "
+                "border-radius:12px; flex-wrap:wrap; border:1px solid #e8e8f0;"
+            ):
+                # Left: Title + filter chips
+                with ui.row().style("align-items:center; gap:10px; flex-wrap:wrap;"):
+                    ui.label("🚗 Vehicle Selection").style(
+                        "font-weight:700; font-size:0.95em; white-space:nowrap;"
+                    )
+                    # EV/ICE as toggle chips instead of checkboxes
+                    ev_toggle = ui.button(
+                        "⚡ EV" if SESSION["ev_checked"] else "EV",
+                        on_click=None,
+                    ).props("flat dense" if not SESSION["ev_checked"] else "unelevated dense color=primary").style(
+                        "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
+                        + (" background:#636EFA; color:white;" if SESSION["ev_checked"] else " color:#888;")
+                    )
+                    ice_toggle = ui.button(
+                        "⛽ ICE" if SESSION["ice_checked"] else "ICE",
+                        on_click=None,
+                    ).props("flat dense" if not SESSION["ice_checked"] else "unelevated dense color=negative").style(
+                        "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
+                        + (" background:#EF553B; color:white;" if SESSION["ice_checked"] else " color:#888;")
+                    )
+                    # Hidden checkboxes — keep compatibility with existing code
+                    ev_cb = ui.checkbox("EV", value=SESSION["ev_checked"]).style("display:none;")
+                    ice_cb = ui.checkbox("ICE", value=SESSION["ice_checked"]).style("display:none;")
+
+                    def _sync_toggle(btn, cb, key) -> None:
+                        cb.value = not cb.value
+                        SESSION[key] = cb.value
+                        active = cb.value
+                        if key == "ev":
+                            btn.text = "⚡ EV" if active else "EV"
+                            btn.props("unelevated dense color=primary" if active else "flat dense")
+                            btn.style(f"background:#636EFA; color:white;" if active else "color:#888;")
+                        else:
+                            btn.text = "⛽ ICE" if active else "ICE"
+                            btn.props("unelevated dense color=negative" if active else "flat dense")
+                            btn.style(f"background:#EF553B; color:white;" if active else "color:#888;")
+                        on_filter_change()  # NiceGUI on_value_change does NOT fire on programmatic value set
+
+                    ev_toggle.on_click(lambda: _sync_toggle(ev_toggle, ev_cb, "ev"))
+                    ice_toggle.on_click(lambda: _sync_toggle(ice_toggle, ice_cb, "ice"))
+
             with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):
                 with ui.card().style("min-width:280px; max-width:320px; flex:1; padding:16px;"):
-                    ui.label("🚗 Vehicle Selection").style("font-weight:700; font-size:1em; margin-bottom:8px;")
-
-                    with ui.row().classes("filter-row"):
-                        ev_cb = ui.checkbox("EV", value=SESSION["ev_checked"]).style("font-size:0.85em;")
-                        ice_cb = ui.checkbox("ICE", value=SESSION["ice_checked"]).style("font-size:0.85em;")
-
                     make_select = ui.select([], label="Make", with_input=True).style("width:100%;")
                     make_select.visible = False
 
@@ -104,23 +152,58 @@ def index(sort: str = "") -> None:
         # --- RANKING TAB ---
         with dashboard_panels, ui.tab_panel("ranking"):
             with ui.card().style("padding:16px; width:100%;"):
-                with ui.row().style("align-items:center; gap:16px; margin-bottom:12px;"):
-                    ui.label("📊 Consumption Ranking").style("font-weight:700; font-size:0.95em;")
+                # Header bar for ranking controls
+                with ui.element("div").style(
+                    "display:flex; align-items:center; gap:12px; margin-bottom:12px; "
+                    "flex-wrap:wrap; padding-bottom:8px; border-bottom:1px solid #f0f0f0;"
+                ):
+                    ui.label("🏆 Ranking").style("font-weight:700; font-size:0.95em; white-space:nowrap;")
                     speed_ranking_select = ui.select(
                         {s: f"{s} km/h" for s in SPEED_OPTIONS},
                         value=SPEED_OPTIONS[2],
                         label="Speed",
                     ).style("width:140px;")
-                    ranking_ev_cb = ui.checkbox("EV", value=SESSION["ranking_ev"]).style("font-size:0.85em;")
-                    ranking_ice_cb = ui.checkbox("ICE", value=SESSION["ranking_ice"]).style("font-size:0.85em;")
+                    # EV/ICE toggle chips for ranking
+                    ranking_ev_toggle = ui.button(
+                        "⚡ EV" if SESSION["ranking_ev"] else "EV",
+                    ).props("flat dense" if not SESSION["ranking_ev"] else "unelevated dense color=primary").style(
+                        "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
+                        + (" background:#636EFA; color:white;" if SESSION["ranking_ev"] else " color:#888;")
+                    )
+                    ranking_ice_toggle = ui.button(
+                        "⛽ ICE" if SESSION["ranking_ice"] else "ICE",
+                    ).props("flat dense" if not SESSION["ranking_ice"] else "unelevated dense color=negative").style(
+                        "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
+                        + (" background:#EF553B; color:white;" if SESSION["ranking_ice"] else " color:#888;")
+                    )
                     sort_btn = (
                         ui.button(
                             "Sort: Range" if SESSION["ranking_sort"] else "Sort: kWh",
                             on_click=lambda: _toggle_ranking_sort(),
                         )
                         .props("flat dense")
-                        .style("font-size:0.82em;")
+                        .style("font-size:0.82em; border-radius:20px;")
                     )
+                    # Hidden checkboxes — ranking uses separate EV/ICE state
+                    ranking_ev_cb = ui.checkbox("EV", value=SESSION["ranking_ev"]).style("display:none;")
+                    ranking_ice_cb = ui.checkbox("ICE", value=SESSION["ranking_ice"]).style("display:none;")
+
+                    def _sync_ranking_toggle(btn, cb, key) -> None:
+                        cb.value = not cb.value
+                        SESSION[key] = cb.value
+                        active = cb.value
+                        if key == "ranking_ev":
+                            btn.text = "⚡ EV" if active else "EV"
+                            btn.props("unelevated dense color=primary" if active else "flat dense")
+                            btn.style(f"background:#636EFA; color:white;" if active else "color:#888;")
+                        else:
+                            btn.text = "⛽ ICE" if active else "ICE"
+                            btn.props("unelevated dense color=negative" if active else "flat dense")
+                            btn.style(f"background:#EF553B; color:white;" if active else "color:#888;")
+                        update_ranking()  # NiceGUI on_value_change does NOT fire on programmatic value set
+
+                    ranking_ev_toggle.on_click(lambda: _sync_ranking_toggle(ranking_ev_toggle, ranking_ev_cb, "ranking_ev"))
+                    ranking_ice_toggle.on_click(lambda: _sync_ranking_toggle(ranking_ice_toggle, ranking_ice_cb, "ranking_ice"))
                 ranking_container = ui.element("div").style("width:100%;")
 
         # --- SETTINGS TAB ---
