@@ -13,6 +13,7 @@ from app.ui.components.vehicle_selector import (
     make_vehicle_label,
     short_label,
 )
+from app.ui.layout import nav_bar, page_layout
 from app.ui.state import SESSION
 from app.ui.tables import (
     IMAGES_DIR,
@@ -28,94 +29,24 @@ MAX_COMPARE = 8
 
 app.add_static_files("/images", str(IMAGES_DIR))
 
-DARK_CSS = """
-body.dark {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
-    color: #cdd6f4;
-}
-body.dark .q-card {
-    background: #1e1e2e !important;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
-}
-body.dark label, body.dark .text-grey { color: #a6adc8 !important; }
-"""
-
-LIGHT_CSS = """
-body {
-    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-    min-height: 100vh;
-}
-.q-card {
-    border-radius: 12px !important;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
-}
-"""
-
-SHARED_CSS = """
-.sel-item {
-    display: flex; align-items: center; padding: 4px 6px;
-    border-radius: 6px; font-size: 0.82em;
-}
-.sel-item:hover { background: var(--hover-bg, #f5f5f5); }
-.add-btn {
-    font-size: 0.78em; padding: 3px 8px; border-radius: 6px;
-    border: 1px solid #e0e0e0; background: #fff;
-    cursor: pointer; transition: all 0.15s ease;
-    width: 100%; text-align: left;
-}
-.add-btn:hover { background: #f0f4ff; border-color: #636EFA; }
-.add-btn.selected {
-    background: #636EFA22; border-color: #636EFA44; color: #636EFA;
-}
-.filter-row {
-    display: flex; gap: 12px; align-items: center; margin-bottom: 8px;
-}
-.conf-badge {
-    display: inline-block; padding: 1px 6px; border-radius: 4px;
-    font-size: 0.7em; font-weight: 700; text-transform: uppercase;
-}
-.detail-card {
-    padding: 16px; margin-bottom: 12px;
-}
-.detail-header {
-    font-weight: 700; font-size: 0.85em; color: #888;
-    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;
-}
-.detail-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 6px 0; border-bottom: 1px solid #f0f0f0;
-}
-.detail-label { color: #888; font-size: 0.88em; }
-.detail-value { font-weight: 600; font-size: 0.88em; }
-.missing-tag {
-    display: inline-block; font-size: 0.68em; padding: 1px 5px;
-    border-radius: 3px; background: #FFA15A22; color: #FFA15A;
-    margin-left: 4px; font-weight: 600;
-}
-"""
-
 
 @ui.page("/vehicle/{vid}")
 def vehicle_detail(vid: str) -> None:
     v = REPO.get(vid)
-    ui.add_css(LIGHT_CSS + SHARED_CSS + DARK_CSS)
+    nav_bar()
 
     if not v:
-        with ui.column().style("max-width:800px; margin:40px auto; padding:20px;"):
+        with page_layout("Vehicle Not Found", show_back=True):
             ui.label("Vehicle not found").style("font-size:1.5em; color:#EF553B;")
-            ui.link("Back to overview", "/").style("color:#636EFA;")
         return
 
-    with ui.column().style("max-width:800px; margin:20px auto; padding:20px; gap:8px;"):
-        with ui.row().style("justify-content:space-between; align-items:center; width:100%;"):
-            ui.link("← Back to overview", "/").style("color:#636EFA; text-decoration:none; font-size:0.9em;")
-
+    with page_layout(f"🚗 {make_vehicle_label(v)}", show_back=True):
         ui.html(build_vehicle_detail_html(v))
 
 
 @ui.page("/")
 def index(sort: str = "") -> None:
-    ui.add_css(LIGHT_CSS + SHARED_CSS + DARK_CSS)
+    nav_bar()
 
     if sort == "range":
         SESSION["ranking_sort"] = True
@@ -125,32 +56,10 @@ def index(sort: str = "") -> None:
     params = PhysicsParams()
     selected_ids = SESSION["selected"]
 
-    with ui.column().style("gap:16px; padding:20px; max-width:1400px; margin:0 auto; width:100%;"):
-        with ui.row().style("width:100%; align-items:center; justify-content:space-between;"):
-            with ui.row().style("align-items:center; gap:8px;"):
-                ui.label("⚡").style("font-size:1.8em;")
-                with ui.column().style("gap:0;"):
-                    ui.label("Vehicle Consumption Analyzer").style(
-                        "font-size:1.5em; font-weight:700; line-height:1.1; color:#1a1a2e;"
-                    )
-                    ui.label("Physics-based EV & ICE comparison").style(
-                        "font-size:0.85em; color:#888; line-height:1.1;"
-                    )
-                ui.link("🗺️ Route", "/route").style(
-                    "font-size:0.85em; color:#636EFA; text-decoration:none; margin-left:12px;"
-                )
-
-            def toggle_dark() -> None:
-                SESSION["dark"] = not SESSION["dark"]
-                if SESSION["dark"]:
-                    ui.query("body").classes("dark")
-                else:
-                    ui.query("body").classes(remove="dark")
-
-            dark_switch = ui.switch("Dark", value=SESSION["dark"], on_change=lambda _: toggle_dark())
-            dark_switch.style("font-size:0.85em;")
-        if SESSION["dark"]:
-            ui.query("body").classes("dark")
+    with page_layout("⚡ Vehicle Consumption Analyzer"):
+        ui.label("Physics-based EV & ICE comparison").style(
+            "font-size:0.85em; color:#888; margin-bottom:8px;"
+        )
 
         with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):
             with ui.card().style("min-width:280px; max-width:320px; flex:1; padding:16px;"):
@@ -510,6 +419,7 @@ def index(sort: str = "") -> None:
 def map_route_page() -> None:
     from app.ui.pages.map_route_planner import map_route_page
 
+    nav_bar()
     map_route_page()
 
 
@@ -517,6 +427,7 @@ def map_route_page() -> None:
 def manual_route_page() -> None:
     from app.ui.pages.route_planner import route_page
 
+    nav_bar()
     route_page()
 
 

@@ -38,6 +38,7 @@ from app.ui.components.map_widget import (
     set_start_end_markers,
 )
 from app.ui.components.vehicle_selector import make_vehicle_label
+from app.ui.layout import page_layout
 from app.ui.state import SESSION
 
 MAX_COMPARE_ROUTE = 8
@@ -65,11 +66,6 @@ def _provider_status_text() -> str:
 
 
 def map_route_page() -> None:
-    ui.add_css("""
-    body { background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%); min-height: 100vh; }
-    .q-card { border-radius: 12px !important; box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important; }
-    """)
-
     repo = VehicleRepository()
     selected_ids: list[str] = list(SESSION.get("selected", []))
     demo_provider = DemoRoutingProvider()
@@ -85,15 +81,7 @@ def map_route_page() -> None:
         "highway_route": ("demo highway start", "demo highway destination"),
     }
 
-    with ui.column().style("gap:16px; padding:20px; max-width:1400px; margin:0 auto; width:100%;"):
-        with ui.row().style("width:100%; align-items:center; gap:8px;"):
-            ui.link("← Dashboard", "/").style("color:#636EFA; text-decoration:none; font-size:0.9em;")
-            ui.link("| Manual Route", "/route/manual").style(
-                "color:#888; text-decoration:none; font-size:0.85em; margin-left:8px;"
-            )
-        ui.label("Map Route Planner").style("font-size:1.5em; font-weight:700; color:#1a1a2e;")
-        ui.label("Calculate energy consumption for a route").style("font-size:0.85em; color:#888;")
-
+    with page_layout("🗺️ Map Route Planner"):
         with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):
             with ui.card().style("min-width:280px; max-width:320px; flex:1; padding:16px;"):
                 ui.label("Route Search").style("font-weight:700; font-size:1em; margin-bottom:8px;")

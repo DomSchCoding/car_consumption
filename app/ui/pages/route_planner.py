@@ -19,6 +19,7 @@ from app.data.repository import VehicleRepository
 from app.ui.components.vehicle_selector import (
     make_vehicle_label,
 )
+from app.ui.layout import page_layout
 from app.ui.state import SESSION
 
 MAX_COMPARE_ROUTE = 8
@@ -86,25 +87,10 @@ def route_page() -> None:
     """Render the Route / Commute planner page."""
     from app.ui.charts import VEHICLE_COLORS
 
-    ui.add_css("""
-    body {
-        background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-        min-height: 100vh;
-    }
-    .q-card {
-        border-radius: 12px !important;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
-    }
-    """)
-
     repo = VehicleRepository()
     selected_ids: list[str] = list(SESSION.get("selected", []))
 
-    with ui.column().style("gap:16px; padding:20px; max-width:1400px; margin:0 auto; width:100%;"):
-        ui.link("← Back to Dashboard", "/").style("color:#636EFA; text-decoration:none; font-size:0.9em;")
-        ui.label("🗺️ Route / Commute Planner").style("font-size:1.5em; font-weight:700; color:#1a1a2e;")
-        ui.label("Calculate energy consumption for a specific route").style("font-size:0.85em; color:#888;")
-
+    with page_layout("🗺️ Route / Commute Planner"):
         with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):
             with ui.card().style("min-width:300px; max-width:360px; flex:1; padding:16px;"):
                 ui.label("Route Parameters").style("font-weight:700; font-size:1em; margin-bottom:8px;")
@@ -147,6 +133,10 @@ def route_page() -> None:
                     "font-weight:600; font-size:0.85em; color:#555; margin-top:8px; margin-bottom:4px;"
                 )
                 vehicle_list = ui.column().style("max-height:200px; overflow-y:auto; gap:2px; width:100%;")
+
+                ui.button("Calculate", on_click=lambda: calculate_route()).props("color=primary").style(
+                    "width:100%; margin-top:8px;"
+                )
 
             with ui.card().style("flex:2; min-width:400px; padding:16px;"):
                 result_container = ui.element("div").style("width:100%;")
@@ -301,10 +291,6 @@ def route_page() -> None:
                     ui.html(chtml)
 
     update_vehicle_list()
-
-    ui.button("Calculate", on_click=lambda: calculate_route()).props("color=primary").style(
-        "width:100%; margin-top:8px;"
-    )
 
     dist_input.on_value_change(lambda _: calculate_route())
     speed_input.on_value_change(lambda _: calculate_route())
