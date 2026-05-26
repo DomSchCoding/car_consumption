@@ -115,9 +115,9 @@ def render_consumption_table(
         return
 
     ui.aggrid(
-        rows,
-        columns,
         options={
+            "columnDefs": columns,
+            "rowData": rows,
             "rowHeight": 36,
             "headerHeight": 32,
             "suppressRowClickSelection": True,

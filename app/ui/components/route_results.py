@@ -44,15 +44,15 @@ def render_energy_table(results: list[dict]) -> None:
         })
 
     ui.aggrid(
-        {"columns": columns, "rowData": rows},
         options={
+            "columnDefs": columns,
+            "rowData": rows,
             "rowHeight": 32,
             "headerHeight": 28,
             "suppressRowClickSelection": True,
             "domLayout": "normal",
         },
-        style="width:100%; height:100%;",
-    )
+    ).style("width:100%;")
 
 
 def render_comparison_table(compare_results: list[dict], all_results: list[dict]) -> None:
@@ -78,14 +78,14 @@ def render_comparison_table(compare_results: list[dict], all_results: list[dict]
         })
 
     ui.aggrid(
-        {"columns": columns, "rowData": rows},
         options={
+            "columnDefs": columns,
+            "rowData": rows,
             "rowHeight": 32,
             "headerHeight": 28,
             "suppressRowClickSelection": True,
         },
-        style="width:100%; height:100%;",
-    )
+    ).style("width:100%;")
 
 
 def render_energy_breakdown_chart(results: list[dict]) -> None:
