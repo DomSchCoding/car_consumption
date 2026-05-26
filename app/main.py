@@ -15,11 +15,13 @@ from app.ui.components.vehicle_selector import (
 )
 from app.ui.layout import page_layout
 from app.ui.state import SESSION
+from app.ui.nicegui_tables import (
+    render_consumption_table,
+    render_ranking_list,
+)
 from app.ui.tables import (
     IMAGES_DIR,
     SPEED_OPTIONS,
-    build_ranking_list,
-    build_table,
     build_vehicle_detail_html,
 )
 
@@ -358,11 +360,10 @@ def index(sort: str = "") -> None:
                 )
             ui.plotly(fig).style("width:100%; height:450px;")
 
-        table_html = build_table(vehicles, params, FUEL_CONST, ice_thermal_eff.value, use_per_tire_cb.value)
         table_container.clear()
         with table_container, ui.card().style("padding:16px;"):
             ui.label("📋 Consumption Table").style("font-weight:700; font-size:0.95em; margin-bottom:8px;")
-            ui.html(table_html)
+            render_consumption_table(vehicles, params, FUEL_CONST, ice_thermal_eff.value, use_per_tire_cb.value)
 
         update_ranking()
 
@@ -375,20 +376,19 @@ def index(sort: str = "") -> None:
         params.eta_charging = charging_eff_input.value
         params.temperature_c = float(temp_input.value)
         speed = speed_ranking_select.value if speed_ranking_select.value else SPEED_OPTIONS[2]
-        html = build_ranking_list(
-            params,
-            speed,
-            ranking_ev_cb.value,
-            ranking_ice_cb.value,
-            FUEL_CONST,
-            ice_thermal_eff.value,
-            use_per_tire_cb.value,
-            REPO,
-            SESSION["ranking_sort"],
-        )
         ranking_container.clear()
         with ranking_container:
-            ui.html(html)
+            render_ranking_list(
+                params,
+                speed,
+                ranking_ev_cb.value,
+                ranking_ice_cb.value,
+                FUEL_CONST,
+                ice_thermal_eff.value,
+                use_per_tire_cb.value,
+                REPO,
+                bool(SESSION["ranking_sort"]),
+            )
 
     def on_filter_change() -> None:
         SESSION["ev_checked"] = ev_cb.value
