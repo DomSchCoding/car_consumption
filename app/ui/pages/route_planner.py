@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from nicegui import ui
 
-from app.core.physics import battery_capacity_factor
 from app.core.route_energy import commute_energy
 from app.data.models import (
     CommuteScenario,
@@ -13,7 +12,6 @@ from app.data.models import (
     RoadType,
     Route,
     RouteSegment,
-    VehicleType,
 )
 from app.data.repository import VehicleRepository
 from app.ui.components.route_results import (
@@ -35,7 +33,7 @@ def route_page() -> None:
     from app.ui.charts import VEHICLE_COLORS
 
     repo = VehicleRepository()
-    selected_ids: list[str] = list(SESSION.get("selected", []))
+    selected_ids: list[str] = list(SESSION.get("selected") or [])
 
     with page_layout("🗺️ Route / Commute Planner"):
         with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):

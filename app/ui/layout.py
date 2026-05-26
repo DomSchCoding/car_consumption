@@ -14,7 +14,6 @@ The layout provides:
 
 from __future__ import annotations
 
-from nicegui import app as nicegui_app
 from nicegui import ui
 
 from app.ui.state import SESSION
@@ -36,7 +35,6 @@ def _inject_css() -> None:
 def _apply_dark_mode() -> None:
     """Apply or remove dark mode class on body."""
     is_dark = SESSION.get("dark", False)
-    mode = "dark" if is_dark else "light"
     ui.run_javascript(f"document.body.classList.toggle('dark-mode', {is_dark})")
 
 
@@ -95,7 +93,7 @@ def page_layout(title: str, show_back: bool = False, back_url: str = "/") -> ui.
     with ui.element("div").classes("app-page-container"):
         # Back link if requested
         if show_back:
-            ui.link(f"← Back", back_url).classes("app-back-link").style("margin-bottom:12px;")
+            ui.link("← Back", back_url).classes("app-back-link").style("margin-bottom:12px;")
 
         # Page title
         ui.label(title).classes("app-section-title").style("font-size:1.5em;")

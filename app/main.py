@@ -14,11 +14,11 @@ from app.ui.components.vehicle_selector import (
     short_label,
 )
 from app.ui.layout import page_layout
-from app.ui.state import SESSION
 from app.ui.nicegui_tables import (
     render_consumption_table,
     render_ranking_list,
 )
+from app.ui.state import SESSION
 from app.ui.tables import (
     IMAGES_DIR,
     SPEED_OPTIONS,
@@ -88,7 +88,9 @@ def index(sort: str = "") -> None:
                     ui.separator().style("margin:8px 0;")
 
                     ui.label("Selected").style("font-weight:600; font-size:0.85em; color:#555; margin-bottom:4px;")
-                    selected_list_container = ui.column().style("max-height:180px; overflow-y:auto; gap:2px; width:100%;")
+                    selected_list_container = ui.column().style(
+                        "max-height:180px; overflow-y:auto; gap:2px; width:100%;"
+                    )
 
                 with ui.card().style("flex:3; min-width:400px; padding:16px;"):
                     chart_container = ui.element("div").style("width:100%; min-height:420px;")

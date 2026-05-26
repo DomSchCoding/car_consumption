@@ -38,9 +38,9 @@ from app.ui.components.map_widget import (
 )
 from app.ui.components.route_results import (
     render_comparison_table,
+    render_elevation_chart,
     render_energy_breakdown_chart,
     render_energy_table,
-    render_elevation_chart,
     render_kv_table,
 )
 from app.ui.components.vehicle_selector import make_vehicle_label
@@ -599,12 +599,6 @@ def map_route_page() -> None:
             _render_elevation_debug(provider_route, results, params)
 
     def _render_elevation_debug(provider_route, results: list, params: PhysicsParams) -> None:
-        from app.core.route_geometry import (
-            elevation_stats,
-            expected_climb_battery_kwh,
-            expected_descent_recovered_kwh,
-            potential_energy_kwh,
-        )
 
         geometry = provider_route.geometry
         stats = elevation_stats(geometry)
