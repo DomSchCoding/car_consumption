@@ -43,14 +43,16 @@ Komplettes UI-Redesign mit konsistentem Layout, zentralem Theme, NiceGUI-nativen
 - `app/ui/tables.py` bleibt für `build_vehicle_detail_html()`, `SPEED_OPTIONS`, `IMAGES_DIR`
 - Auto Dark-Mode, responsive, sortable
 
-### Phase 4: Route Planner Improvements
+### Phase 4: Route Planner Improvements ✅ DONE
 - **Map Route (`/route`):**
-  - Loading Spinner während Geocoding/Routing
-  - Error Cards statt scattered labels
-  - Energy Results als Tabs: Overview | Elevation | Speed | Breakdown
+  - Energy Results als Tabs: 📊 Table | 📈 Breakdown | ↔️ Comparison | ⛰️ Elevation
+  - `app/ui/components/route_results.py` mit nativen NiceGUI-Komponenten
+  - HTML-Tables + inline Plotly entfernt
+  - `_render_elevation_debug()` nutzt `render_kv_table()`
 - **Manual Route (`/route/manual`):**
-  - Gleiche Behandlung — Cards, NiceGUI Components
-  - Results Table konvertiert
+  - `build_route_breakdown_table()` HTML-Funktion entfernt
+  - Konsistentes Tab-Layout mit Map Route Planner
+  - `ui.html()` → native NiceGUI
 
 ### Phase 5: Vehicle Detail Page
 - HTML → NiceGUI Cards
@@ -82,6 +84,6 @@ Komplettes UI-Redesign mit konsistentem Layout, zentralem Theme, NiceGUI-nativen
 - [x] Phase 1: Layout + Theme (2026-05-26)
 - [x] Phase 2: Dashboard Redesign (2026-05-26)
 - [x] Phase 3: NiceGUI Tables (2026-05-26)
-- [ ] Phase 4: Route Planner
+- [x] Phase 4: Route Planner (2026-05-26)
 - [ ] Phase 5: Vehicle Detail
 - [ ] Phase 6: Responsive
