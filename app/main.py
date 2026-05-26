@@ -13,7 +13,7 @@ from app.ui.components.vehicle_selector import (
     make_vehicle_label,
     short_label,
 )
-from app.ui.layout import nav_bar, page_layout
+from app.ui.layout import page_layout
 from app.ui.state import SESSION
 from app.ui.tables import (
     IMAGES_DIR,
@@ -33,7 +33,6 @@ app.add_static_files("/images", str(IMAGES_DIR))
 @ui.page("/vehicle/{vid}")
 def vehicle_detail(vid: str) -> None:
     v = REPO.get(vid)
-    nav_bar()
 
     if not v:
         with page_layout("Vehicle Not Found", show_back=True):
@@ -46,8 +45,6 @@ def vehicle_detail(vid: str) -> None:
 
 @ui.page("/")
 def index(sort: str = "") -> None:
-    nav_bar()
-
     if sort == "range":
         SESSION["ranking_sort"] = True
     elif sort == "consumption":
@@ -57,41 +54,75 @@ def index(sort: str = "") -> None:
     selected_ids = SESSION["selected"]
 
     with page_layout("⚡ Vehicle Consumption Analyzer"):
-        ui.label("Physics-based EV & ICE comparison").style(
-            "font-size:0.85em; color:#888; margin-bottom:8px;"
-        )
+        dashboard_tabs = ui.tabs().props("dense").style("margin-bottom:0;")
+        with dashboard_tabs:
+            ui.tab("compare", label="📊 Compare")
+            ui.tab("table", label="📋 Table")
+            ui.tab("ranking", label="🏆 Ranking")
+            ui.tab("settings", label="⚙️ Settings")
 
-        with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):
-            with ui.card().style("min-width:280px; max-width:320px; flex:1; padding:16px;"):
-                ui.label("🚗 Vehicle Selection").style("font-weight:700; font-size:1em; margin-bottom:8px;")
+        dashboard_panels = ui.tab_panels(dashboard_tabs, value="compare").style("width:100%;")
 
-                with ui.row().classes("filter-row"):
-                    ev_cb = ui.checkbox("EV", value=SESSION["ev_checked"]).style("font-size:0.85em;")
-                    ice_cb = ui.checkbox("ICE", value=SESSION["ice_checked"]).style("font-size:0.85em;")
+        # --- COMPARE TAB ---
+        with dashboard_panels, ui.tab_panel("compare"):
+            with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):
+                with ui.card().style("min-width:280px; max-width:320px; flex:1; padding:16px;"):
+                    ui.label("🚗 Vehicle Selection").style("font-weight:700; font-size:1em; margin-bottom:8px;")
 
-                make_select = ui.select([], label="Make", with_input=True).style("width:100%;")
-                make_select.visible = False
+                    with ui.row().classes("filter-row"):
+                        ev_cb = ui.checkbox("EV", value=SESSION["ev_checked"]).style("font-size:0.85em;")
+                        ice_cb = ui.checkbox("ICE", value=SESSION["ice_checked"]).style("font-size:0.85em;")
 
-                model_select = ui.select(
-                    {},
-                    multiple=True,
-                    label="Models",
-                ).style("width:100%;")
-                model_select.visible = False
+                    make_select = ui.select([], label="Make", with_input=True).style("width:100%;")
+                    make_select.visible = False
 
-                ui.separator().style("margin:8px 0;")
+                    model_select = ui.select(
+                        {},
+                        multiple=True,
+                        label="Models",
+                    ).style("width:100%;")
+                    model_select.visible = False
 
-                ui.label("Selected").style("font-weight:600; font-size:0.85em; color:#555; margin-bottom:4px;")
-                selected_list_container = ui.column().style("max-height:180px; overflow-y:auto; gap:2px; width:100%;")
+                    ui.separator().style("margin:8px 0;")
 
-            with ui.card().style("flex:3; min-width:400px; padding:16px;"):
-                chart_container = ui.element("div").style("width:100%; min-height:420px;")
+                    ui.label("Selected").style("font-weight:600; font-size:0.85em; color:#555; margin-bottom:4px;")
+                    selected_list_container = ui.column().style("max-height:180px; overflow-y:auto; gap:2px; width:100%;")
 
-        table_container = ui.element("div").style("width:100%;")
+                with ui.card().style("flex:3; min-width:400px; padding:16px;"):
+                    chart_container = ui.element("div").style("width:100%; min-height:420px;")
 
-        with ui.card().style("padding:16px;"):
-            with ui.expansion("⚙️ Settings", icon="settings").style("width:100%;"):
-                with ui.row().style("width:100%; gap:24px; flex-wrap:wrap; padding:8px 0;"):
+        # --- TABLE TAB ---
+        with dashboard_panels, ui.tab_panel("table"):
+            with ui.card().style("padding:16px; width:100%;"):
+                ui.label("📋 Consumption Table").style("font-weight:700; font-size:0.95em; margin-bottom:8px;")
+                table_container = ui.element("div").style("width:100%;")
+
+        # --- RANKING TAB ---
+        with dashboard_panels, ui.tab_panel("ranking"):
+            with ui.card().style("padding:16px; width:100%;"):
+                with ui.row().style("align-items:center; gap:16px; margin-bottom:12px;"):
+                    ui.label("📊 Consumption Ranking").style("font-weight:700; font-size:0.95em;")
+                    speed_ranking_select = ui.select(
+                        {s: f"{s} km/h" for s in SPEED_OPTIONS},
+                        value=SPEED_OPTIONS[2],
+                        label="Speed",
+                    ).style("width:140px;")
+                    ranking_ev_cb = ui.checkbox("EV", value=SESSION["ranking_ev"]).style("font-size:0.85em;")
+                    ranking_ice_cb = ui.checkbox("ICE", value=SESSION["ranking_ice"]).style("font-size:0.85em;")
+                    sort_btn = (
+                        ui.button(
+                            "Sort: Range" if SESSION["ranking_sort"] else "Sort: kWh",
+                            on_click=lambda: _toggle_ranking_sort(),
+                        )
+                        .props("flat dense")
+                        .style("font-size:0.82em;")
+                    )
+                ranking_container = ui.element("div").style("width:100%;")
+
+        # --- SETTINGS TAB ---
+        with dashboard_panels, ui.tab_panel("settings"):
+            with ui.card().style("padding:16px; width:100%;"):
+                with ui.column().style("gap:24px;"):
                     with ui.column().style("gap:8px; min-width:180px;"):
                         ui.label("Parameters").style("font-weight:600; font-size:0.85em; color:#666;")
                         rho_input = ui.number(
@@ -172,33 +203,13 @@ def index(sort: str = "") -> None:
                         ui.label("Max (km/h)").style("font-size:0.82em;")
                         speed_max_slider = ui.slider(min=50, max=200, value=160, step=5).style("width:100%;")
 
-            with ui.expansion("📐 Physics Formulas", icon="science").style("width:100%;"):
-                ui.markdown(
-                    "**Aero:** F = ½ · ρ · Cd · A · v²  →  kWh/100km = F · 100 / 3600\n\n"
-                    "**Roll:** F = c<sub>rr</sub> · m · g  →  kWh/100km constant\n\n"
-                    "**Aux:** kWh/100km = P<sub>aux</sub> / v · 100  (↓ with speed)\n\n"
-                    "**Drivetrain:** Battery = Wheel / η"
-                ).style("font-size:0.82em; line-height:1.6;")
-
-        with ui.card().style("padding:16px;"):
-            with ui.row().style("align-items:center; gap:16px; margin-bottom:12px;"):
-                ui.label("📊 Consumption Ranking").style("font-weight:700; font-size:0.95em;")
-                speed_ranking_select = ui.select(
-                    {s: f"{s} km/h" for s in SPEED_OPTIONS},
-                    value=SPEED_OPTIONS[2],
-                    label="Speed",
-                ).style("width:140px;")
-                ranking_ev_cb = ui.checkbox("EV", value=SESSION["ranking_ev"]).style("font-size:0.85em;")
-                ranking_ice_cb = ui.checkbox("ICE", value=SESSION["ranking_ice"]).style("font-size:0.85em;")
-                sort_btn = (
-                    ui.button(
-                        "Sort: Range" if SESSION["ranking_sort"] else "Sort: kWh",
-                        on_click=lambda: _toggle_ranking_sort(),
-                    )
-                    .props("flat dense")
-                    .style("font-size:0.82em;")
-                )
-            ranking_container = ui.element("div").style("width:100%;")
+                    with ui.expansion("📐 Physics Formulas", icon="science").style("width:100%;"):
+                        ui.markdown(
+                            "**Aero:** F = ½ · ρ · Cd · A · v²  →  kWh/100km = F · 100 / 3600\n\n"
+                            "**Roll:** F = c<sub>rr</sub> · m · g  →  kWh/100km constant\n\n"
+                            "**Aux:** kWh/100km = P<sub>aux</sub> / v · 100  (↓ with speed)\n\n"
+                            "**Drivetrain:** Battery = Wheel / η"
+                        ).style("font-size:0.82em; line-height:1.6;")
 
     _make_list: list[str] = []
 
@@ -419,7 +430,6 @@ def index(sort: str = "") -> None:
 def map_route_page() -> None:
     from app.ui.pages.map_route_planner import map_route_page
 
-    nav_bar()
     map_route_page()
 
 
@@ -427,7 +437,6 @@ def map_route_page() -> None:
 def manual_route_page() -> None:
     from app.ui.pages.route_planner import route_page
 
-    nav_bar()
     route_page()
 
 
