@@ -35,10 +35,12 @@ Komplettes UI-Redesign mit konsistentem Layout, zentralem Theme, NiceGUI-nativen
   - **Settings**: Physics Params, Environment
 - Duplicate `nav_bar()` Calls entfernt (wird von `page_layout()` gehandhabt)
 
-### Phase 3: NiceGUI Tables statt HTML
-- `build_table()` → `ui.aggrid` oder `ui.table`
-- `build_ranking_list()` → `ui.list` mit `ui.linear_progress`
-- `build_vehicle_detail_html()` → Native NiceGUI Cards/Grid
+### Phase 3: NiceGUI Tables statt HTML ✅ DONE
+- `app/ui/nicegui_tables.py` erstellt mit nativen NiceGUI-Renderern:
+  - `render_consumption_table()`: `ui.aggrid`-basierte Tabelle
+  - `render_ranking_list()`: `ui.list` + `ui.linear_progress`
+- `build_table()` / `build_ranking_list()` HTML-Calls in main.py ersetzt
+- `app/ui/tables.py` bleibt für `build_vehicle_detail_html()`, `SPEED_OPTIONS`, `IMAGES_DIR`
 - Auto Dark-Mode, responsive, sortable
 
 ### Phase 4: Route Planner Improvements
@@ -79,7 +81,7 @@ Komplettes UI-Redesign mit konsistentem Layout, zentralem Theme, NiceGUI-nativen
 
 - [x] Phase 1: Layout + Theme (2026-05-26)
 - [x] Phase 2: Dashboard Redesign (2026-05-26)
-- [ ] Phase 3: NiceGUI Tables
+- [x] Phase 3: NiceGUI Tables (2026-05-26)
 - [ ] Phase 4: Route Planner
 - [ ] Phase 5: Vehicle Detail
 - [ ] Phase 6: Responsive
