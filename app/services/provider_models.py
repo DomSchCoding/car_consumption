@@ -7,7 +7,7 @@ is explicit and testable.
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 
 from pydantic import BaseModel, Field
 
@@ -74,7 +74,7 @@ class ProviderStatus(BaseModel):
     message: str = ""
 
 
-class RouteSourceKind(str, Enum):
+class RouteSourceKind(StrEnum):
     manual = "manual"
     provider = "provider"
     gpx = "gpx"

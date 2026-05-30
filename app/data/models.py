@@ -3,18 +3,18 @@
 from __future__ import annotations
 
 from datetime import date
-from enum import Enum
+from enum import StrEnum
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 
-class ConfidenceLevel(str, Enum):
+class ConfidenceLevel(StrEnum):
     high = "high"
     medium = "medium"
     low = "low"
 
 
-class VehicleType(str, Enum):
+class VehicleType(StrEnum):
     ev = "ev"
     ice = "ice"
     phev = "phev"
@@ -23,12 +23,12 @@ class VehicleType(str, Enum):
     truck = "truck"
 
 
-class FuelType(str, Enum):
+class FuelType(StrEnum):
     gasoline = "gasoline"
     diesel = "diesel"
 
 
-class TireClass(str, Enum):
+class TireClass(StrEnum):
     eco_lrr = "eco_lrr"
     standard = "standard"
     sport = "sport"
@@ -165,7 +165,7 @@ class FuelConstants(BaseModel):
     diesel_kwh_per_liter: float = 9.7
 
 
-class RoadType(str, Enum):
+class RoadType(StrEnum):
     city = "city"
     suburban = "suburban"
     rural = "rural"
@@ -173,7 +173,7 @@ class RoadType(str, Enum):
     mixed = "mixed"
 
 
-class DirectionMode(str, Enum):
+class DirectionMode(StrEnum):
     one_way = "one_way"
     return_trip = "return_trip"
 

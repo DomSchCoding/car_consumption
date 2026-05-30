@@ -13,12 +13,15 @@ from app.ui.components.vehicle_selector import (
     make_vehicle_label,
     short_label,
 )
+from app.ui.layout import page_layout
+from app.ui.nicegui_tables import (
+    render_consumption_table,
+    render_ranking_list,
+)
 from app.ui.state import SESSION
 from app.ui.tables import (
     IMAGES_DIR,
     SPEED_OPTIONS,
-    build_ranking_list,
-    build_table,
     build_vehicle_detail_html,
 )
 
@@ -28,95 +31,22 @@ MAX_COMPARE = 8
 
 app.add_static_files("/images", str(IMAGES_DIR))
 
-DARK_CSS = """
-body.dark {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
-    color: #cdd6f4;
-}
-body.dark .q-card {
-    background: #1e1e2e !important;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
-}
-body.dark label, body.dark .text-grey { color: #a6adc8 !important; }
-"""
-
-LIGHT_CSS = """
-body {
-    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-    min-height: 100vh;
-}
-.q-card {
-    border-radius: 12px !important;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
-}
-"""
-
-SHARED_CSS = """
-.sel-item {
-    display: flex; align-items: center; padding: 4px 6px;
-    border-radius: 6px; font-size: 0.82em;
-}
-.sel-item:hover { background: var(--hover-bg, #f5f5f5); }
-.add-btn {
-    font-size: 0.78em; padding: 3px 8px; border-radius: 6px;
-    border: 1px solid #e0e0e0; background: #fff;
-    cursor: pointer; transition: all 0.15s ease;
-    width: 100%; text-align: left;
-}
-.add-btn:hover { background: #f0f4ff; border-color: #636EFA; }
-.add-btn.selected {
-    background: #636EFA22; border-color: #636EFA44; color: #636EFA;
-}
-.filter-row {
-    display: flex; gap: 12px; align-items: center; margin-bottom: 8px;
-}
-.conf-badge {
-    display: inline-block; padding: 1px 6px; border-radius: 4px;
-    font-size: 0.7em; font-weight: 700; text-transform: uppercase;
-}
-.detail-card {
-    padding: 16px; margin-bottom: 12px;
-}
-.detail-header {
-    font-weight: 700; font-size: 0.85em; color: #888;
-    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;
-}
-.detail-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 6px 0; border-bottom: 1px solid #f0f0f0;
-}
-.detail-label { color: #888; font-size: 0.88em; }
-.detail-value { font-weight: 600; font-size: 0.88em; }
-.missing-tag {
-    display: inline-block; font-size: 0.68em; padding: 1px 5px;
-    border-radius: 3px; background: #FFA15A22; color: #FFA15A;
-    margin-left: 4px; font-weight: 600;
-}
-"""
-
 
 @ui.page("/vehicle/{vid}")
 def vehicle_detail(vid: str) -> None:
     v = REPO.get(vid)
-    ui.add_css(LIGHT_CSS + SHARED_CSS + DARK_CSS)
 
     if not v:
-        with ui.column().style("max-width:800px; margin:40px auto; padding:20px;"):
+        with page_layout("Vehicle Not Found", show_back=True):
             ui.label("Vehicle not found").style("font-size:1.5em; color:#EF553B;")
-            ui.link("Back to overview", "/").style("color:#636EFA;")
         return
 
-    with ui.column().style("max-width:800px; margin:20px auto; padding:20px; gap:8px;"):
-        with ui.row().style("justify-content:space-between; align-items:center; width:100%;"):
-            ui.link("← Back to overview", "/").style("color:#636EFA; text-decoration:none; font-size:0.9em;")
-
+    with page_layout(f"🚗 {make_vehicle_label(v)}", show_back=True):
         ui.html(build_vehicle_detail_html(v))
 
 
 @ui.page("/")
 def index(sort: str = "") -> None:
-    ui.add_css(LIGHT_CSS + SHARED_CSS + DARK_CSS)
-
     if sort == "range":
         SESSION["ranking_sort"] = True
     elif sort == "consumption":
@@ -125,64 +55,161 @@ def index(sort: str = "") -> None:
     params = PhysicsParams()
     selected_ids = SESSION["selected"]
 
-    with ui.column().style("gap:16px; padding:20px; max-width:1400px; margin:0 auto; width:100%;"):
-        with ui.row().style("width:100%; align-items:center; justify-content:space-between;"):
-            with ui.row().style("align-items:center; gap:8px;"):
-                ui.label("⚡").style("font-size:1.8em;")
-                with ui.column().style("gap:0;"):
-                    ui.label("Vehicle Consumption Analyzer").style(
-                        "font-size:1.5em; font-weight:700; line-height:1.1; color:#1a1a2e;"
+    with page_layout("⚡ Vehicle Consumption Analyzer"):
+        dashboard_tabs = ui.tabs().props("dense").style("margin-bottom:0;")
+        with dashboard_tabs:
+            ui.tab("compare", label="📊 Compare")
+            ui.tab("table", label="📋 Table")
+            ui.tab("ranking", label="🏆 Ranking")
+            ui.tab("settings", label="⚙️ Settings")
+            # Route tab — navigates to /route on click
+            route_tab = ui.tab("route", label="🗺️ Route Planner")
+
+        def _go_to_route() -> None:
+            ui.navigate.to("/route")
+        route_tab.on("click", _go_to_route)
+
+        dashboard_panels = ui.tab_panels(dashboard_tabs, value="compare").style("width:100%;")
+
+        # --- COMPARE TAB ---
+        with dashboard_panels, ui.tab_panel("compare"):
+            # Header bar with title, filters, and controls
+            with ui.element("div").style(
+                "display:flex; align-items:center; justify-content:space-between; "
+                "gap:12px; padding:12px 16px; margin-bottom:12px; "
+                "background:linear-gradient(135deg, #f8f9fc 0%, #f0f2f8 100%); "
+                "border-radius:12px; flex-wrap:wrap; border:1px solid #e8e8f0;"
+            ):
+                # Left: Title + filter chips
+                with ui.row().style("align-items:center; gap:10px; flex-wrap:wrap;"):
+                    ui.label("🚗 Vehicle Selection").style(
+                        "font-weight:700; font-size:0.95em; white-space:nowrap;"
                     )
-                    ui.label("Physics-based EV & ICE comparison").style(
-                        "font-size:0.85em; color:#888; line-height:1.1;"
+                    # EV/ICE as toggle chips instead of checkboxes
+                    ev_toggle = ui.button(
+                        "⚡ EV" if SESSION["ev_checked"] else "EV",
+                        on_click=None,
+                    ).props("flat dense" if not SESSION["ev_checked"] else "unelevated dense color=primary").style(
+                        "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
+                        + (" background:#636EFA; color:white;" if SESSION["ev_checked"] else " color:#888;")
                     )
-                ui.link("🗺️ Route", "/route").style(
-                    "font-size:0.85em; color:#636EFA; text-decoration:none; margin-left:12px;"
-                )
+                    ice_toggle = ui.button(
+                        "⛽ ICE" if SESSION["ice_checked"] else "ICE",
+                        on_click=None,
+                    ).props("flat dense" if not SESSION["ice_checked"] else "unelevated dense color=negative").style(
+                        "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
+                        + (" background:#EF553B; color:white;" if SESSION["ice_checked"] else " color:#888;")
+                    )
+                    # Hidden checkboxes — keep compatibility with existing code
+                    ev_cb = ui.checkbox("EV", value=SESSION["ev_checked"]).style("display:none;")
+                    ice_cb = ui.checkbox("ICE", value=SESSION["ice_checked"]).style("display:none;")
 
-            def toggle_dark() -> None:
-                SESSION["dark"] = not SESSION["dark"]
-                if SESSION["dark"]:
-                    ui.query("body").classes("dark")
-                else:
-                    ui.query("body").classes(remove="dark")
+                    def _sync_toggle(btn, cb, key) -> None:
+                        cb.value = not cb.value
+                        SESSION[key] = cb.value
+                        active = cb.value
+                        if key == "ev":
+                            btn.text = "⚡ EV" if active else "EV"
+                            btn.props("unelevated dense color=primary" if active else "flat dense")
+                            btn.style(f"background:#636EFA; color:white;" if active else "color:#888;")
+                        else:
+                            btn.text = "⛽ ICE" if active else "ICE"
+                            btn.props("unelevated dense color=negative" if active else "flat dense")
+                            btn.style(f"background:#EF553B; color:white;" if active else "color:#888;")
+                        on_filter_change()  # NiceGUI on_value_change does NOT fire on programmatic value set
 
-            dark_switch = ui.switch("Dark", value=SESSION["dark"], on_change=lambda _: toggle_dark())
-            dark_switch.style("font-size:0.85em;")
-        if SESSION["dark"]:
-            ui.query("body").classes("dark")
+                    ev_toggle.on_click(lambda: _sync_toggle(ev_toggle, ev_cb, "ev"))
+                    ice_toggle.on_click(lambda: _sync_toggle(ice_toggle, ice_cb, "ice"))
 
-        with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):
-            with ui.card().style("min-width:280px; max-width:320px; flex:1; padding:16px;"):
-                ui.label("🚗 Vehicle Selection").style("font-weight:700; font-size:1em; margin-bottom:8px;")
+            with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):
+                with ui.card().style("min-width:280px; max-width:320px; flex:1; padding:16px;"):
+                    make_select = ui.select([], label="Make", with_input=True).style("width:100%;")
+                    make_select.visible = False
 
-                with ui.row().classes("filter-row"):
-                    ev_cb = ui.checkbox("EV", value=SESSION["ev_checked"]).style("font-size:0.85em;")
-                    ice_cb = ui.checkbox("ICE", value=SESSION["ice_checked"]).style("font-size:0.85em;")
+                    model_select = ui.select(
+                        {},
+                        multiple=True,
+                        label="Models",
+                    ).style("width:100%;")
+                    model_select.visible = False
 
-                make_select = ui.select([], label="Make", with_input=True).style("width:100%;")
-                make_select.visible = False
+                    ui.separator().style("margin:8px 0;")
 
-                model_select = ui.select(
-                    {},
-                    multiple=True,
-                    label="Models",
-                ).style("width:100%;")
-                model_select.visible = False
+                    ui.label("Selected").style("font-weight:600; font-size:0.85em; color:#555; margin-bottom:4px;")
+                    selected_list_container = ui.column().style(
+                        "max-height:180px; overflow-y:auto; gap:2px; width:100%;"
+                    )
 
-                ui.separator().style("margin:8px 0;")
+                with ui.card().style("flex:3; min-width:400px; padding:16px;"):
+                    chart_container = ui.element("div").style("width:100%; min-height:420px;")
 
-                ui.label("Selected").style("font-weight:600; font-size:0.85em; color:#555; margin-bottom:4px;")
-                selected_list_container = ui.column().style("max-height:180px; overflow-y:auto; gap:2px; width:100%;")
+        # --- TABLE TAB ---
+        with dashboard_panels, ui.tab_panel("table"):
+            with ui.card().style("padding:16px; width:100%;"):
+                ui.label("📋 Consumption Table").style("font-weight:700; font-size:0.95em; margin-bottom:8px;")
+                table_container = ui.element("div").style("width:100%;")
 
-            with ui.card().style("flex:3; min-width:400px; padding:16px;"):
-                chart_container = ui.element("div").style("width:100%; min-height:420px;")
+        # --- RANKING TAB ---
+        with dashboard_panels, ui.tab_panel("ranking"):
+            with ui.card().style("padding:16px; width:100%;"):
+                # Header bar for ranking controls
+                with ui.element("div").style(
+                    "display:flex; align-items:center; gap:12px; margin-bottom:12px; "
+                    "flex-wrap:wrap; padding-bottom:8px; border-bottom:1px solid #f0f0f0;"
+                ):
+                    ui.label("🏆 Ranking").style("font-weight:700; font-size:0.95em; white-space:nowrap;")
+                    speed_ranking_select = ui.select(
+                        {s: f"{s} km/h" for s in SPEED_OPTIONS},
+                        value=SPEED_OPTIONS[2],
+                        label="Speed",
+                    ).style("width:140px;")
+                    # EV/ICE toggle chips for ranking
+                    ranking_ev_toggle = ui.button(
+                        "⚡ EV" if SESSION["ranking_ev"] else "EV",
+                    ).props("flat dense" if not SESSION["ranking_ev"] else "unelevated dense color=primary").style(
+                        "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
+                        + (" background:#636EFA; color:white;" if SESSION["ranking_ev"] else " color:#888;")
+                    )
+                    ranking_ice_toggle = ui.button(
+                        "⛽ ICE" if SESSION["ranking_ice"] else "ICE",
+                    ).props("flat dense" if not SESSION["ranking_ice"] else "unelevated dense color=negative").style(
+                        "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
+                        + (" background:#EF553B; color:white;" if SESSION["ranking_ice"] else " color:#888;")
+                    )
+                    sort_btn = (
+                        ui.button(
+                            "Sort: Range" if SESSION["ranking_sort"] else "Sort: kWh",
+                            on_click=lambda: _toggle_ranking_sort(),
+                        )
+                        .props("flat dense")
+                        .style("font-size:0.82em; border-radius:20px;")
+                    )
+                    # Hidden checkboxes — ranking uses separate EV/ICE state
+                    ranking_ev_cb = ui.checkbox("EV", value=SESSION["ranking_ev"]).style("display:none;")
+                    ranking_ice_cb = ui.checkbox("ICE", value=SESSION["ranking_ice"]).style("display:none;")
 
-        table_container = ui.element("div").style("width:100%;")
+                    def _sync_ranking_toggle(btn, cb, key) -> None:
+                        cb.value = not cb.value
+                        SESSION[key] = cb.value
+                        active = cb.value
+                        if key == "ranking_ev":
+                            btn.text = "⚡ EV" if active else "EV"
+                            btn.props("unelevated dense color=primary" if active else "flat dense")
+                            btn.style(f"background:#636EFA; color:white;" if active else "color:#888;")
+                        else:
+                            btn.text = "⛽ ICE" if active else "ICE"
+                            btn.props("unelevated dense color=negative" if active else "flat dense")
+                            btn.style(f"background:#EF553B; color:white;" if active else "color:#888;")
+                        update_ranking()  # NiceGUI on_value_change does NOT fire on programmatic value set
 
-        with ui.card().style("padding:16px;"):
-            with ui.expansion("⚙️ Settings", icon="settings").style("width:100%;"):
-                with ui.row().style("width:100%; gap:24px; flex-wrap:wrap; padding:8px 0;"):
+                    ranking_ev_toggle.on_click(lambda: _sync_ranking_toggle(ranking_ev_toggle, ranking_ev_cb, "ranking_ev"))
+                    ranking_ice_toggle.on_click(lambda: _sync_ranking_toggle(ranking_ice_toggle, ranking_ice_cb, "ranking_ice"))
+                ranking_container = ui.element("div").style("width:100%;")
+
+        # --- SETTINGS TAB ---
+        with dashboard_panels, ui.tab_panel("settings"):
+            with ui.card().style("padding:16px; width:100%;"):
+                with ui.column().style("gap:24px;"):
                     with ui.column().style("gap:8px; min-width:180px;"):
                         ui.label("Parameters").style("font-weight:600; font-size:0.85em; color:#666;")
                         rho_input = ui.number(
@@ -263,33 +290,13 @@ def index(sort: str = "") -> None:
                         ui.label("Max (km/h)").style("font-size:0.82em;")
                         speed_max_slider = ui.slider(min=50, max=200, value=160, step=5).style("width:100%;")
 
-            with ui.expansion("📐 Physics Formulas", icon="science").style("width:100%;"):
-                ui.markdown(
-                    "**Aero:** F = ½ · ρ · Cd · A · v²  →  kWh/100km = F · 100 / 3600\n\n"
-                    "**Roll:** F = c<sub>rr</sub> · m · g  →  kWh/100km constant\n\n"
-                    "**Aux:** kWh/100km = P<sub>aux</sub> / v · 100  (↓ with speed)\n\n"
-                    "**Drivetrain:** Battery = Wheel / η"
-                ).style("font-size:0.82em; line-height:1.6;")
-
-        with ui.card().style("padding:16px;"):
-            with ui.row().style("align-items:center; gap:16px; margin-bottom:12px;"):
-                ui.label("📊 Consumption Ranking").style("font-weight:700; font-size:0.95em;")
-                speed_ranking_select = ui.select(
-                    {s: f"{s} km/h" for s in SPEED_OPTIONS},
-                    value=SPEED_OPTIONS[2],
-                    label="Speed",
-                ).style("width:140px;")
-                ranking_ev_cb = ui.checkbox("EV", value=SESSION["ranking_ev"]).style("font-size:0.85em;")
-                ranking_ice_cb = ui.checkbox("ICE", value=SESSION["ranking_ice"]).style("font-size:0.85em;")
-                sort_btn = (
-                    ui.button(
-                        "Sort: Range" if SESSION["ranking_sort"] else "Sort: kWh",
-                        on_click=lambda: _toggle_ranking_sort(),
-                    )
-                    .props("flat dense")
-                    .style("font-size:0.82em;")
-                )
-            ranking_container = ui.element("div").style("width:100%;")
+                    with ui.expansion("📐 Physics Formulas", icon="science").style("width:100%;"):
+                        ui.markdown(
+                            "**Aero:** F = ½ · ρ · Cd · A · v²  →  kWh/100km = F · 100 / 3600\n\n"
+                            "**Roll:** F = c<sub>rr</sub> · m · g  →  kWh/100km constant\n\n"
+                            "**Aux:** kWh/100km = P<sub>aux</sub> / v · 100  (↓ with speed)\n\n"
+                            "**Drivetrain:** Battery = Wheel / η"
+                        ).style("font-size:0.82em; line-height:1.6;")
 
     _make_list: list[str] = []
 
@@ -438,11 +445,10 @@ def index(sort: str = "") -> None:
                 )
             ui.plotly(fig).style("width:100%; height:450px;")
 
-        table_html = build_table(vehicles, params, FUEL_CONST, ice_thermal_eff.value, use_per_tire_cb.value)
         table_container.clear()
         with table_container, ui.card().style("padding:16px;"):
             ui.label("📋 Consumption Table").style("font-weight:700; font-size:0.95em; margin-bottom:8px;")
-            ui.html(table_html)
+            render_consumption_table(vehicles, params, FUEL_CONST, ice_thermal_eff.value, use_per_tire_cb.value)
 
         update_ranking()
 
@@ -455,20 +461,19 @@ def index(sort: str = "") -> None:
         params.eta_charging = charging_eff_input.value
         params.temperature_c = float(temp_input.value)
         speed = speed_ranking_select.value if speed_ranking_select.value else SPEED_OPTIONS[2]
-        html = build_ranking_list(
-            params,
-            speed,
-            ranking_ev_cb.value,
-            ranking_ice_cb.value,
-            FUEL_CONST,
-            ice_thermal_eff.value,
-            use_per_tire_cb.value,
-            REPO,
-            SESSION["ranking_sort"],
-        )
         ranking_container.clear()
         with ranking_container:
-            ui.html(html)
+            render_ranking_list(
+                params,
+                speed,
+                ranking_ev_cb.value,
+                ranking_ice_cb.value,
+                FUEL_CONST,
+                ice_thermal_eff.value,
+                use_per_tire_cb.value,
+                REPO,
+                bool(SESSION["ranking_sort"]),
+            )
 
     def on_filter_change() -> None:
         SESSION["ev_checked"] = ev_cb.value

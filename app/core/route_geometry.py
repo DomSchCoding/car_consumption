@@ -192,3 +192,35 @@ def estimate_bearing_degrees(a: GeoPoint, b: GeoPoint) -> float:
     y = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(dlon)
     bearing = math.degrees(math.atan2(x, y))
     return (bearing + 360.0) % 360.0
+
+
+def mirror_elevation_for_return(points: list[GeoPoint3D]) -> list[GeoPoint3D]:
+    """Mirror outward trip geometry to create a return trip with matching start/end elevations.
+
+    The return trip reverses the geometry and ensures the last point has the same
+    elevation as the original start point, so round trips have consistent elevation.
+    """
+    if not points:
+        return []
+
+    start_elev = points[0].elevation_m if points[0].elevation_m is not None else 0.0
+
+    mirrored: list[GeoPoint3D] = []
+    reversed_points = list(reversed(points))
+
+    for pt in reversed_points:
+        elev = pt.elevation_m if pt.elevation_m is not None else 0.0
+        mirrored.append(
+            GeoPoint3D(
+                lat=pt.lat,
+                lon=pt.lon,
+                elevation_m=round(elev, 1),
+                distance_from_start_km=pt.distance_from_start_km,
+            )
+        )
+
+    # Force the last point (return destination) to match the original start elevation
+    if mirrored:
+        mirrored[-1].elevation_m = round(start_elev, 1)
+
+    return mirrored

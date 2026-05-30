@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from nicegui import ui
 
-from app.core.physics import battery_capacity_factor
 from app.core.route_energy import commute_energy
 from app.data.models import (
     CommuteScenario,
@@ -13,98 +12,30 @@ from app.data.models import (
     RoadType,
     Route,
     RouteSegment,
-    VehicleType,
 )
 from app.data.repository import VehicleRepository
+from app.ui.components.route_results import (
+    render_comparison_table,
+    render_energy_breakdown_chart,
+    render_energy_table,
+)
 from app.ui.components.vehicle_selector import (
     make_vehicle_label,
 )
+from app.ui.layout import page_layout
 from app.ui.state import SESSION
 
 MAX_COMPARE_ROUTE = 8
-
-
-def build_route_breakdown_table(results: list[dict], vehicles: list) -> str:
-    """Build HTML table for route energy comparison."""
-    header = [
-        "Vehicle",
-        "kWh/trip",
-        "kWh/100km",
-        "Range/trips",
-        "Duration",
-        "Aero",
-        "Roll",
-        "Aux",
-        "Climb",
-        "Descent rec.",
-        "Stop-go",
-    ]
-    t_style = "width:100%; border-collapse: collapse; font-size: 0.82em; font-family: system-ui, sans-serif;"
-    th_style = (
-        "border-bottom:2px solid #e0e0e0; padding:8px 6px; "
-        "background:#fafafa; color:#555; font-weight:600; text-align:left;"
-    )
-    td_style = "padding:6px 8px; border-bottom:1px solid #f0f0f0;"
-    nm_style = (
-        "padding:6px 8px; border-bottom:1px solid #f0f0f0; font-weight:600; "
-        "max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"
-    )
-
-    html = f'<table style="{t_style}"><thead><tr>'
-    for h in header:
-        html += f'<th style="{th_style}">{h}</th>'
-    html += "</tr></thead><tbody>"
-
-    for entry in results:
-        v = entry["vehicle"]
-        bd = entry["breakdown"]
-        bg = "#fafafa" if results.index(entry) % 2 == 0 else "#fff"
-        html += f'<tr style="background:{bg};">'
-        html += f'<td style="{nm_style}">{make_vehicle_label(v)}</td>'
-        html += f'<td style="{td_style}">{bd.total_battery_kwh:.1f}</td>'
-        html += f'<td style="{td_style}">{bd.kwh_per_100km:.1f}</td>'
-        if v.vehicle_type == VehicleType.ev and v.battery_usable_kwh:
-            cap = battery_capacity_factor(SESSION.get("_route_temp", 20.0))
-            eff = v.battery_usable_kwh * cap
-            n_trips = eff / bd.total_battery_kwh if bd.total_battery_kwh > 0 else 0
-            html += f'<td style="{td_style}">{n_trips:.1f}</td>'
-        else:
-            html += f'<td style="{td_style}">-</td>'
-        html += f'<td style="{td_style}">{bd.duration_h * 60:.0f} min</td>'
-        html += f'<td style="{td_style}">{bd.aero_kwh:.2f}</td>'
-        html += f'<td style="{td_style}">{bd.roll_kwh:.2f}</td>'
-        html += f'<td style="{td_style}">{bd.aux_kwh:.2f}</td>'
-        html += f'<td style="{td_style}">{bd.climb_kwh:.2f}</td>'
-        html += f'<td style="{td_style}">{bd.descent_recovered_kwh:.2f}</td>'
-        html += f'<td style="{td_style}">{bd.stop_go_kwh:.2f}</td>'
-        html += "</tr>"
-    html += "</tbody></table>"
-    return html
 
 
 def route_page() -> None:
     """Render the Route / Commute planner page."""
     from app.ui.charts import VEHICLE_COLORS
 
-    ui.add_css("""
-    body {
-        background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-        min-height: 100vh;
-    }
-    .q-card {
-        border-radius: 12px !important;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
-    }
-    """)
-
     repo = VehicleRepository()
-    selected_ids: list[str] = list(SESSION.get("selected", []))
+    selected_ids: list[str] = list(SESSION.get("selected") or [])
 
-    with ui.column().style("gap:16px; padding:20px; max-width:1400px; margin:0 auto; width:100%;"):
-        ui.link("← Back to Dashboard", "/").style("color:#636EFA; text-decoration:none; font-size:0.9em;")
-        ui.label("🗺️ Route / Commute Planner").style("font-size:1.5em; font-weight:700; color:#1a1a2e;")
-        ui.label("Calculate energy consumption for a specific route").style("font-size:0.85em; color:#888;")
-
+    with page_layout("🗺️ Route / Commute Planner"):
         with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):
             with ui.card().style("min-width:300px; max-width:360px; flex:1; padding:16px;"):
                 ui.label("Route Parameters").style("font-weight:700; font-size:1em; margin-bottom:8px;")
@@ -147,6 +78,10 @@ def route_page() -> None:
                     "font-weight:600; font-size:0.85em; color:#555; margin-top:8px; margin-bottom:4px;"
                 )
                 vehicle_list = ui.column().style("max-height:200px; overflow-y:auto; gap:2px; width:100%;")
+
+                ui.button("Calculate", on_click=lambda: calculate_route()).props("color=primary").style(
+                    "width:100%; margin-top:8px;"
+                )
 
             with ui.card().style("flex:2; min-width:400px; padding:16px;"):
                 result_container = ui.element("div").style("width:100%;")
@@ -250,23 +185,30 @@ def route_page() -> None:
                 route_desc += f", round trip ({distance_km * 2:.0f} km total)"
             ui.label(route_desc).style("font-weight:600; font-size:0.95em; margin-bottom:8px;")
 
-            if return_cb.value:
-                ui.label("Outward + Return").style(
-                    "font-weight:700; font-size:0.95em; color:#636EFA; margin-bottom:4px;"
-                )
-            else:
-                ui.label("One Way").style("font-weight:700; font-size:0.95em; color:#636EFA; margin-bottom:4px;")
+            # Energy Results as Tabs
+            energy_tabs = ui.tabs().props("dense").style("margin-bottom:0;")
+            with energy_tabs:
+                ui.tab("energy_table", label="📊 Energy Table")
+                ui.tab("breakdown", label="📈 Breakdown")
+                if return_cb.value:
+                    ui.tab("comparison", label="↔️ Outward vs Return")
 
-            html = build_route_breakdown_table(results, vehicles)
-            ui.html(html)
+            energy_panels = ui.tab_panels(energy_tabs, value="energy_table").style("width:100%;")
+
+            with energy_panels, ui.tab_panel("energy_table"):
+                with ui.card().style("padding:16px; width:100%;"):
+                    render_energy_table(results)
+
+            with energy_panels, ui.tab_panel("breakdown"):
+                with ui.card().style("padding:16px; width:100%;"):
+                    render_energy_breakdown_chart(results)
 
             if return_cb.value:
-                ui.label("Outward vs Return").style("font-weight:700; font-size:0.95em; color:#555; margin-top:12px;")
                 compare_results = []
                 for entry in results:
                     bd_out = entry["outward"]
                     bd_ret = entry["return_"]
-                    if bd_ret:
+                    if bd_ret is not None:
                         compare_results.append(
                             {
                                 "vehicle": entry["vehicle"],
@@ -276,35 +218,14 @@ def route_page() -> None:
                             }
                         )
 
-                if compare_results:
-                    tc = "width:100%; border-collapse: collapse; font-size: 0.85em; font-family: system-ui, sans-serif;"
-                    th = (
-                        "border-bottom:2px solid #e0e0e0; padding:6px 8px; "
-                        "background:#fafafa; color:#555; font-weight:600; text-align:left;"
-                    )
-                    td = "padding:6px 8px; border-bottom:1px solid #f0f0f0;"
-                    nm = "padding:6px 8px; border-bottom:1px solid #f0f0f0; font-weight:600;"
-                    chtml = f'<table style="{tc}"><thead><tr>'
-                    for h in ["Vehicle", "Outward (kWh)", "Return (kWh)", "Total (kWh)", "Total kWh/100km"]:
-                        chtml += f'<th style="{th}">{h}</th>'
-                    chtml += "</tr></thead><tbody>"
-                    for entry in compare_results:
-                        v = entry["vehicle"]
-                        bd_total = results[compare_results.index(entry)]["breakdown"]
-                        chtml += f'<tr><td style="{nm}">{make_vehicle_label(v)}</td>'
-                        chtml += f'<td style="{td}">{entry["outward_kwh"]:.1f}</td>'
-                        chtml += f'<td style="{td}">{entry["return_kwh"]:.1f}</td>'
-                        chtml += f'<td style="{td}">{entry["total_kwh"]:.1f}</td>'
-                        chtml += f'<td style="{td}">{bd_total.kwh_per_100km:.1f}</td>'
-                        chtml += "</tr>"
-                    chtml += "</tbody></table>"
-                    ui.html(chtml)
+                with energy_panels, ui.tab_panel("comparison"):
+                    with ui.card().style("padding:16px; width:100%;"):
+                        if compare_results:
+                            render_comparison_table(compare_results, results)
+                        else:
+                            ui.label("No return trip data available").style("color:#888;")
 
     update_vehicle_list()
-
-    ui.button("Calculate", on_click=lambda: calculate_route()).props("color=primary").style(
-        "width:100%; margin-top:8px;"
-    )
 
     dist_input.on_value_change(lambda _: calculate_route())
     speed_input.on_value_change(lambda _: calculate_route())

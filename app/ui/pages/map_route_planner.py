@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import asyncio
 
-import plotly.graph_objects as go
 from nicegui import ui
 
 from app.core.route_energy import commute_energy
@@ -37,7 +36,15 @@ from app.ui.components.map_widget import (
     set_single_marker,
     set_start_end_markers,
 )
+from app.ui.components.route_results import (
+    render_comparison_table,
+    render_elevation_chart,
+    render_energy_breakdown_chart,
+    render_energy_table,
+    render_kv_table,
+)
 from app.ui.components.vehicle_selector import make_vehicle_label
+from app.ui.layout import page_layout
 from app.ui.state import SESSION
 
 MAX_COMPARE_ROUTE = 8
@@ -65,13 +72,8 @@ def _provider_status_text() -> str:
 
 
 def map_route_page() -> None:
-    ui.add_css("""
-    body { background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%); min-height: 100vh; }
-    .q-card { border-radius: 12px !important; box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important; }
-    """)
-
     repo = VehicleRepository()
-    selected_ids: list[str] = list(SESSION.get("selected", []))
+    # NOTE: selected_ids is now loaded dynamically from SESSION in _calculate_energy()
     demo_provider = DemoRoutingProvider()
 
     current_route_result: dict = {"provider_route": None, "segments": None, "messages": []}
@@ -85,15 +87,7 @@ def map_route_page() -> None:
         "highway_route": ("demo highway start", "demo highway destination"),
     }
 
-    with ui.column().style("gap:16px; padding:20px; max-width:1400px; margin:0 auto; width:100%;"):
-        with ui.row().style("width:100%; align-items:center; gap:8px;"):
-            ui.link("← Dashboard", "/").style("color:#636EFA; text-decoration:none; font-size:0.9em;")
-            ui.link("| Manual Route", "/route/manual").style(
-                "color:#888; text-decoration:none; font-size:0.85em; margin-left:8px;"
-            )
-        ui.label("Map Route Planner").style("font-size:1.5em; font-weight:700; color:#1a1a2e;")
-        ui.label("Calculate energy consumption for a route").style("font-size:0.85em; color:#888;")
-
+    with page_layout("🗺️ Map Route Planner", show_back=True, back_url="/"):
         with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):
             with ui.card().style("min-width:280px; max-width:320px; flex:1; padding:16px;"):
                 ui.label("Route Search").style("font-weight:700; font-size:1em; margin-bottom:8px;")
@@ -327,6 +321,7 @@ def map_route_page() -> None:
 
     def update_vehicle_list() -> None:
         vehicle_list.clear()
+        selected_ids = list(SESSION.get("selected", []))
         if not selected_ids:
             with vehicle_list:
                 ui.label("Select vehicles on the Dashboard first").style("color:#999; font-size:0.82em;")
@@ -494,13 +489,21 @@ def map_route_page() -> None:
         if provider_route is None:
             return
 
+        selected_ids = list(SESSION.get("selected", []))
         vehicles = repo.get_by_ids(selected_ids[:MAX_COMPARE_ROUTE])
         if not vehicles:
             results_container.clear()
             with results_container:
-                ui.label("Select vehicles on the Dashboard first").style(
-                    "font-size:1em; color:#888; text-align:center; padding:40px;"
-                )
+                with ui.card().style("padding:24px; text-align:center; margin-top:16px;"):
+                    ui.label("⚠️ No vehicles selected").style(
+                        "font-size:1.1em; font-weight:700; color:#FFA15A; margin-bottom:8px;"
+                    )
+                    ui.label("Go to the COMPARE tab and select vehicles first.").style(
+                        "font-size:0.9em; color:#666;"
+                    )
+                    ui.button("Go to COMPARE", on_click=lambda: ui.run_javascript("window.location.hash = 'tab-compare'")).props(
+                        "color=primary outline"
+                    ).style("margin-top:12px;")
             return
 
         params = PhysicsParams()
@@ -522,6 +525,10 @@ def map_route_page() -> None:
         results = []
         for v in vehicles:
             try:
+                # Debug: Check segments
+                if not commute.route.segments:
+                    ui.notify(f"⚠️ Route has 0 segments!", type="warning", position="top")
+                    continue
                 result = commute_energy(
                     v,
                     commute,
@@ -537,8 +544,10 @@ def map_route_page() -> None:
                         "return_": result["return"],
                     }
                 )
-            except Exception:
-                pass
+            except Exception as e:
+                import traceback
+                ui.notify(f"❌ Energy calculation failed: {e}", type="negative", position="top", timeout=10000)
+                traceback.print_exc()
 
         results_container.clear()
         with results_container:
@@ -549,12 +558,33 @@ def map_route_page() -> None:
             direction_label = "Outward + Return" if return_cb.value else "One Way"
             ui.label(direction_label).style("font-weight:700; font-size:0.95em; color:#636EFA; margin-bottom:8px;")
 
-            with ui.card().style("padding:16px; width:100%;"):
-                html = _build_energy_table(results)
-                ui.html(html)
+            elev_points = [
+                (p.distance_from_start_km, p.elevation_m)
+                for p in provider_route.geometry
+                if p.elevation_m is not None and p.distance_from_start_km is not None
+            ]
+
+            # Energy Results as Tabs
+            energy_tabs = ui.tabs().props("dense").style("margin-bottom:0;")
+            with energy_tabs:
+                ui.tab("energy_table", label="📊 Energy Table")
+                ui.tab("breakdown", label="📈 Breakdown")
+                if return_cb.value:
+                    ui.tab("comparison", label="↔️ Outward vs Return")
+                if elev_points:
+                    ui.tab("elevation", label="⛰️ Elevation")
+
+            energy_panels = ui.tab_panels(energy_tabs, value="energy_table").style("width:100%;")
+
+            with energy_panels, ui.tab_panel("energy_table"):
+                with ui.card().style("padding:16px; width:100%;"):
+                    render_energy_table(results, temperature.value or 20.0)
+
+            with energy_panels, ui.tab_panel("breakdown"):
+                with ui.card().style("padding:16px; width:100%;"):
+                    render_energy_breakdown_chart(results)
 
             if return_cb.value:
-                ui.label("Outward vs Return").style("font-weight:700; font-size:0.95em; color:#555; margin-top:12px;")
                 compare_results = []
                 for entry in results:
                     bd_out = entry["outward"]
@@ -569,183 +599,95 @@ def map_route_page() -> None:
                             }
                         )
 
-                if compare_results:
+                with energy_panels, ui.tab_panel("comparison"):
                     with ui.card().style("padding:16px; width:100%;"):
-                        chtml = _build_comparison_table(compare_results, results)
-                        ui.html(chtml)
+                        if compare_results:
+                            render_comparison_table(compare_results, results)
+                        else:
+                            ui.label("No return trip data available").style("color:#888;")
 
-            with ui.card().style("padding:16px; width:100%;"):
-                fig = go.Figure()
-                for i, entry in enumerate(results):
-                    bd = entry["breakdown"]
-                    v = entry["vehicle"]
-                    color = VEHICLE_COLORS[i % len(VEHICLE_COLORS)]
-                    fig.add_trace(
-                        go.Bar(
-                            name=make_vehicle_label(v),
-                            x=["Aero", "Roll", "Aux", "Climb", "Stop-go", "Descent rec."],
-                            y=[
-                                bd.aero_kwh,
-                                bd.roll_kwh,
-                                bd.aux_kwh,
-                                bd.climb_kwh,
-                                bd.stop_go_kwh,
-                                -bd.descent_recovered_kwh,
-                            ],
-                            marker_color=color,
-                        )
-                    )
-                fig.update_layout(
-                    barmode="group",
-                    title="Energy Breakdown (kWh)",
-                    template="plotly_white",
-                    margin=dict(l=50, r=20, t=40, b=40),
-                    paper_bgcolor="rgba(0,0,0,0)",
-                    plot_bgcolor="rgba(0,0,0,0)",
-                )
-                ui.plotly(fig).style("width:100%; height:400px;")
-
-            elev_points = [
-                (p.distance_from_start_km, p.elevation_m)
-                for p in provider_route.geometry
-                if p.elevation_m is not None and p.distance_from_start_km is not None
-            ]
             if elev_points:
-                with ui.card().style("padding:16px; width:100%;"):
-                    fig_elev = go.Figure()
-                    dists = [p[0] for p in elev_points]
-                    elevs = [p[1] for p in elev_points]
-                    fig_elev.add_trace(
-                        go.Scatter(
-                            x=dists, y=elevs, mode="lines", name="Elevation", line=dict(color="#00CC96", width=2)
-                        )
-                    )
-                    fig_elev.update_layout(
-                        title="Elevation Profile",
-                        xaxis_title="Distance (km)",
-                        yaxis_title="Elevation (m)",
-                        template="plotly_white",
-                        margin=dict(l=50, r=20, t=40, b=40),
-                        paper_bgcolor="rgba(0,0,0,0)",
-                        plot_bgcolor="rgba(0,0,0,0)",
-                    )
-                    ui.plotly(fig_elev).style("width:100%; height:300px;")
+                with energy_panels, ui.tab_panel("elevation"):
+                    with ui.card().style("padding:16px; width:100%;"):
+                        render_elevation_chart(elev_points)
 
             _render_elevation_debug(provider_route, results, params)
 
     def _render_elevation_debug(provider_route, results: list, params: PhysicsParams) -> None:
-        with ui.expansion("Elevation / Physics Debug", icon="science").style("width:100%; margin-top:8px;"):
-            geometry = provider_route.geometry
-            stats = elevation_stats(geometry)
 
-            provider_name = provider_route.provider
-            elevation_source = "enriched" if any(p.elevation_m is not None for p in geometry) else "none"
-            geometry_points = len(geometry)
+        geometry = provider_route.geometry
+        stats = elevation_stats(geometry)
 
-            start_elev = stats.get("start_elevation")
-            end_elev = stats.get("end_elevation")
-            net_diff = stats.get("net_elevation_diff")
-            min_elev = stats.get("min_elevation")
-            max_elev = stats.get("max_elevation")
-            acc_gain = stats.get("accumulated_gain", 0)
-            acc_loss = stats.get("accumulated_loss", 0)
-            sample_count = stats.get("sample_count", 0)
+        provider_name = provider_route.provider
+        elevation_source = "enriched" if any(p.elevation_m is not None for p in geometry) else "none"
+        geometry_points = len(geometry)
 
-            rows = [
-                ("Provider", provider_name),
-                ("Elevation source", elevation_source),
-                ("Geometry points", str(geometry_points)),
-                ("Sample count", str(sample_count)),
-                ("Start elevation", f"{start_elev} m" if start_elev is not None else "N/A"),
-                ("Destination elevation", f"{end_elev} m" if end_elev is not None else "N/A"),
-                ("Net elevation diff", f"{net_diff} m" if net_diff is not None else "N/A"),
-                ("Min elevation", f"{min_elev} m" if min_elev is not None else "N/A"),
-                ("Max elevation", f"{max_elev} m" if max_elev is not None else "N/A"),
-                ("Accumulated gain", f"{acc_gain} m"),
-                ("Accumulated loss", f"{acc_loss} m"),
+        start_elev = stats.get("start_elevation")
+        end_elev = stats.get("end_elevation")
+        net_diff = stats.get("net_elevation_diff")
+        min_elev = stats.get("min_elevation")
+        max_elev = stats.get("max_elevation")
+        acc_gain = stats.get("accumulated_gain") or 0
+        acc_loss = stats.get("accumulated_loss") or 0
+        sample_count = stats.get("sample_count", 0)
+
+        rows: list[tuple[str, str]] = [
+            ("Provider", provider_name),
+            ("Elevation source", elevation_source),
+            ("Geometry points", str(geometry_points)),
+            ("Sample count", str(sample_count)),
+            ("Start elevation", f"{start_elev} m" if start_elev is not None else "N/A"),
+            ("Destination elevation", f"{end_elev} m" if end_elev is not None else "N/A"),
+            ("Net elevation diff", f"{net_diff} m" if net_diff is not None else "N/A"),
+            ("Min elevation", f"{min_elev} m" if min_elev is not None else "N/A"),
+            ("Max elevation", f"{max_elev} m" if max_elev is not None else "N/A"),
+            ("Accumulated gain", f"{acc_gain} m"),
+            ("Accumulated loss", f"{acc_loss} m"),
+        ]
+
+        if results:
+            v = results[0]["vehicle"]
+            mass_kg = v.mass_kg + (payload.value or 0)
+            eta_dt = params.eta_drivetrain
+            eta_regen = regen_downhill.value or 0.65
+
+            height_m = acc_gain if acc_gain else 0
+            net_h = abs(end_elev - start_elev) if start_elev is not None and end_elev is not None else 0
+
+            e_pot = potential_energy_kwh(mass_kg, height_m) if height_m else 0
+            e_climb_bat = expected_climb_battery_kwh(mass_kg, height_m, eta_dt) if height_m else 0
+            e_regen_val = expected_descent_recovered_kwh(mass_kg, acc_loss if acc_loss else 0, eta_regen)
+
+            model_climb = results[0]["breakdown"].climb_kwh
+            model_descent = results[0]["breakdown"].descent_recovered_kwh
+
+            rows += [
+                ("Vehicle mass (+ payload)", f"{mass_kg:.0f} kg"),
+                ("Net elev diff (start/end)", f"{net_h:.0f} m" if net_h else "N/A"),
+                ("m·g·h climb (potential)", f"{e_pot:.3f} kWh" if e_pot else "N/A"),
+                ("m·g·h / η_dt (battery)", f"{e_climb_bat:.3f} kWh" if e_climb_bat else "N/A"),
+                ("Model climb kWh", f"{model_climb:.3f} kWh"),
+                ("Model descent recovered", f"{model_descent:.3f} kWh"),
+                ("Expected descent recovered", f"{e_regen_val:.3f} kWh"),
+                ("η_dt / η_regen", f"{eta_dt} / {eta_regen}"),
             ]
 
-            if results:
-                v = results[0]["vehicle"]
-                mass_kg = v.mass_kg + (payload.value or 0)
-                eta_dt = params.eta_drivetrain
-                eta_regen = regen_downhill.value or 0.65
+        warnings: list[str] = []
+        if start_elev is not None and end_elev is not None and net_diff is not None:
+            distance_km = provider_route.summary_distance_km
+            if distance_km > 10 and all(p.elevation_m is None for p in geometry):
+                warnings.append("Route > 10 km but all elevation values are None")
+            if abs(net_diff) > 50 and acc_gain < abs(net_diff) and acc_loss < abs(net_diff):
+                warnings.append(
+                    f"Start/end elevation difference ({net_diff:.0f} m) exceeds "
+                    f"computed gain/loss (gain={acc_gain:.0f}, loss={acc_loss:.0f})"
+                )
+            if any(p.elevation_m is not None for p in geometry) and acc_gain == 0 and acc_loss == 0:
+                warnings.append("Elevation values present but accumulated gain/loss is 0")
 
-                height_m = acc_gain if acc_gain else 0
-                net_h = abs(end_elev - start_elev) if start_elev is not None and end_elev is not None else 0
+        rows.append(("Warnings", "; ".join(warnings) if warnings else "None"))
 
-                e_pot = potential_energy_kwh(mass_kg, height_m) if height_m else 0
-                e_climb_bat = expected_climb_battery_kwh(mass_kg, height_m, eta_dt) if height_m else 0
-                e_regen_val = expected_descent_recovered_kwh(mass_kg, acc_loss if acc_loss else 0, eta_regen)
-
-                model_climb = results[0]["breakdown"].climb_kwh
-                model_descent = results[0]["breakdown"].descent_recovered_kwh
-
-                rows += [
-                    ("Vehicle mass (+ payload)", f"{mass_kg:.0f} kg"),
-                    ("Net elev diff (start/end)", f"{net_h:.0f} m" if net_h else "N/A"),
-                    ("m·g·h climb (potential)", f"{e_pot:.3f} kWh" if e_pot else "N/A"),
-                    ("m·g·h / η_dt (battery)", f"{e_climb_bat:.3f} kWh" if e_climb_bat else "N/A"),
-                    ("Model climb kWh", f"{model_climb:.3f} kWh"),
-                    ("Model descent recovered", f"{model_descent:.3f} kWh"),
-                    ("Expected descent recovered", f"{e_regen_val:.3f} kWh"),
-                    ("η_dt / η_regen", f"{eta_dt} / {eta_regen}"),
-                ]
-
-            warnings: list[str] = []
-            if start_elev is not None and end_elev is not None and net_diff is not None:
-                distance_km = provider_route.summary_distance_km
-                if distance_km > 10 and all(p.elevation_m is None for p in geometry):
-                    warnings.append("Route > 10 km but all elevation values are None")
-                if abs(net_diff) > 50 and acc_gain < abs(net_diff) and acc_loss < abs(net_diff):
-                    warnings.append(
-                        f"Start/end elevation difference ({net_diff:.0f} m) exceeds "
-                        f"computed gain/loss (gain={acc_gain:.0f}, loss={acc_loss:.0f})"
-                    )
-                if any(p.elevation_m is not None for p in geometry) and acc_gain == 0 and acc_loss == 0:
-                    warnings.append("Elevation values present but accumulated gain/loss is 0")
-
-            rows.append(("Warnings", "; ".join(warnings) if warnings else "None"))
-
-            tc = "width:100%; border-collapse:collapse; font-size:0.8em; font-family:monospace;"
-            th_style = "border-bottom:1px solid #ddd; padding:3px 8px; background:#f5f5f5; text-align:left; color:#555;"
-            td_style = "padding:3px 8px; border-bottom:1px solid #eee;"
-            thead = f'<thead><tr><th style="{th_style}">Field</th><th style="{th_style}">Value</th></tr></thead>'
-            html = f'<table style="{tc}">{thead}<tbody>'
-            for label, value in rows:
-                html += f'<tr><td style="{td_style}">{label}</td><td style="{td_style}">{value}</td></tr>'
-            html += "</tbody></table>"
-            ui.html(html)
-
-    def _build_energy_table(results: list) -> str:
-        from app.ui.components.route_summary import build_energy_table
-
-        return build_energy_table(results)
-
-    def _build_comparison_table(compare_results: list, all_results: list) -> str:
-        tc = "width:100%; border-collapse: collapse; font-size: 0.85em; font-family: system-ui, sans-serif;"
-        th = (
-            "border-bottom:2px solid #e0e0e0; padding:6px 8px; "
-            "background:#fafafa; color:#555; font-weight:600; text-align:left;"
-        )
-        td = "padding:6px 8px; border-bottom:1px solid #f0f0f0;"
-        nm = "padding:6px 8px; border-bottom:1px solid #f0f0f0; font-weight:600;"
-
-        chtml = f'<table style="{tc}"><thead><tr>'
-        for h in ["Vehicle", "Outward (kWh)", "Return (kWh)", "Total (kWh)", "Total kWh/100km"]:
-            chtml += f'<th style="{th}">{h}</th>'
-        chtml += "</tr></thead><tbody>"
-        for entry in compare_results:
-            v = entry["vehicle"]
-            bd_total = all_results[compare_results.index(entry)]["breakdown"]
-            chtml += f'<tr><td style="{nm}">{make_vehicle_label(v)}</td>'
-            chtml += f'<td style="{td}">{entry["outward_kwh"]:.1f}</td>'
-            chtml += f'<td style="{td}">{entry["return_kwh"]:.1f}</td>'
-            chtml += f'<td style="{td}">{entry["total_kwh"]:.1f}</td>'
-            chtml += f'<td style="{td}">{bd_total.kwh_per_100km:.1f}</td>'
-            chtml += "</tr>"
-        chtml += "</tbody></table>"
-        return chtml
+        render_kv_table(rows, "Elevation / Physics Debug")
 
     update_vehicle_list()
 

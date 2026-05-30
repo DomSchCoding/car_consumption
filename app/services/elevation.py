@@ -72,8 +72,8 @@ def open_meteo_status() -> ProviderStatus:
 
 def resample_route_points(
     points: list[GeoPoint3D],
-    spacing_km: float = 1.0,
-    max_points: int = 50,
+    spacing_km: float = 0.5,
+    max_points: int = 200,
 ) -> list[tuple[float, float]]:
     """Select route points with approximately `spacing_km` between them, capped at `max_points`.
 
@@ -164,8 +164,8 @@ def fetch_elevation(points: list[tuple[float, float]]) -> list[float] | None:
 
 def enrich_route_with_elevation(
     geometry: list[GeoPoint3D],
-    spacing_km: float = 1.0,
-    max_points: int = 50,
+    spacing_km: float = 0.5,
+    max_points: int = 200,
 ) -> list[GeoPoint3D]:
     """Resample route, fetch elevation, and map elevations back to the full geometry.
 
