@@ -73,7 +73,7 @@ def _provider_status_text() -> str:
 
 def map_route_page() -> None:
     repo = VehicleRepository()
-    selected_ids: list[str] = list(SESSION.get("selected", []))
+    # NOTE: selected_ids is now loaded dynamically from SESSION in _calculate_energy()
     demo_provider = DemoRoutingProvider()
 
     current_route_result: dict = {"provider_route": None, "segments": None, "messages": []}
@@ -87,7 +87,7 @@ def map_route_page() -> None:
         "highway_route": ("demo highway start", "demo highway destination"),
     }
 
-    with page_layout("🗺️ Map Route Planner"):
+    with page_layout("🗺️ Map Route Planner", show_back=True, back_url="/"):
         with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):
             with ui.card().style("min-width:280px; max-width:320px; flex:1; padding:16px;"):
                 ui.label("Route Search").style("font-weight:700; font-size:1em; margin-bottom:8px;")
@@ -321,6 +321,7 @@ def map_route_page() -> None:
 
     def update_vehicle_list() -> None:
         vehicle_list.clear()
+        selected_ids = list(SESSION.get("selected", []))
         if not selected_ids:
             with vehicle_list:
                 ui.label("Select vehicles on the Dashboard first").style("color:#999; font-size:0.82em;")
@@ -488,13 +489,21 @@ def map_route_page() -> None:
         if provider_route is None:
             return
 
+        selected_ids = list(SESSION.get("selected", []))
         vehicles = repo.get_by_ids(selected_ids[:MAX_COMPARE_ROUTE])
         if not vehicles:
             results_container.clear()
             with results_container:
-                ui.label("Select vehicles on the Dashboard first").style(
-                    "font-size:1em; color:#888; text-align:center; padding:40px;"
-                )
+                with ui.card().style("padding:24px; text-align:center; margin-top:16px;"):
+                    ui.label("⚠️ No vehicles selected").style(
+                        "font-size:1.1em; font-weight:700; color:#FFA15A; margin-bottom:8px;"
+                    )
+                    ui.label("Go to the COMPARE tab and select vehicles first.").style(
+                        "font-size:0.9em; color:#666;"
+                    )
+                    ui.button("Go to COMPARE", on_click=lambda: ui.run_javascript("window.location.hash = 'tab-compare'")).props(
+                        "color=primary outline"
+                    ).style("margin-top:12px;")
             return
 
         params = PhysicsParams()
@@ -516,6 +525,10 @@ def map_route_page() -> None:
         results = []
         for v in vehicles:
             try:
+                # Debug: Check segments
+                if not commute.route.segments:
+                    ui.notify(f"⚠️ Route has 0 segments!", type="warning", position="top")
+                    continue
                 result = commute_energy(
                     v,
                     commute,
@@ -531,8 +544,10 @@ def map_route_page() -> None:
                         "return_": result["return"],
                     }
                 )
-            except Exception:
-                pass
+            except Exception as e:
+                import traceback
+                ui.notify(f"❌ Energy calculation failed: {e}", type="negative", position="top", timeout=10000)
+                traceback.print_exc()
 
         results_container.clear()
         with results_container:
@@ -563,7 +578,7 @@ def map_route_page() -> None:
 
             with energy_panels, ui.tab_panel("energy_table"):
                 with ui.card().style("padding:16px; width:100%;"):
-                    render_energy_table(results)
+                    render_energy_table(results, temperature.value or 20.0)
 
             with energy_panels, ui.tab_panel("breakdown"):
                 with ui.card().style("padding:16px; width:100%;"):
