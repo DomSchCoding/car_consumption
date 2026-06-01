@@ -137,3 +137,89 @@ vehicles:
   drivetrain: awd
   new_price_eur: 89900
   trunk_volume_l: 643
+- id: volvo_c40_single
+  make: Volvo
+  model: C40 Recharge
+  variant: Single Motor
+  year_from: 2022
+  vehicle_type: ev
+  mass_kg: 2040
+  frontal_area_m2: 2.42
+  drag_coefficient_cd: 0.27
+  tire_class: suv
+  battery_usable_kwh: 69.0
+  ac_charging_kw: 11
+  dc_charging_kw: 150
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 150
+  - soc_percent: 10
+    power_kw: 150
+  - soc_percent: 30
+    power_kw: 140
+  - soc_percent: 50
+    power_kw: 110
+  - soc_percent: 70
+    power_kw: 80
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: true
+  hvac_cop_heat: 3.0
+  wltp_consumption_kwh_100km:
+    value: 17.8
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 18.5
+    source_ref: evdb
+  length_mm: 4440
+  ground_clearance_mm: 175
+  drivetrain: fwd
+  new_price_eur: 48900
+  trunk_volume_l: 413
+- id: volvo_xc40_recharge_twin
+  make: Volvo
+  model: XC40 Recharge
+  variant: Twin Motor
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 2185
+  frontal_area_m2: 2.52
+  drag_coefficient_cd: 0.29
+  tire_class: suv
+  battery_usable_kwh: 78.0
+  ac_charging_kw: 11
+  dc_charging_kw: 150
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 150
+  - soc_percent: 10
+    power_kw: 150
+  - soc_percent: 30
+    power_kw: 140
+  - soc_percent: 50
+    power_kw: 110
+  - soc_percent: 70
+    power_kw: 80
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: true
+  hvac_cop_heat: 3.0
+  wltp_consumption_kwh_100km:
+    value: 19.8
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 21.0
+    source_ref: evdb
+  length_mm: 4425
+  ground_clearance_mm: 175
+  drivetrain: awd
+  new_price_eur: 52900
+  trunk_volume_l: 419

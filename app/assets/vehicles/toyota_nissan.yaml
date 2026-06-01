@@ -275,3 +275,55 @@ vehicles:
   drivetrain: fwd
   new_price_eur: 42300
   trunk_volume_l: 435
+- id: toyota_prius_phev
+  make: Toyota
+  model: Prius PHEV
+  variant: 2.0 PHEV
+  year_from: 2023
+  vehicle_type: phev
+  mass_kg: 1560
+  frontal_area_m2: 2.18
+  drag_coefficient_cd: 0.22
+  tire_class: eco_lrr
+  battery_usable_kwh: 8.8
+  ac_charging_kw: 3.7
+  has_heat_pump: true
+  hvac_cop_heat: 3.0
+  wltp_consumption_kwh_100km:
+    value: 12.8
+    source_ref: wltp
+  fuel_type: gasoline
+  real_consumption_l_100km:
+    value: 4.2
+    source_ref: wltp
+  length_mm: 4600
+  ground_clearance_mm: 130
+  drivetrain: fwd
+  new_price_eur: 42900
+  trunk_volume_l: 284
+- id: toyota_rav4_phev
+  make: Toyota
+  model: RAV4 PHEV
+  variant: 2.5 PHEV AWD
+  year_from: 2021
+  vehicle_type: phev
+  mass_kg: 1930
+  frontal_area_m2: 2.55
+  drag_coefficient_cd: 0.32
+  tire_class: suv
+  battery_usable_kwh: 18.1
+  ac_charging_kw: 6.6
+  has_heat_pump: true
+  hvac_cop_heat: 3.0
+  wltp_consumption_kwh_100km:
+    value: 15.6
+    source_ref: wltp
+  fuel_type: gasoline
+  real_consumption_l_100km:
+    value: 5.6
+    source_ref: wltp
+  length_mm: 4600
+  ground_clearance_mm: 190
+  drivetrain: awd
+  new_price_eur: 51490
+  trunk_volume_l: 520

@@ -1,0 +1,43 @@
+vehicles:
+- id: dacia_spring
+  make: Dacia
+  model: Spring
+  variant: Electric 26.8 kWh
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 970
+  frontal_area_m2: 2.17
+  drag_coefficient_cd: 0.3
+  tire_class: eco_lrr
+  battery_usable_kwh: 26.8
+  ac_charging_kw: 7.4
+  dc_charging_kw: 30
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 30
+  - soc_percent: 10
+    power_kw: 30
+  - soc_percent: 30
+    power_kw: 28
+  - soc_percent: 50
+    power_kw: 24
+  - soc_percent: 70
+    power_kw: 18
+  - soc_percent: 80
+    power_kw: 12
+  - soc_percent: 90
+    power_kw: 6
+  - soc_percent: 100
+    power_kw: 3
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 13.7
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 15.0
+    source_ref: evdb
+  length_mm: 3734
+  ground_clearance_mm: 150
+  drivetrain: fwd
+  new_price_eur: 16900
+  trunk_volume_l: 290

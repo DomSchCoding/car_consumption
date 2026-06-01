@@ -390,3 +390,129 @@ vehicles:
   drivetrain: fwd
   new_price_eur: 46800
   trunk_volume_l: 9300
+- id: vw_e_up
+  make: Volkswagen
+  model: e-Up!
+  variant: 36.8 kWh
+  year_from: 2019
+  year_to: 2023
+  vehicle_type: ev
+  mass_kg: 1235
+  frontal_area_m2: 2.1
+  drag_coefficient_cd: 0.28
+  tire_class: eco_lrr
+  battery_usable_kwh: 32.3
+  ac_charging_kw: 7.2
+  dc_charging_kw: 40
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 40
+  - soc_percent: 10
+    power_kw: 40
+  - soc_percent: 30
+    power_kw: 38
+  - soc_percent: 50
+    power_kw: 32
+  - soc_percent: 70
+    power_kw: 25
+  - soc_percent: 80
+    power_kw: 18
+  - soc_percent: 90
+    power_kw: 10
+  - soc_percent: 100
+    power_kw: 5
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 12.7
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 14.0
+    source_ref: evdb
+  length_mm: 3600
+  ground_clearance_mm: 135
+  drivetrain: fwd
+  new_price_eur: 21990
+  trunk_volume_l: 251
+- id: vw_id7_pro_s
+  make: Volkswagen
+  model: ID.7
+  variant: Pro S
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 2230
+  frontal_area_m2: 2.46
+  drag_coefficient_cd: 0.23
+  tire_class: eco_lrr
+  battery_usable_kwh: 86.0
+  ac_charging_kw: 11
+  dc_charging_kw: 200
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 200
+  - soc_percent: 10
+    power_kw: 200
+  - soc_percent: 30
+    power_kw: 185
+  - soc_percent: 50
+    power_kw: 140
+  - soc_percent: 70
+    power_kw: 100
+  - soc_percent: 80
+    power_kw: 65
+  - soc_percent: 90
+    power_kw: 35
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: true
+  hvac_cop_heat: 3.0
+  wltp_consumption_kwh_100km:
+    value: 14.1
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 15.0
+    source_ref: evdb
+  length_mm: 4961
+  ground_clearance_mm: 145
+  drivetrain: rwd
+  new_price_eur: 57990
+  trunk_volume_l: 532
+- id: vw_id_buzz_lwb
+  make: Volkswagen
+  model: ID. Buzz
+  variant: LWB Pro S
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 2380
+  frontal_area_m2: 2.72
+  drag_coefficient_cd: 0.27
+  tire_class: suv
+  battery_usable_kwh: 86.0
+  ac_charging_kw: 11
+  dc_charging_kw: 200
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 200
+  - soc_percent: 10
+    power_kw: 200
+  - soc_percent: 30
+    power_kw: 185
+  - soc_percent: 50
+    power_kw: 140
+  - soc_percent: 70
+    power_kw: 100
+  - soc_percent: 80
+    power_kw: 65
+  - soc_percent: 90
+    power_kw: 35
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: true
+  hvac_cop_heat: 3.0
+  wltp_consumption_kwh_100km:
+    value: 19.0
+    source_ref: wltp
+  length_mm: 4962
+  ground_clearance_mm: 164
+  drivetrain: rwd
+  new_price_eur: 61990
+  trunk_volume_l: 1340

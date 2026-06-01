@@ -452,3 +452,46 @@ vehicles:
     wltp:
       name: WLTP official
       confidence: high
+- id: hyundai_ioniq5_n
+  make: Hyundai
+  model: Ioniq 5 N
+  variant: Performance AWD
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 2235
+  frontal_area_m2: 2.57
+  drag_coefficient_cd: 0.29
+  tire_class: sport
+  battery_usable_kwh: 84.0
+  ac_charging_kw: 11
+  dc_charging_kw: 350
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 350
+  - soc_percent: 10
+    power_kw: 350
+  - soc_percent: 30
+    power_kw: 300
+  - soc_percent: 50
+    power_kw: 200
+  - soc_percent: 70
+    power_kw: 130
+  - soc_percent: 80
+    power_kw: 85
+  - soc_percent: 90
+    power_kw: 40
+  - soc_percent: 100
+    power_kw: 12
+  has_heat_pump: true
+  hvac_cop_heat: 3.5
+  wltp_consumption_kwh_100km:
+    value: 21.2
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 23.0
+    source_ref: evdb
+  length_mm: 4715
+  ground_clearance_mm: 155
+  drivetrain: awd
+  new_price_eur: 74900
+  trunk_volume_l: 527

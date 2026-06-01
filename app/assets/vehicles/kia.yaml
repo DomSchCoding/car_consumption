@@ -275,3 +275,83 @@ vehicles:
     wltp:
       name: WLTP official
       confidence: high
+- id: kia_ev3_58
+  make: Kia
+  model: EV3
+  variant: Standard 58 kWh
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 1765
+  frontal_area_m2: 2.42
+  drag_coefficient_cd: 0.26
+  tire_class: eco_lrr
+  battery_usable_kwh: 58.3
+  ac_charging_kw: 11
+  dc_charging_kw: 128
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 128
+  - soc_percent: 10
+    power_kw: 128
+  - soc_percent: 30
+    power_kw: 120
+  - soc_percent: 50
+    power_kw: 95
+  - soc_percent: 70
+    power_kw: 65
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: true
+  hvac_cop_heat: 3.0
+  wltp_consumption_kwh_100km:
+    value: 15.0
+    source_ref: wltp
+  length_mm: 4300
+  ground_clearance_mm: 160
+  drivetrain: fwd
+  new_price_eur: 35990
+  trunk_volume_l: 460
+- id: kia_ev3_81
+  make: Kia
+  model: EV3
+  variant: Long Range 81 kWh
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 1865
+  frontal_area_m2: 2.42
+  drag_coefficient_cd: 0.26
+  tire_class: eco_lrr
+  battery_usable_kwh: 81.4
+  ac_charging_kw: 11
+  dc_charging_kw: 128
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 128
+  - soc_percent: 10
+    power_kw: 128
+  - soc_percent: 30
+    power_kw: 120
+  - soc_percent: 50
+    power_kw: 95
+  - soc_percent: 70
+    power_kw: 65
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: true
+  hvac_cop_heat: 3.0
+  wltp_consumption_kwh_100km:
+    value: 15.2
+    source_ref: wltp
+  length_mm: 4300
+  ground_clearance_mm: 160
+  drivetrain: fwd
+  new_price_eur: 40490
+  trunk_volume_l: 460

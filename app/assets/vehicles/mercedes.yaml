@@ -1,347 +1,379 @@
-# Mercedes-Benz vehicles (EV + ICE reference)
-# Last updated: 2026-06-01
-
 vehicles:
-  - id: mercedes_eqe_350
-    make: Mercedes-Benz
-    model: EQE
-    variant: "350+"
-    year_from: 2022
-    vehicle_type: ev
-    mass_kg: 2495
-    frontal_area_m2: 2.50
-    drag_coefficient_cd: 0.20
-    tire_class: standard
-    battery_usable_kwh: 86.0
-    ac_charging_kw: 11
-    dc_charging_kw: 170
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 170
-      - soc_percent: 20
-        power_kw: 170
-      - soc_percent: 50
-        power_kw: 120
-      - soc_percent: 70
-        power_kw: 75
-      - soc_percent: 80
-        power_kw: 45
-      - soc_percent: 90
-        power_kw: 20
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 16.5
-      source_ref: demo
-    length_mm: 4946
-    ground_clearance_mm: 118
-    drivetrain: rwd
-    new_price_eur: 74147
-    trunk_volume_l: 430
-    source_refs:
-      demo:
-        name: "Demo estimate"
-        confidence: low
-
-  - id: mercedes_eqs_450
-    make: Mercedes-Benz
-    model: EQS
-    variant: "450+"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 2480
-    frontal_area_m2: 2.50
-    drag_coefficient_cd: 0.20
-    tire_class: standard
-    battery_usable_kwh: 107.8
-    ac_charging_kw: 11
-    dc_charging_kw: 200
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 200
-      - soc_percent: 20
-        power_kw: 200
-      - soc_percent: 50
-        power_kw: 140
-      - soc_percent: 70
-        power_kw: 90
-      - soc_percent: 80
-        power_kw: 50
-      - soc_percent: 90
-        power_kw: 25
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 17.5
-      source_ref: demo
-    length_mm: 5216
-    ground_clearance_mm: 118
-    drivetrain: rwd
-    new_price_eur: 108600
-    trunk_volume_l: 610
-    source_refs:
-      demo:
-        name: "Demo estimate"
-        confidence: low
-
-  - id: mercedes_eqa_250
-    make: Mercedes-Benz
-    model: EQA
-    variant: "250"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 1955
-    frontal_area_m2: 2.60
-    drag_coefficient_cd: 0.28
-    tire_class: suv
-    battery_usable_kwh: 66.5
-    ac_charging_kw: 11
-    dc_charging_kw: 100
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 100
-      - soc_percent: 50
-        power_kw: 75
-      - soc_percent: 80
-        power_kw: 45
-      - soc_percent: 100
-        power_kw: 12
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 17.5
-      source_ref: wltp
-    length_mm: 4485
-    ground_clearance_mm: 203
-    drivetrain: fwd
-    new_price_eur: 49500
-    trunk_volume_l: 475
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: mercedes_eqb_300
-    make: Mercedes-Benz
-    model: EQB
-    variant: "300 4MATIC"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 2110
-    frontal_area_m2: 2.65
-    drag_coefficient_cd: 0.28
-    tire_class: suv
-    battery_usable_kwh: 66.5
-    ac_charging_kw: 11
-    dc_charging_kw: 100
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 100
-      - soc_percent: 50
-        power_kw: 75
-      - soc_percent: 80
-        power_kw: 45
-      - soc_percent: 100
-        power_kw: 12
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 18.5
-      source_ref: wltp
-    length_mm: 4669
-    ground_clearance_mm: 203
-    drivetrain: awd
-    new_price_eur: 58300
-    trunk_volume_l: 520
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: mercedes_eqv_300
-    make: Mercedes-Benz
-    model: EQV
-    variant: "300 Long"
-    year_from: 2020
-    vehicle_type: van
-    mass_kg: 2860
-    frontal_area_m2: 3.10
-    drag_coefficient_cd: 0.29
-    tire_class: van_truck
-    battery_usable_kwh: 90.0
-    ac_charging_kw: 11
-    dc_charging_kw: 110
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 110
-      - soc_percent: 50
-        power_kw: 80
-      - soc_percent: 80
-        power_kw: 45
-      - soc_percent: 100
-        power_kw: 15
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 25.0
-      source_ref: wltp
-    length_mm: 5379
-    ground_clearance_mm: 150
-    drivetrain: fwd
-    new_price_eur: 80300
-    trunk_volume_l: 2050
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: mercedes_c220d
-    make: Mercedes-Benz
-    model: C 220 d
-    variant: "W206"
-    year_from: 2021
-    vehicle_type: ice
-    mass_kg: 1770
-    frontal_area_m2: 2.33
-    drag_coefficient_cd: 0.23
-    tire_class: standard
-    fuel_type: diesel
-    real_consumption_l_100km:
-      value: 5.2
-      source_ref: demo
-    length_mm: 4756
-    ground_clearance_mm: 120
-    drivetrain: rwd
-    new_price_eur: 51200
-    trunk_volume_l: 455
-    source_refs:
-      demo:
-        name: "Demo estimate"
-        confidence: low
-
-  - id: mercedes_eqa_300
-    make: Mercedes-Benz
-    model: EQA
-    variant: "300 4MATIC"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 2005
-    frontal_area_m2: 2.60
-    drag_coefficient_cd: 0.28
-    tire_class: suv
-    battery_usable_kwh: 66.5
-    ac_charging_kw: 11
-    dc_charging_kw: 100
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 100
-      - soc_percent: 50
-        power_kw: 75
-      - soc_percent: 80
-        power_kw: 45
-      - soc_percent: 100
-        power_kw: 12
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 18.0
-      source_ref: wltp
-    length_mm: 4485
-    ground_clearance_mm: 203
-    drivetrain: awd
-    new_price_eur: 55500
-    trunk_volume_l: 475
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: mercedes_eqs_suv_450
-    make: Mercedes-Benz
-    model: EQS SUV
-    variant: "450+"
-    year_from: 2022
-    vehicle_type: ev
-    mass_kg: 2710
-    frontal_area_m2: 3.00
-    drag_coefficient_cd: 0.24
-    tire_class: suv
-    battery_usable_kwh: 107.8
-    ac_charging_kw: 11
-    dc_charging_kw: 200
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 200
-      - soc_percent: 20
-        power_kw: 200
-      - soc_percent: 50
-        power_kw: 140
-      - soc_percent: 70
-        power_kw: 90
-      - soc_percent: 80
-        power_kw: 50
-      - soc_percent: 90
-        power_kw: 25
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 20.0
-      source_ref: wltp
-    length_mm: 5143
-    ground_clearance_mm: 155
-    drivetrain: rwd
-    new_price_eur: 112900
-    trunk_volume_l: 610
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: mercedes_eqe_suv_350
-    make: Mercedes-Benz
-    model: EQE SUV
-    variant: "350+"
-    year_from: 2022
-    vehicle_type: ev
-    mass_kg: 2650
-    frontal_area_m2: 2.85
-    drag_coefficient_cd: 0.24
-    tire_class: suv
-    battery_usable_kwh: 90.6
-    ac_charging_kw: 11
-    dc_charging_kw: 170
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 170
-      - soc_percent: 20
-        power_kw: 170
-      - soc_percent: 50
-        power_kw: 120
-      - soc_percent: 70
-        power_kw: 75
-      - soc_percent: 80
-        power_kw: 45
-      - soc_percent: 90
-        power_kw: 20
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 19.5
-      source_ref: wltp
-    length_mm: 4906
-    ground_clearance_mm: 155
-    drivetrain: rwd
-    new_price_eur: 82900
-    trunk_volume_l: 520
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
+- id: mercedes_eqe_350
+  make: Mercedes-Benz
+  model: EQE
+  variant: 350+
+  year_from: 2022
+  vehicle_type: ev
+  mass_kg: 2495
+  frontal_area_m2: 2.5
+  drag_coefficient_cd: 0.2
+  tire_class: standard
+  battery_usable_kwh: 86.0
+  ac_charging_kw: 11
+  dc_charging_kw: 170
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 170
+  - soc_percent: 20
+    power_kw: 170
+  - soc_percent: 50
+    power_kw: 120
+  - soc_percent: 70
+    power_kw: 75
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 90
+    power_kw: 20
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.5
+  wltp_consumption_kwh_100km:
+    value: 16.5
+    source_ref: demo
+  length_mm: 4946
+  ground_clearance_mm: 118
+  drivetrain: rwd
+  new_price_eur: 74147
+  trunk_volume_l: 430
+  source_refs:
+    demo:
+      name: Demo estimate
+      confidence: low
+- id: mercedes_eqs_450
+  make: Mercedes-Benz
+  model: EQS
+  variant: 450+
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 2480
+  frontal_area_m2: 2.5
+  drag_coefficient_cd: 0.2
+  tire_class: standard
+  battery_usable_kwh: 107.8
+  ac_charging_kw: 11
+  dc_charging_kw: 200
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 200
+  - soc_percent: 20
+    power_kw: 200
+  - soc_percent: 50
+    power_kw: 140
+  - soc_percent: 70
+    power_kw: 90
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.5
+  wltp_consumption_kwh_100km:
+    value: 17.5
+    source_ref: demo
+  length_mm: 5216
+  ground_clearance_mm: 118
+  drivetrain: rwd
+  new_price_eur: 108600
+  trunk_volume_l: 610
+  source_refs:
+    demo:
+      name: Demo estimate
+      confidence: low
+- id: mercedes_eqa_250
+  make: Mercedes-Benz
+  model: EQA
+  variant: '250'
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 1955
+  frontal_area_m2: 2.6
+  drag_coefficient_cd: 0.28
+  tire_class: suv
+  battery_usable_kwh: 66.5
+  ac_charging_kw: 11
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 50
+    power_kw: 75
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 100
+    power_kw: 12
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 17.5
+    source_ref: wltp
+  length_mm: 4485
+  ground_clearance_mm: 203
+  drivetrain: fwd
+  new_price_eur: 49500
+  trunk_volume_l: 475
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: mercedes_eqb_300
+  make: Mercedes-Benz
+  model: EQB
+  variant: 300 4MATIC
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 2110
+  frontal_area_m2: 2.65
+  drag_coefficient_cd: 0.28
+  tire_class: suv
+  battery_usable_kwh: 66.5
+  ac_charging_kw: 11
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 50
+    power_kw: 75
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 100
+    power_kw: 12
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 18.5
+    source_ref: wltp
+  length_mm: 4669
+  ground_clearance_mm: 203
+  drivetrain: awd
+  new_price_eur: 58300
+  trunk_volume_l: 520
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: mercedes_eqv_300
+  make: Mercedes-Benz
+  model: EQV
+  variant: 300 Long
+  year_from: 2020
+  vehicle_type: van
+  mass_kg: 2860
+  frontal_area_m2: 3.1
+  drag_coefficient_cd: 0.29
+  tire_class: van_truck
+  battery_usable_kwh: 90.0
+  ac_charging_kw: 11
+  dc_charging_kw: 110
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 110
+  - soc_percent: 50
+    power_kw: 80
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 100
+    power_kw: 15
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 25.0
+    source_ref: wltp
+  length_mm: 5379
+  ground_clearance_mm: 150
+  drivetrain: fwd
+  new_price_eur: 80300
+  trunk_volume_l: 2050
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: mercedes_c220d
+  make: Mercedes-Benz
+  model: C 220 d
+  variant: W206
+  year_from: 2021
+  vehicle_type: ice
+  mass_kg: 1770
+  frontal_area_m2: 2.33
+  drag_coefficient_cd: 0.23
+  tire_class: standard
+  fuel_type: diesel
+  real_consumption_l_100km:
+    value: 5.2
+    source_ref: demo
+  length_mm: 4756
+  ground_clearance_mm: 120
+  drivetrain: rwd
+  new_price_eur: 51200
+  trunk_volume_l: 455
+  source_refs:
+    demo:
+      name: Demo estimate
+      confidence: low
+- id: mercedes_eqa_300
+  make: Mercedes-Benz
+  model: EQA
+  variant: 300 4MATIC
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 2005
+  frontal_area_m2: 2.6
+  drag_coefficient_cd: 0.28
+  tire_class: suv
+  battery_usable_kwh: 66.5
+  ac_charging_kw: 11
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 50
+    power_kw: 75
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 100
+    power_kw: 12
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 18.0
+    source_ref: wltp
+  length_mm: 4485
+  ground_clearance_mm: 203
+  drivetrain: awd
+  new_price_eur: 55500
+  trunk_volume_l: 475
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: mercedes_eqs_suv_450
+  make: Mercedes-Benz
+  model: EQS SUV
+  variant: 450+
+  year_from: 2022
+  vehicle_type: ev
+  mass_kg: 2710
+  frontal_area_m2: 3.0
+  drag_coefficient_cd: 0.24
+  tire_class: suv
+  battery_usable_kwh: 107.8
+  ac_charging_kw: 11
+  dc_charging_kw: 200
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 200
+  - soc_percent: 20
+    power_kw: 200
+  - soc_percent: 50
+    power_kw: 140
+  - soc_percent: 70
+    power_kw: 90
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.5
+  wltp_consumption_kwh_100km:
+    value: 20.0
+    source_ref: wltp
+  length_mm: 5143
+  ground_clearance_mm: 155
+  drivetrain: rwd
+  new_price_eur: 112900
+  trunk_volume_l: 610
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: mercedes_eqe_suv_350
+  make: Mercedes-Benz
+  model: EQE SUV
+  variant: 350+
+  year_from: 2022
+  vehicle_type: ev
+  mass_kg: 2650
+  frontal_area_m2: 2.85
+  drag_coefficient_cd: 0.24
+  tire_class: suv
+  battery_usable_kwh: 90.6
+  ac_charging_kw: 11
+  dc_charging_kw: 170
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 170
+  - soc_percent: 20
+    power_kw: 170
+  - soc_percent: 50
+    power_kw: 120
+  - soc_percent: 70
+    power_kw: 75
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 90
+    power_kw: 20
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.5
+  wltp_consumption_kwh_100km:
+    value: 19.5
+    source_ref: wltp
+  length_mm: 4906
+  ground_clearance_mm: 155
+  drivetrain: rwd
+  new_price_eur: 82900
+  trunk_volume_l: 520
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: mercedes_eqe_suv_300
+  make: Mercedes-Benz
+  model: EQE SUV
+  variant: '300'
+  year_from: 2023
+  vehicle_type: ev
+  mass_kg: 2430
+  frontal_area_m2: 2.6
+  drag_coefficient_cd: 0.26
+  tire_class: suv
+  battery_usable_kwh: 90.6
+  ac_charging_kw: 11
+  dc_charging_kw: 170
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 170
+  - soc_percent: 10
+    power_kw: 170
+  - soc_percent: 30
+    power_kw: 160
+  - soc_percent: 50
+    power_kw: 130
+  - soc_percent: 70
+    power_kw: 90
+  - soc_percent: 80
+    power_kw: 60
+  - soc_percent: 90
+    power_kw: 30
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: true
+  hvac_cop_heat: 3.5
+  wltp_consumption_kwh_100km:
+    value: 19.4
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 21.0
+    source_ref: evdb
+  length_mm: 4863
+  ground_clearance_mm: 160
+  drivetrain: rwd
+  new_price_eur: 77000
+  trunk_volume_l: 520
