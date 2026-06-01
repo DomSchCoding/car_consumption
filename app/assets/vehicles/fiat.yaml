@@ -5,31 +5,35 @@ vehicles:
   variant: 42 kWh
   year_from: 2020
   vehicle_type: ev
-  mass_kg: 1385
-  frontal_area_m2: 2.15
-  drag_coefficient_cd: 0.28
+  mass_kg: 1365
+  frontal_area_m2: 2.2
+  drag_coefficient_cd: 0.29
   tire_class: standard
   battery_usable_kwh: 42.0
-  ac_charging_kw: 11
-  dc_charging_kw: 85
+  ac_charging_kw: 7.4
+  dc_charging_kw: 50
   dc_charging_curve:
   - soc_percent: 0
-    power_kw: 85
+    power_kw: 50
+  - soc_percent: 10
+    power_kw: 50
   - soc_percent: 20
-    power_kw: 85
+    power_kw: 50
+  - soc_percent: 30
+    power_kw: 47
   - soc_percent: 50
-    power_kw: 60
-  - soc_percent: 70
     power_kw: 40
+  - soc_percent: 70
+    power_kw: 28
   - soc_percent: 80
-    power_kw: 25
+    power_kw: 18
   - soc_percent: 90
-    power_kw: 12
+    power_kw: 10
   - soc_percent: 100
     power_kw: 5
   has_heat_pump: false
   wltp_consumption_kwh_100km:
-    value: 14.5
+    value: 14.1
     source_ref: wltp
   length_mm: 3635
   ground_clearance_mm: 133
@@ -47,16 +51,16 @@ vehicles:
   variant: 24 kWh
   year_from: 2020
   vehicle_type: ev
-  mass_kg: 1280
-  frontal_area_m2: 2.15
-  drag_coefficient_cd: 0.28
+  mass_kg: 1320
+  frontal_area_m2: 2.2
+  drag_coefficient_cd: 0.29
   tire_class: standard
-  battery_usable_kwh: 24.0
-  ac_charging_kw: 3.3
-  dc_charging_kw: null
+  battery_usable_kwh: 23.8
+  ac_charging_kw: 7.4
+  dc_charging_kw: 50
   has_heat_pump: false
   wltp_consumption_kwh_100km:
-    value: 13.8
+    value: 13.7
     source_ref: wltp
   length_mm: 3635
   ground_clearance_mm: 133
@@ -68,6 +72,25 @@ vehicles:
       name: WLTP official
       confidence: high
   notes: 'NOTE: Same image as 500e 42 kWh. Both are 500e but 24 kWh is mild-hybrid/BEV variant — check if visually identical.'
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 50
+  - soc_percent: 10
+    power_kw: 50
+  - soc_percent: 20
+    power_kw: 50
+  - soc_percent: 30
+    power_kw: 47
+  - soc_percent: 50
+    power_kw: 40
+  - soc_percent: 70
+    power_kw: 28
+  - soc_percent: 80
+    power_kw: 18
+  - soc_percent: 90
+    power_kw: 10
+  - soc_percent: 100
+    power_kw: 5
 - id: fiat_600e_42
   make: Fiat
   model: 600e
