@@ -1,255 +1,277 @@
-# Toyota & Nissan vehicles
-# Last updated: 2026-05-23
-
 vehicles:
-  - id: toyota_bz4x_fwd
-    make: Toyota
-    model: bZ4X
-    variant: "FWD"
-    year_from: 2022
-    vehicle_type: ev
-    mass_kg: 1910
-    frontal_area_m2: 2.65
-    drag_coefficient_cd: 0.29
-    tire_class: suv
-    battery_usable_kwh: 64.0
-    ac_charging_kw: 6.6
-    dc_charging_kw: 100
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 100
-      - soc_percent: 10
-        power_kw: 100
-      - soc_percent: 20
-        power_kw: 100
-      - soc_percent: 30
-        power_kw: 95
-      - soc_percent: 50
-        power_kw: 80
-      - soc_percent: 70
-        power_kw: 55
-      - soc_percent: 80
-        power_kw: 35
-      - soc_percent: 90
-        power_kw: 18
-      - soc_percent: 100
-        power_kw: 6
-    has_heat_pump: true
-    hvac_cop_heat: 2.2
-    wltp_consumption_kwh_100km:
-      value: 17.1
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: toyota_bz4x_awd
-    make: Toyota
-    model: bZ4X
-    variant: "AWD"
-    year_from: 2022
-    vehicle_type: ev
-    mass_kg: 2015
-    frontal_area_m2: 2.65
-    drag_coefficient_cd: 0.29
-    tire_class: suv
-    battery_usable_kwh: 64.0
-    ac_charging_kw: 6.6
-    dc_charging_kw: 150
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 150
-      - soc_percent: 10
-        power_kw: 150
-      - soc_percent: 20
-        power_kw: 150
-      - soc_percent: 30
-        power_kw: 145
-      - soc_percent: 50
-        power_kw: 122
-      - soc_percent: 70
-        power_kw: 85
-      - soc_percent: 80
-        power_kw: 52
-      - soc_percent: 90
-        power_kw: 26
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.2
-    wltp_consumption_kwh_100km:
-      value: 18.0
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: nissan_ariya_63
-    make: Nissan
-    model: Ariya
-    variant: "63 kWh FWD"
-    year_from: 2022
-    vehicle_type: ev
-    mass_kg: 1975
-    frontal_area_m2: 2.60
-    drag_coefficient_cd: 0.28
-    tire_class: suv
-    battery_usable_kwh: 63.0
-    ac_charging_kw: 7.4
-    dc_charging_kw: 130
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 130
-      - soc_percent: 10
-        power_kw: 130
-      - soc_percent: 20
-        power_kw: 130
-      - soc_percent: 30
-        power_kw: 125
-      - soc_percent: 50
-        power_kw: 105
-      - soc_percent: 70
-        power_kw: 72
-      - soc_percent: 80
-        power_kw: 45
-      - soc_percent: 90
-        power_kw: 22
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.3
-    wltp_consumption_kwh_100km:
-      value: 17.0
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: nissan_ariya_87
-    make: Nissan
-    model: Ariya
-    variant: "87 kWh e-4ORCE"
-    year_from: 2022
-    vehicle_type: ev
-    mass_kg: 2145
-    frontal_area_m2: 2.60
-    drag_coefficient_cd: 0.28
-    tire_class: suv
-    battery_usable_kwh: 87.0
-    ac_charging_kw: 7.4
-    dc_charging_kw: 130
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 130
-      - soc_percent: 10
-        power_kw: 130
-      - soc_percent: 20
-        power_kw: 130
-      - soc_percent: 30
-        power_kw: 125
-      - soc_percent: 50
-        power_kw: 105
-      - soc_percent: 70
-        power_kw: 72
-      - soc_percent: 80
-        power_kw: 45
-      - soc_percent: 90
-        power_kw: 22
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.3
-    wltp_consumption_kwh_100km:
-      value: 18.8
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: nissan_leaf_40
-    make: Nissan
-    model: Leaf
-    variant: "40 kWh"
-    year_from: 2018
-    year_to: 2024
-    vehicle_type: ev
-    mass_kg: 1580
-    frontal_area_m2: 2.40
-    drag_coefficient_cd: 0.28
-    tire_class: eco_lrr
-    battery_usable_kwh: 40.0
-    ac_charging_kw: 6.6
-    dc_charging_kw: 50
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 50
-      - soc_percent: 10
-        power_kw: 50
-      - soc_percent: 20
-        power_kw: 50
-      - soc_percent: 30
-        power_kw: 47
-      - soc_percent: 50
-        power_kw: 40
-      - soc_percent: 70
-        power_kw: 28
-      - soc_percent: 80
-        power_kw: 18
-      - soc_percent: 90
-        power_kw: 10
-      - soc_percent: 100
-        power_kw: 5
-    has_heat_pump: false
-    wltp_consumption_kwh_100km:
-      value: 17.0
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: nissan_leaf_62
-    make: Nissan
-    model: Leaf
-    variant: "62 kWh e+"
-    year_from: 2019
-    year_to: 2024
-    vehicle_type: ev
-    mass_kg: 1645
-    frontal_area_m2: 2.40
-    drag_coefficient_cd: 0.28
-    tire_class: eco_lrr
-    battery_usable_kwh: 62.0
-    ac_charging_kw: 6.6
-    dc_charging_kw: 100
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 100
-      - soc_percent: 10
-        power_kw: 100
-      - soc_percent: 20
-        power_kw: 100
-      - soc_percent: 30
-        power_kw: 95
-      - soc_percent: 50
-        power_kw: 80
-      - soc_percent: 70
-        power_kw: 55
-      - soc_percent: 80
-        power_kw: 35
-      - soc_percent: 90
-        power_kw: 18
-      - soc_percent: 100
-        power_kw: 6
-    has_heat_pump: false
-    wltp_consumption_kwh_100km:
-      value: 18.0
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
+- id: toyota_bz4x_fwd
+  make: Toyota
+  model: bZ4X
+  variant: FWD
+  year_from: 2022
+  vehicle_type: ev
+  mass_kg: 1910
+  frontal_area_m2: 2.65
+  drag_coefficient_cd: 0.29
+  tire_class: suv
+  battery_usable_kwh: 64.0
+  ac_charging_kw: 6.6
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 10
+    power_kw: 100
+  - soc_percent: 20
+    power_kw: 100
+  - soc_percent: 30
+    power_kw: 95
+  - soc_percent: 50
+    power_kw: 80
+  - soc_percent: 70
+    power_kw: 55
+  - soc_percent: 80
+    power_kw: 35
+  - soc_percent: 90
+    power_kw: 18
+  - soc_percent: 100
+    power_kw: 6
+  has_heat_pump: true
+  hvac_cop_heat: 2.2
+  wltp_consumption_kwh_100km:
+    value: 17.1
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4690
+  ground_clearance_mm: 175
+  drivetrain: fwd
+  new_price_eur: 47490
+  trunk_volume_l: 452
+- id: toyota_bz4x_awd
+  make: Toyota
+  model: bZ4X
+  variant: AWD
+  year_from: 2022
+  vehicle_type: ev
+  mass_kg: 2015
+  frontal_area_m2: 2.65
+  drag_coefficient_cd: 0.29
+  tire_class: suv
+  battery_usable_kwh: 64.0
+  ac_charging_kw: 6.6
+  dc_charging_kw: 150
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 150
+  - soc_percent: 10
+    power_kw: 150
+  - soc_percent: 20
+    power_kw: 150
+  - soc_percent: 30
+    power_kw: 145
+  - soc_percent: 50
+    power_kw: 122
+  - soc_percent: 70
+    power_kw: 85
+  - soc_percent: 80
+    power_kw: 52
+  - soc_percent: 90
+    power_kw: 26
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.2
+  wltp_consumption_kwh_100km:
+    value: 18.0
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4690
+  ground_clearance_mm: 175
+  drivetrain: awd
+  new_price_eur: 51490
+  trunk_volume_l: 452
+- id: nissan_ariya_63
+  make: Nissan
+  model: Ariya
+  variant: 63 kWh FWD
+  year_from: 2022
+  vehicle_type: ev
+  mass_kg: 1975
+  frontal_area_m2: 2.6
+  drag_coefficient_cd: 0.28
+  tire_class: suv
+  battery_usable_kwh: 63.0
+  ac_charging_kw: 7.4
+  dc_charging_kw: 130
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 130
+  - soc_percent: 10
+    power_kw: 130
+  - soc_percent: 20
+    power_kw: 130
+  - soc_percent: 30
+    power_kw: 125
+  - soc_percent: 50
+    power_kw: 105
+  - soc_percent: 70
+    power_kw: 72
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 90
+    power_kw: 22
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.3
+  wltp_consumption_kwh_100km:
+    value: 17.0
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4595
+  ground_clearance_mm: 170
+  drivetrain: fwd
+  new_price_eur: 46500
+  trunk_volume_l: 466
+- id: nissan_ariya_87
+  make: Nissan
+  model: Ariya
+  variant: 87 kWh e-4ORCE
+  year_from: 2022
+  vehicle_type: ev
+  mass_kg: 2145
+  frontal_area_m2: 2.6
+  drag_coefficient_cd: 0.28
+  tire_class: suv
+  battery_usable_kwh: 87.0
+  ac_charging_kw: 7.4
+  dc_charging_kw: 130
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 130
+  - soc_percent: 10
+    power_kw: 130
+  - soc_percent: 20
+    power_kw: 130
+  - soc_percent: 30
+    power_kw: 125
+  - soc_percent: 50
+    power_kw: 105
+  - soc_percent: 70
+    power_kw: 72
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 90
+    power_kw: 22
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.3
+  wltp_consumption_kwh_100km:
+    value: 18.8
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4595
+  ground_clearance_mm: 170
+  drivetrain: awd
+  new_price_eur: 57900
+  trunk_volume_l: 466
+- id: nissan_leaf_40
+  make: Nissan
+  model: Leaf
+  variant: 40 kWh
+  year_from: 2018
+  year_to: 2024
+  vehicle_type: ev
+  mass_kg: 1580
+  frontal_area_m2: 2.4
+  drag_coefficient_cd: 0.28
+  tire_class: eco_lrr
+  battery_usable_kwh: 40.0
+  ac_charging_kw: 6.6
+  dc_charging_kw: 50
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 50
+  - soc_percent: 10
+    power_kw: 50
+  - soc_percent: 20
+    power_kw: 50
+  - soc_percent: 30
+    power_kw: 47
+  - soc_percent: 50
+    power_kw: 40
+  - soc_percent: 70
+    power_kw: 28
+  - soc_percent: 80
+    power_kw: 18
+  - soc_percent: 90
+    power_kw: 10
+  - soc_percent: 100
+    power_kw: 5
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 17.0
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4490
+  ground_clearance_mm: 155
+  drivetrain: fwd
+  new_price_eur: 36800
+  trunk_volume_l: 435
+- id: nissan_leaf_62
+  make: Nissan
+  model: Leaf
+  variant: 62 kWh e+
+  year_from: 2019
+  year_to: 2024
+  vehicle_type: ev
+  mass_kg: 1645
+  frontal_area_m2: 2.4
+  drag_coefficient_cd: 0.28
+  tire_class: eco_lrr
+  battery_usable_kwh: 62.0
+  ac_charging_kw: 6.6
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 10
+    power_kw: 100
+  - soc_percent: 20
+    power_kw: 100
+  - soc_percent: 30
+    power_kw: 95
+  - soc_percent: 50
+    power_kw: 80
+  - soc_percent: 70
+    power_kw: 55
+  - soc_percent: 80
+    power_kw: 35
+  - soc_percent: 90
+    power_kw: 18
+  - soc_percent: 100
+    power_kw: 6
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 18.0
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4490
+  ground_clearance_mm: 155
+  drivetrain: fwd
+  new_price_eur: 42300
+  trunk_volume_l: 435

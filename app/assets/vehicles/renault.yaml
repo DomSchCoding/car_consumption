@@ -1,130 +1,140 @@
-# Renault vehicles
-# Last updated: 2026-05-23
-
 vehicles:
-  - id: renault_zoe_52
-    make: Renault
-    model: Zoe
-    variant: "R135 52 kWh"
-    year_from: 2019
-    year_to: 2024
-    vehicle_type: ev
-    mass_kg: 1502
-    frontal_area_m2: 2.30
-    drag_coefficient_cd: 0.29
-    tire_class: eco_lrr
-    battery_usable_kwh: 52.0
-    ac_charging_kw: 22
-    dc_charging_kw: 50
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 50
-      - soc_percent: 10
-        power_kw: 50
-      - soc_percent: 20
-        power_kw: 50
-      - soc_percent: 30
-        power_kw: 47
-      - soc_percent: 50
-        power_kw: 40
-      - soc_percent: 70
-        power_kw: 28
-      - soc_percent: 80
-        power_kw: 18
-      - soc_percent: 90
-        power_kw: 10
-      - soc_percent: 100
-        power_kw: 5
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 16.5
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: renault_megane_e_tech_60
-    make: Renault
-    model: Megane E-Tech
-    variant: "EV60 220hp"
-    year_from: 2022
-    vehicle_type: ev
-    mass_kg: 1636
-    frontal_area_m2: 2.40
-    drag_coefficient_cd: 0.28
-    tire_class: standard
-    battery_usable_kwh: 60.0
-    ac_charging_kw: 7.4
-    dc_charging_kw: 130
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 130
-      - soc_percent: 10
-        power_kw: 130
-      - soc_percent: 20
-        power_kw: 130
-      - soc_percent: 30
-        power_kw: 125
-      - soc_percent: 50
-        power_kw: 105
-      - soc_percent: 70
-        power_kw: 72
-      - soc_percent: 80
-        power_kw: 45
-      - soc_percent: 90
-        power_kw: 22
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.3
-    wltp_consumption_kwh_100km:
-      value: 16.2
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: renault_5_e_tech_52
-    make: Renault
-    model: R5 E-Tech
-    variant: "52 kWh"
-    year_from: 2024
-    vehicle_type: ev
-    mass_kg: 1450
-    frontal_area_m2: 2.35
-    drag_coefficient_cd: 0.28
-    tire_class: eco_lrr
-    battery_usable_kwh: 52.0
-    ac_charging_kw: 7.4
-    dc_charging_kw: 100
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 100
-      - soc_percent: 10
-        power_kw: 100
-      - soc_percent: 20
-        power_kw: 100
-      - soc_percent: 30
-        power_kw: 95
-      - soc_percent: 50
-        power_kw: 80
-      - soc_percent: 70
-        power_kw: 55
-      - soc_percent: 80
-        power_kw: 35
-      - soc_percent: 90
-        power_kw: 18
-      - soc_percent: 100
-        power_kw: 6
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 14.5
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
+- id: renault_zoe_52
+  make: Renault
+  model: Zoe
+  variant: R135 52 kWh
+  year_from: 2019
+  year_to: 2024
+  vehicle_type: ev
+  mass_kg: 1502
+  frontal_area_m2: 2.3
+  drag_coefficient_cd: 0.29
+  tire_class: eco_lrr
+  battery_usable_kwh: 52.0
+  ac_charging_kw: 22
+  dc_charging_kw: 50
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 50
+  - soc_percent: 10
+    power_kw: 50
+  - soc_percent: 20
+    power_kw: 50
+  - soc_percent: 30
+    power_kw: 47
+  - soc_percent: 50
+    power_kw: 40
+  - soc_percent: 70
+    power_kw: 28
+  - soc_percent: 80
+    power_kw: 18
+  - soc_percent: 90
+    power_kw: 10
+  - soc_percent: 100
+    power_kw: 5
+  has_heat_pump: true
+  hvac_cop_heat: 2.5
+  wltp_consumption_kwh_100km:
+    value: 16.5
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4087
+  ground_clearance_mm: 130
+  drivetrain: fwd
+  new_price_eur: 33490
+  trunk_volume_l: 338
+- id: renault_megane_e_tech_60
+  make: Renault
+  model: Megane E-Tech
+  variant: EV60 220hp
+  year_from: 2022
+  vehicle_type: ev
+  mass_kg: 1636
+  frontal_area_m2: 2.4
+  drag_coefficient_cd: 0.28
+  tire_class: standard
+  battery_usable_kwh: 60.0
+  ac_charging_kw: 7.4
+  dc_charging_kw: 130
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 130
+  - soc_percent: 10
+    power_kw: 130
+  - soc_percent: 20
+    power_kw: 130
+  - soc_percent: 30
+    power_kw: 125
+  - soc_percent: 50
+    power_kw: 105
+  - soc_percent: 70
+    power_kw: 72
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 90
+    power_kw: 22
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.3
+  wltp_consumption_kwh_100km:
+    value: 16.2
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4200
+  ground_clearance_mm: 145
+  drivetrain: fwd
+  new_price_eur: 39990
+  trunk_volume_l: 440
+- id: renault_5_e_tech_52
+  make: Renault
+  model: R5 E-Tech
+  variant: 52 kWh
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 1450
+  frontal_area_m2: 2.35
+  drag_coefficient_cd: 0.28
+  tire_class: eco_lrr
+  battery_usable_kwh: 52.0
+  ac_charging_kw: 7.4
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 10
+    power_kw: 100
+  - soc_percent: 20
+    power_kw: 100
+  - soc_percent: 30
+    power_kw: 95
+  - soc_percent: 50
+    power_kw: 80
+  - soc_percent: 70
+    power_kw: 55
+  - soc_percent: 80
+    power_kw: 35
+  - soc_percent: 90
+    power_kw: 18
+  - soc_percent: 100
+    power_kw: 6
+  has_heat_pump: true
+  hvac_cop_heat: 2.5
+  wltp_consumption_kwh_100km:
+    value: 14.5
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 3920
+  ground_clearance_mm: 135
+  drivetrain: fwd
+  new_price_eur: 33490
+  trunk_volume_l: 326

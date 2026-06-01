@@ -1,241 +1,277 @@
-# Kia vehicles
-# Last updated: 2026-05-23
-
 vehicles:
-  - id: kia_ev6_sr
-    make: Kia
-    model: EV6
-    variant: "RWD 58 kWh"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 1850
-    frontal_area_m2: 2.55
-    drag_coefficient_cd: 0.28
-    tire_class: standard
-    battery_usable_kwh: 58.0
-    ac_charging_kw: 7.4
-    dc_charging_kw: 170
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 170
-      - soc_percent: 10
-        power_kw: 170
-      - soc_percent: 20
-        power_kw: 170
-      - soc_percent: 30
-        power_kw: 165
-      - soc_percent: 50
-        power_kw: 140
-      - soc_percent: 70
-        power_kw: 100
-      - soc_percent: 80
-        power_kw: 65
-      - soc_percent: 90
-        power_kw: 30
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 16.5
-      source_ref: wltp
-    real_consumption_kwh_100km:
-      - value: 16.8
-        source_ref: evdb
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-      evdb:
-        name: "EV Database"
-        url: "https://ev-database.org"
-        confidence: medium
-
-  - id: kia_ev6_rwd
-    make: Kia
-    model: EV6
-    variant: "RWD 77.4 kWh"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 1930
-    frontal_area_m2: 2.55
-    drag_coefficient_cd: 0.28
-    tire_class: standard
-    battery_usable_kwh: 77.4
-    ac_charging_kw: 7.4
-    dc_charging_kw: 239
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 239
-      - soc_percent: 10
-        power_kw: 239
-      - soc_percent: 20
-        power_kw: 239
-      - soc_percent: 30
-        power_kw: 230
-      - soc_percent: 50
-        power_kw: 185
-      - soc_percent: 70
-        power_kw: 125
-      - soc_percent: 80
-        power_kw: 80
-      - soc_percent: 90
-        power_kw: 38
-      - soc_percent: 100
-        power_kw: 10
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 17.5
-      source_ref: wltp
-    real_consumption_kwh_100km:
-      - value: 18.0
-        source_ref: evdb
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-      evdb:
-        name: "EV Database"
-        url: "https://ev-database.org"
-        confidence: medium
-
-  - id: kia_ev9_awd
-    make: Kia
-    model: EV9
-    variant: "AWD 99.8 kWh"
-    year_from: 2023
-    vehicle_type: ev
-    mass_kg: 2526
-    frontal_area_m2: 3.10
-    drag_coefficient_cd: 0.29
-    tire_class: suv
-    battery_usable_kwh: 99.8
-    ac_charging_kw: 11
-    dc_charging_kw: 210
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 210
-      - soc_percent: 10
-        power_kw: 210
-      - soc_percent: 20
-        power_kw: 210
-      - soc_percent: 30
-        power_kw: 205
-      - soc_percent: 50
-        power_kw: 175
-      - soc_percent: 70
-        power_kw: 125
-      - soc_percent: 80
-        power_kw: 78
-      - soc_percent: 90
-        power_kw: 36
-      - soc_percent: 100
-        power_kw: 9
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 22.3
-      source_ref: wltp
-    real_consumption_kwh_100km:
-      - value: 23.0
-        source_ref: evdb
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-      evdb:
-        name: "EV Database"
-        url: "https://ev-database.org"
-        confidence: medium
-
-  - id: kia_niro_ev_39
-    make: Kia
-    model: Niro EV
-    variant: "39 kWh"
-    year_from: 2022
-    vehicle_type: ev
-    mass_kg: 1600
-    frontal_area_m2: 2.50
-    drag_coefficient_cd: 0.29
-    tire_class: suv
-    battery_usable_kwh: 39.2
-    ac_charging_kw: 7.4
-    dc_charging_kw: 50
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 50
-      - soc_percent: 10
-        power_kw: 50
-      - soc_percent: 20
-        power_kw: 50
-      - soc_percent: 30
-        power_kw: 47
-      - soc_percent: 50
-        power_kw: 40
-      - soc_percent: 70
-        power_kw: 28
-      - soc_percent: 80
-        power_kw: 18
-      - soc_percent: 90
-        power_kw: 10
-      - soc_percent: 100
-        power_kw: 5
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 15.5
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: kia_niro_ev_64
-    make: Kia
-    model: Niro EV
-    variant: "64 kWh"
-    year_from: 2022
-    vehicle_type: ev
-    mass_kg: 1721
-    frontal_area_m2: 2.50
-    drag_coefficient_cd: 0.29
-    tire_class: suv
-    battery_usable_kwh: 64.0
-    ac_charging_kw: 7.4
-    dc_charging_kw: 64
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 64
-      - soc_percent: 10
-        power_kw: 64
-      - soc_percent: 20
-        power_kw: 64
-      - soc_percent: 30
-        power_kw: 60
-      - soc_percent: 50
-        power_kw: 50
-      - soc_percent: 70
-        power_kw: 35
-      - soc_percent: 80
-        power_kw: 22
-      - soc_percent: 90
-        power_kw: 12
-      - soc_percent: 100
-        power_kw: 5
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 15.8
-      source_ref: wltp
-    real_consumption_kwh_100km:
-      - value: 16.2
-        source_ref: evdb
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-      evdb:
-        name: "EV Database"
-        url: "https://ev-database.org"
-        confidence: medium
+- id: kia_ev6_sr
+  make: Kia
+  model: EV6
+  variant: RWD 58 kWh
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 1830
+  frontal_area_m2: 2.38
+  drag_coefficient_cd: 0.28
+  tire_class: standard
+  battery_usable_kwh: 58.0
+  ac_charging_kw: 11
+  dc_charging_kw: 175
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 175
+  - soc_percent: 20
+    power_kw: 175
+  - soc_percent: 50
+    power_kw: 130
+  - soc_percent: 70
+    power_kw: 90
+  - soc_percent: 80
+    power_kw: 55
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 15.5
+    source_ref: wltp
+  length_mm: 4695
+  ground_clearance_mm: 155
+  drivetrain: rwd
+  new_price_eur: 48900
+  trunk_volume_l: 490
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+    evdb:
+      name: EV Database
+      url: https://ev-database.org
+      confidence: medium
+- id: kia_ev6_rwd
+  make: Kia
+  model: EV6
+  variant: RWD 77.4 kWh
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 1975
+  frontal_area_m2: 2.38
+  drag_coefficient_cd: 0.28
+  tire_class: standard
+  battery_usable_kwh: 77.4
+  ac_charging_kw: 11
+  dc_charging_kw: 280
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 280
+  - soc_percent: 20
+    power_kw: 280
+  - soc_percent: 50
+    power_kw: 220
+  - soc_percent: 70
+    power_kw: 140
+  - soc_percent: 80
+    power_kw: 80
+  - soc_percent: 90
+    power_kw: 35
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 15.8
+    source_ref: wltp
+  length_mm: 4695
+  ground_clearance_mm: 155
+  drivetrain: rwd
+  new_price_eur: 56900
+  trunk_volume_l: 490
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+    evdb:
+      name: EV Database
+      url: https://ev-database.org
+      confidence: medium
+- id: kia_ev9_awd
+  make: Kia
+  model: EV9
+  variant: AWD 99.8 kWh
+  year_from: 2023
+  vehicle_type: ev
+  mass_kg: 2520
+  frontal_area_m2: 2.95
+  drag_coefficient_cd: 0.28
+  tire_class: suv
+  battery_usable_kwh: 99.8
+  ac_charging_kw: 11
+  dc_charging_kw: 168
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 168
+  - soc_percent: 20
+    power_kw: 168
+  - soc_percent: 50
+    power_kw: 120
+  - soc_percent: 70
+    power_kw: 80
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 19.0
+    source_ref: wltp
+  length_mm: 5010
+  ground_clearance_mm: 182
+  drivetrain: awd
+  new_price_eur: 81900
+  trunk_volume_l: 614
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+    evdb:
+      name: EV Database
+      url: https://ev-database.org
+      confidence: medium
+- id: kia_niro_ev_39
+  make: Kia
+  model: Niro EV
+  variant: 39 kWh
+  year_from: 2019
+  year_to: 2022
+  vehicle_type: ev
+  mass_kg: 1540
+  frontal_area_m2: 2.4
+  drag_coefficient_cd: 0.29
+  tire_class: standard
+  battery_usable_kwh: 39.2
+  ac_charging_kw: 11
+  dc_charging_kw: 77
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 77
+  - soc_percent: 50
+    power_kw: 65
+  - soc_percent: 80
+    power_kw: 40
+  - soc_percent: 100
+    power_kw: 12
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 15.5
+    source_ref: wltp
+  length_mm: 4365
+  ground_clearance_mm: 170
+  drivetrain: fwd
+  new_price_eur: 38900
+  trunk_volume_l: 452
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: kia_niro_ev_64
+  make: Kia
+  model: Niro EV
+  variant: 64 kWh
+  year_from: 2019
+  year_to: 2022
+  vehicle_type: ev
+  mass_kg: 1670
+  frontal_area_m2: 2.4
+  drag_coefficient_cd: 0.29
+  tire_class: standard
+  battery_usable_kwh: 64.0
+  ac_charging_kw: 11
+  dc_charging_kw: 77
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 77
+  - soc_percent: 50
+    power_kw: 65
+  - soc_percent: 80
+    power_kw: 40
+  - soc_percent: 100
+    power_kw: 12
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 15.8
+    source_ref: wltp
+  length_mm: 4365
+  ground_clearance_mm: 170
+  drivetrain: fwd
+  new_price_eur: 44900
+  trunk_volume_l: 452
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: kia_ev3_rwd
+  make: Kia
+  model: EV3
+  variant: RWD 58 kWh
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 1650
+  frontal_area_m2: 2.3
+  drag_coefficient_cd: 0.28
+  tire_class: standard
+  battery_usable_kwh: 58.0
+  ac_charging_kw: 11
+  dc_charging_kw: 120
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 120
+  - soc_percent: 20
+    power_kw: 120
+  - soc_percent: 50
+    power_kw: 85
+  - soc_percent: 70
+    power_kw: 55
+  - soc_percent: 80
+    power_kw: 30
+  - soc_percent: 90
+    power_kw: 15
+  - soc_percent: 100
+    power_kw: 5
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 14.5
+    source_ref: wltp
+  length_mm: 4315
+  ground_clearance_mm: 160
+  drivetrain: fwd
+  new_price_eur: 38900
+  trunk_volume_l: 430
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: kia_niro_phev
+  make: Kia
+  model: Niro
+  variant: PHEV
+  year_from: 2022
+  vehicle_type: phev
+  mass_kg: 1660
+  frontal_area_m2: 2.4
+  drag_coefficient_cd: 0.29
+  tire_class: standard
+  battery_usable_kwh: 13.4
+  fuel_type: gasoline
+  real_consumption_l_100km:
+    value: 1.4
+    source_ref: wltp
+  length_mm: 4365
+  ground_clearance_mm: 170
+  drivetrain: fwd
+  new_price_eur: 46900
+  trunk_volume_l: 452
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high

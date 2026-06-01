@@ -1,85 +1,109 @@
-# Fiat vehicles
-# Last updated: 2026-05-23
-
 vehicles:
-  - id: fiat_500e_42
-    make: Fiat
-    model: 500e
-    variant: "42 kWh"
-    year_from: 2020
-    vehicle_type: ev
-    mass_kg: 1365
-    frontal_area_m2: 2.20
-    drag_coefficient_cd: 0.29
-    tire_class: standard
-    battery_usable_kwh: 42.0
-    ac_charging_kw: 7.4
-    dc_charging_kw: 50
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 50
-      - soc_percent: 10
-        power_kw: 50
-      - soc_percent: 20
-        power_kw: 50
-      - soc_percent: 30
-        power_kw: 47
-      - soc_percent: 50
-        power_kw: 40
-      - soc_percent: 70
-        power_kw: 28
-      - soc_percent: 80
-        power_kw: 18
-      - soc_percent: 90
-        power_kw: 10
-      - soc_percent: 100
-        power_kw: 5
-    has_heat_pump: false
-    wltp_consumption_kwh_100km:
-      value: 14.1
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: fiat_500e_24
-    make: Fiat
-    model: 500e
-    variant: "24 kWh"
-    year_from: 2020
-    vehicle_type: ev
-    mass_kg: 1320
-    frontal_area_m2: 2.20
-    drag_coefficient_cd: 0.29
-    tire_class: standard
-    battery_usable_kwh: 23.8
-    ac_charging_kw: 7.4
-    dc_charging_kw: 50
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 50
-      - soc_percent: 10
-        power_kw: 50
-      - soc_percent: 20
-        power_kw: 50
-      - soc_percent: 30
-        power_kw: 47
-      - soc_percent: 50
-        power_kw: 40
-      - soc_percent: 70
-        power_kw: 28
-      - soc_percent: 80
-        power_kw: 18
-      - soc_percent: 90
-        power_kw: 10
-      - soc_percent: 100
-        power_kw: 5
-    has_heat_pump: false
-    wltp_consumption_kwh_100km:
-      value: 13.7
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
+- id: fiat_500e_42
+  make: Fiat
+  model: 500e
+  variant: 42 kWh
+  year_from: 2020
+  vehicle_type: ev
+  mass_kg: 1385
+  frontal_area_m2: 2.15
+  drag_coefficient_cd: 0.28
+  tire_class: standard
+  battery_usable_kwh: 42.0
+  ac_charging_kw: 11
+  dc_charging_kw: 85
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 85
+  - soc_percent: 20
+    power_kw: 85
+  - soc_percent: 50
+    power_kw: 60
+  - soc_percent: 70
+    power_kw: 40
+  - soc_percent: 80
+    power_kw: 25
+  - soc_percent: 90
+    power_kw: 12
+  - soc_percent: 100
+    power_kw: 5
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 14.5
+    source_ref: wltp
+  length_mm: 3635
+  ground_clearance_mm: 133
+  drivetrain: fwd
+  new_price_eur: 30900
+  trunk_volume_l: 170
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: fiat_500e_24
+  make: Fiat
+  model: 500e
+  variant: 24 kWh
+  year_from: 2020
+  vehicle_type: ev
+  mass_kg: 1280
+  frontal_area_m2: 2.15
+  drag_coefficient_cd: 0.28
+  tire_class: standard
+  battery_usable_kwh: 24.0
+  ac_charging_kw: 3.3
+  dc_charging_kw: null
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 13.8
+    source_ref: wltp
+  length_mm: 3635
+  ground_clearance_mm: 133
+  drivetrain: fwd
+  new_price_eur: 23900
+  trunk_volume_l: 170
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: fiat_600e_42
+  make: Fiat
+  model: 600e
+  variant: 42 kWh
+  year_from: 2023
+  vehicle_type: ev
+  mass_kg: 1490
+  frontal_area_m2: 2.25
+  drag_coefficient_cd: 0.27
+  tire_class: standard
+  battery_usable_kwh: 42.0
+  ac_charging_kw: 11
+  dc_charging_kw: 85
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 85
+  - soc_percent: 20
+    power_kw: 85
+  - soc_percent: 50
+    power_kw: 60
+  - soc_percent: 70
+    power_kw: 40
+  - soc_percent: 80
+    power_kw: 25
+  - soc_percent: 90
+    power_kw: 12
+  - soc_percent: 100
+    power_kw: 5
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 14.8
+    source_ref: wltp
+  length_mm: 4050
+  ground_clearance_mm: 135
+  drivetrain: fwd
+  new_price_eur: 37900
+  trunk_volume_l: 310
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high

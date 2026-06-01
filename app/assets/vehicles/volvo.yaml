@@ -1,129 +1,139 @@
-# Volvo vehicles
-# Last updated: 2026-05-23
-
 vehicles:
-  - id: volvo_ex30_single
-    make: Volvo
-    model: EX30
-    variant: "Single Motor"
-    year_from: 2024
-    vehicle_type: ev
-    mass_kg: 1765
-    frontal_area_m2: 2.50
-    drag_coefficient_cd: 0.27
-    tire_class: suv
-    battery_usable_kwh: 64.0
-    ac_charging_kw: 7.4
-    dc_charging_kw: 145
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 145
-      - soc_percent: 10
-        power_kw: 145
-      - soc_percent: 20
-        power_kw: 145
-      - soc_percent: 30
-        power_kw: 140
-      - soc_percent: 50
-        power_kw: 118
-      - soc_percent: 70
-        power_kw: 82
-      - soc_percent: 80
-        power_kw: 50
-      - soc_percent: 90
-        power_kw: 25
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.3
-    wltp_consumption_kwh_100km:
-      value: 16.7
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: volvo_ex40_single
-    make: Volvo
-    model: EX40
-    variant: "Single Motor"
-    year_from: 2024
-    vehicle_type: ev
-    mass_kg: 2140
-    frontal_area_m2: 2.70
-    drag_coefficient_cd: 0.26
-    tire_class: suv
-    battery_usable_kwh: 78.0
-    ac_charging_kw: 7.4
-    dc_charging_kw: 175
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 175
-      - soc_percent: 10
-        power_kw: 175
-      - soc_percent: 20
-        power_kw: 175
-      - soc_percent: 30
-        power_kw: 170
-      - soc_percent: 50
-        power_kw: 142
-      - soc_percent: 70
-        power_kw: 100
-      - soc_percent: 80
-        power_kw: 62
-      - soc_percent: 90
-        power_kw: 30
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: true
-    hvac_cop_heat: 2.3
-    wltp_consumption_kwh_100km:
-      value: 18.7
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: volvo_ex90_twin
-    make: Volvo
-    model: EX90
-    variant: "Twin Motor"
-    year_from: 2024
-    vehicle_type: ev
-    mass_kg: 2620
-    frontal_area_m2: 3.00
-    drag_coefficient_cd: 0.29
-    tire_class: suv
-    battery_usable_kwh: 100.0
-    ac_charging_kw: 11
-    dc_charging_kw: 200
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 200
-      - soc_percent: 10
-        power_kw: 200
-      - soc_percent: 20
-        power_kw: 200
-      - soc_percent: 30
-        power_kw: 195
-      - soc_percent: 50
-        power_kw: 165
-      - soc_percent: 70
-        power_kw: 115
-      - soc_percent: 80
-        power_kw: 70
-      - soc_percent: 90
-        power_kw: 32
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: true
-    hvac_cop_heat: 2.3
-    wltp_consumption_kwh_100km:
-      value: 22.0
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
+- id: volvo_ex30_single
+  make: Volvo
+  model: EX30
+  variant: Single Motor
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 1765
+  frontal_area_m2: 2.5
+  drag_coefficient_cd: 0.27
+  tire_class: suv
+  battery_usable_kwh: 64.0
+  ac_charging_kw: 7.4
+  dc_charging_kw: 145
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 145
+  - soc_percent: 10
+    power_kw: 145
+  - soc_percent: 20
+    power_kw: 145
+  - soc_percent: 30
+    power_kw: 140
+  - soc_percent: 50
+    power_kw: 118
+  - soc_percent: 70
+    power_kw: 82
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.3
+  wltp_consumption_kwh_100km:
+    value: 16.7
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4233
+  ground_clearance_mm: 165
+  drivetrain: rwd
+  new_price_eur: 36590
+  trunk_volume_l: 318
+- id: volvo_ex40_single
+  make: Volvo
+  model: EX40
+  variant: Single Motor
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 2140
+  frontal_area_m2: 2.7
+  drag_coefficient_cd: 0.26
+  tire_class: suv
+  battery_usable_kwh: 78.0
+  ac_charging_kw: 7.4
+  dc_charging_kw: 175
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 175
+  - soc_percent: 10
+    power_kw: 175
+  - soc_percent: 20
+    power_kw: 175
+  - soc_percent: 30
+    power_kw: 170
+  - soc_percent: 50
+    power_kw: 142
+  - soc_percent: 70
+    power_kw: 100
+  - soc_percent: 80
+    power_kw: 62
+  - soc_percent: 90
+    power_kw: 30
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.3
+  wltp_consumption_kwh_100km:
+    value: 18.7
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4440
+  ground_clearance_mm: 175
+  drivetrain: fwd
+  new_price_eur: 48900
+  trunk_volume_l: 419
+- id: volvo_ex90_twin
+  make: Volvo
+  model: EX90
+  variant: Twin Motor
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 2620
+  frontal_area_m2: 3.0
+  drag_coefficient_cd: 0.29
+  tire_class: suv
+  battery_usable_kwh: 100.0
+  ac_charging_kw: 11
+  dc_charging_kw: 200
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 200
+  - soc_percent: 10
+    power_kw: 200
+  - soc_percent: 20
+    power_kw: 200
+  - soc_percent: 30
+    power_kw: 195
+  - soc_percent: 50
+    power_kw: 165
+  - soc_percent: 70
+    power_kw: 115
+  - soc_percent: 80
+    power_kw: 70
+  - soc_percent: 90
+    power_kw: 32
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.3
+  wltp_consumption_kwh_100km:
+    value: 22.0
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 5037
+  ground_clearance_mm: 185
+  drivetrain: awd
+  new_price_eur: 89900
+  trunk_volume_l: 643

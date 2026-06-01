@@ -1,343 +1,369 @@
-# Tesla vehicles
-# Last updated: 2026-05-23
-
 vehicles:
-  - id: tesla_model3_rwd
-    make: Tesla
-    model: Model 3
-    variant: "RWD 60 kWh"
-    year_from: 2021
-    year_to: 2023
-    vehicle_type: ev
-    mass_kg: 1761
-    frontal_area_m2: 2.22
-    drag_coefficient_cd: 0.23
-    tire_class: eco_lrr
-    battery_usable_kwh: 60.0
-    ac_charging_kw: 11.5
-    dc_charging_kw: 170
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 170
-      - soc_percent: 10
-        power_kw: 170
-      - soc_percent: 20
-        power_kw: 170
-      - soc_percent: 30
-        power_kw: 165
-      - soc_percent: 50
-        power_kw: 140
-      - soc_percent: 70
-        power_kw: 105
-      - soc_percent: 80
-        power_kw: 65
-      - soc_percent: 90
-        power_kw: 30
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: false
-    wltp_consumption_kwh_100km:
-      value: 14.9
-      source_ref: wltp
-    real_consumption_kwh_100km:
-      - value: 14.8
-        source_ref: evdb
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-      evdb:
-        name: "EV Database"
-        url: "https://ev-database.org"
-        confidence: medium
-
-  - id: tesla_model3_lr
-    make: Tesla
-    model: Model 3
-    variant: "Long Range AWD"
-    year_from: 2021
-    year_to: 2023
-    vehicle_type: ev
-    mass_kg: 1844
-    frontal_area_m2: 2.22
-    drag_coefficient_cd: 0.23
-    tire_class: eco_lrr
-    battery_usable_kwh: 75.0
-    ac_charging_kw: 11.5
-    dc_charging_kw: 250
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 250
-      - soc_percent: 10
-        power_kw: 250
-      - soc_percent: 20
-        power_kw: 250
-      - soc_percent: 30
-        power_kw: 240
-      - soc_percent: 50
-        power_kw: 200
-      - soc_percent: 70
-        power_kw: 140
-      - soc_percent: 80
-        power_kw: 90
-      - soc_percent: 90
-        power_kw: 42
-      - soc_percent: 100
-        power_kw: 10
-    has_heat_pump: false
-    wltp_consumption_kwh_100km:
-      value: 15.2
-      source_ref: wltp
-    real_consumption_kwh_100km:
-      - value: 15.5
-        source_ref: evdb
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-      evdb:
-        name: "EV Database"
-        url: "https://ev-database.org"
-        confidence: medium
-
-  - id: tesla_model3_highland_rwd
-    make: Tesla
-    model: Model 3
-    variant: "Highland RWD"
-    year_from: 2024
-    vehicle_type: ev
-    mass_kg: 1730
-    frontal_area_m2: 2.22
-    drag_coefficient_cd: 0.219
-    tire_class: eco_lrr
-    battery_usable_kwh: 60.0
-    ac_charging_kw: 11.5
-    dc_charging_kw: 170
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 170
-      - soc_percent: 10
-        power_kw: 170
-      - soc_percent: 20
-        power_kw: 170
-      - soc_percent: 30
-        power_kw: 165
-      - soc_percent: 50
-        power_kw: 140
-      - soc_percent: 70
-        power_kw: 105
-      - soc_percent: 80
-        power_kw: 65
-      - soc_percent: 90
-        power_kw: 30
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: true
-    hvac_cop_heat: 2.8
-    wltp_consumption_kwh_100km:
-      value: 14.0
-      source_ref: wltp
-    real_consumption_kwh_100km:
-      - value: 14.0
-        source_ref: evdb
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-      evdb:
-        name: "EV Database"
-        url: "https://ev-database.org"
-        confidence: medium
-
-  - id: tesla_model3_highland_lr
-    make: Tesla
-    model: Model 3
-    variant: "Highland Long Range AWD"
-    year_from: 2024
-    vehicle_type: ev
-    mass_kg: 1820
-    frontal_area_m2: 2.22
-    drag_coefficient_cd: 0.219
-    tire_class: eco_lrr
-    battery_usable_kwh: 75.0
-    ac_charging_kw: 11.5
-    dc_charging_kw: 250
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 250
-      - soc_percent: 10
-        power_kw: 250
-      - soc_percent: 20
-        power_kw: 250
-      - soc_percent: 30
-        power_kw: 240
-      - soc_percent: 50
-        power_kw: 200
-      - soc_percent: 70
-        power_kw: 140
-      - soc_percent: 80
-        power_kw: 90
-      - soc_percent: 90
-        power_kw: 42
-      - soc_percent: 100
-        power_kw: 10
-    has_heat_pump: true
-    hvac_cop_heat: 2.8
-    wltp_consumption_kwh_100km:
-      value: 14.2
-      source_ref: wltp
-    real_consumption_kwh_100km:
-      - value: 14.5
-        source_ref: evdb
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-      evdb:
-        name: "EV Database"
-        url: "https://ev-database.org"
-        confidence: medium
-
-  - id: tesla_model_y_rwd
-    make: Tesla
-    model: Model Y
-    variant: "RWD 60 kWh"
-    year_from: 2023
-    vehicle_type: ev
-    mass_kg: 1916
-    frontal_area_m2: 2.45
-    drag_coefficient_cd: 0.25
-    tire_class: suv
-    battery_usable_kwh: 60.0
-    ac_charging_kw: 11.5
-    dc_charging_kw: 170
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 170
-      - soc_percent: 10
-        power_kw: 170
-      - soc_percent: 20
-        power_kw: 170
-      - soc_percent: 30
-        power_kw: 165
-      - soc_percent: 50
-        power_kw: 140
-      - soc_percent: 70
-        power_kw: 105
-      - soc_percent: 80
-        power_kw: 65
-      - soc_percent: 90
-        power_kw: 30
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: false
-    wltp_consumption_kwh_100km:
-      value: 16.7
-      source_ref: wltp
-    real_consumption_kwh_100km:
-      - value: 16.0
-        source_ref: evdb
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-      evdb:
-        name: "EV Database"
-        url: "https://ev-database.org"
-        confidence: medium
-
-  - id: tesla_model_y_lr
-    make: Tesla
-    model: Model Y
-    variant: "Long Range AWD"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 1990
-    frontal_area_m2: 2.45
-    drag_coefficient_cd: 0.25
-    tire_class: suv
-    battery_usable_kwh: 75.0
-    ac_charging_kw: 11.5
-    dc_charging_kw: 250
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 250
-      - soc_percent: 10
-        power_kw: 250
-      - soc_percent: 20
-        power_kw: 250
-      - soc_percent: 30
-        power_kw: 240
-      - soc_percent: 50
-        power_kw: 200
-      - soc_percent: 70
-        power_kw: 140
-      - soc_percent: 80
-        power_kw: 90
-      - soc_percent: 90
-        power_kw: 42
-      - soc_percent: 100
-        power_kw: 10
-    has_heat_pump: false
-    wltp_consumption_kwh_100km:
-      value: 17.1
-      source_ref: wltp
-    real_consumption_kwh_100km:
-      - value: 17.2
-        source_ref: evdb
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-      evdb:
-        name: "EV Database"
-        url: "https://ev-database.org"
-        confidence: medium
-
-  - id: tesla_model_s_lr
-    make: Tesla
-    model: Model S
-    variant: "Long Range"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 2065
-    frontal_area_m2: 2.40
-    drag_coefficient_cd: 0.208
-    tire_class: standard
-    battery_usable_kwh: 95.0
-    ac_charging_kw: 11.5
-    dc_charging_kw: 250
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 250
-      - soc_percent: 10
-        power_kw: 250
-      - soc_percent: 20
-        power_kw: 250
-      - soc_percent: 30
-        power_kw: 240
-      - soc_percent: 50
-        power_kw: 200
-      - soc_percent: 70
-        power_kw: 140
-      - soc_percent: 80
-        power_kw: 90
-      - soc_percent: 90
-        power_kw: 42
-      - soc_percent: 100
-        power_kw: 10
-    has_heat_pump: false
-    wltp_consumption_kwh_100km:
-      value: 16.0
-      source_ref: wltp
-    real_consumption_kwh_100km:
-      - value: 16.5
-        source_ref: evdb
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-      evdb:
-        name: "EV Database"
-        url: "https://ev-database.org"
-        confidence: medium
+- id: tesla_model3_rwd
+  make: Tesla
+  model: Model 3
+  variant: RWD 60 kWh
+  year_from: 2021
+  year_to: 2023
+  vehicle_type: ev
+  mass_kg: 1761
+  frontal_area_m2: 2.22
+  drag_coefficient_cd: 0.23
+  tire_class: eco_lrr
+  battery_usable_kwh: 60.0
+  ac_charging_kw: 11.5
+  dc_charging_kw: 170
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 170
+  - soc_percent: 10
+    power_kw: 170
+  - soc_percent: 20
+    power_kw: 170
+  - soc_percent: 30
+    power_kw: 165
+  - soc_percent: 50
+    power_kw: 140
+  - soc_percent: 70
+    power_kw: 105
+  - soc_percent: 80
+    power_kw: 65
+  - soc_percent: 90
+    power_kw: 30
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 14.9
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 14.8
+    source_ref: evdb
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+    evdb:
+      name: EV Database
+      url: https://ev-database.org
+      confidence: medium
+  length_mm: 4694
+  ground_clearance_mm: 140
+  drivetrain: rwd
+  new_price_eur: 42990
+  trunk_volume_l: 561
+- id: tesla_model3_lr
+  make: Tesla
+  model: Model 3
+  variant: Long Range AWD
+  year_from: 2021
+  year_to: 2023
+  vehicle_type: ev
+  mass_kg: 1844
+  frontal_area_m2: 2.22
+  drag_coefficient_cd: 0.23
+  tire_class: eco_lrr
+  battery_usable_kwh: 75.0
+  ac_charging_kw: 11.5
+  dc_charging_kw: 250
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 250
+  - soc_percent: 10
+    power_kw: 250
+  - soc_percent: 20
+    power_kw: 250
+  - soc_percent: 30
+    power_kw: 240
+  - soc_percent: 50
+    power_kw: 200
+  - soc_percent: 70
+    power_kw: 140
+  - soc_percent: 80
+    power_kw: 90
+  - soc_percent: 90
+    power_kw: 42
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 15.2
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 15.5
+    source_ref: evdb
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+    evdb:
+      name: EV Database
+      url: https://ev-database.org
+      confidence: medium
+  length_mm: 4694
+  ground_clearance_mm: 140
+  drivetrain: awd
+  new_price_eur: 51990
+  trunk_volume_l: 561
+- id: tesla_model3_highland_rwd
+  make: Tesla
+  model: Model 3
+  variant: Highland RWD
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 1730
+  frontal_area_m2: 2.22
+  drag_coefficient_cd: 0.219
+  tire_class: eco_lrr
+  battery_usable_kwh: 60.0
+  ac_charging_kw: 11.5
+  dc_charging_kw: 170
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 170
+  - soc_percent: 10
+    power_kw: 170
+  - soc_percent: 20
+    power_kw: 170
+  - soc_percent: 30
+    power_kw: 165
+  - soc_percent: 50
+    power_kw: 140
+  - soc_percent: 70
+    power_kw: 105
+  - soc_percent: 80
+    power_kw: 65
+  - soc_percent: 90
+    power_kw: 30
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.8
+  wltp_consumption_kwh_100km:
+    value: 14.0
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 14.0
+    source_ref: evdb
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+    evdb:
+      name: EV Database
+      url: https://ev-database.org
+      confidence: medium
+  length_mm: 4720
+  ground_clearance_mm: 138
+  drivetrain: rwd
+  new_price_eur: 42990
+  trunk_volume_l: 561
+- id: tesla_model3_highland_lr
+  make: Tesla
+  model: Model 3
+  variant: Highland Long Range AWD
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 1820
+  frontal_area_m2: 2.22
+  drag_coefficient_cd: 0.219
+  tire_class: eco_lrr
+  battery_usable_kwh: 75.0
+  ac_charging_kw: 11.5
+  dc_charging_kw: 250
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 250
+  - soc_percent: 10
+    power_kw: 250
+  - soc_percent: 20
+    power_kw: 250
+  - soc_percent: 30
+    power_kw: 240
+  - soc_percent: 50
+    power_kw: 200
+  - soc_percent: 70
+    power_kw: 140
+  - soc_percent: 80
+    power_kw: 90
+  - soc_percent: 90
+    power_kw: 42
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: true
+  hvac_cop_heat: 2.8
+  wltp_consumption_kwh_100km:
+    value: 14.2
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 14.5
+    source_ref: evdb
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+    evdb:
+      name: EV Database
+      url: https://ev-database.org
+      confidence: medium
+  length_mm: 4720
+  ground_clearance_mm: 138
+  drivetrain: awd
+  new_price_eur: 51990
+  trunk_volume_l: 561
+- id: tesla_model_y_rwd
+  make: Tesla
+  model: Model Y
+  variant: RWD 60 kWh
+  year_from: 2023
+  vehicle_type: ev
+  mass_kg: 1916
+  frontal_area_m2: 2.45
+  drag_coefficient_cd: 0.25
+  tire_class: suv
+  battery_usable_kwh: 60.0
+  ac_charging_kw: 11.5
+  dc_charging_kw: 170
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 170
+  - soc_percent: 10
+    power_kw: 170
+  - soc_percent: 20
+    power_kw: 170
+  - soc_percent: 30
+    power_kw: 165
+  - soc_percent: 50
+    power_kw: 140
+  - soc_percent: 70
+    power_kw: 105
+  - soc_percent: 80
+    power_kw: 65
+  - soc_percent: 90
+    power_kw: 30
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 16.7
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 16.0
+    source_ref: evdb
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+    evdb:
+      name: EV Database
+      url: https://ev-database.org
+      confidence: medium
+  length_mm: 4751
+  ground_clearance_mm: 167
+  drivetrain: rwd
+  new_price_eur: 44890
+  trunk_volume_l: 854
+- id: tesla_model_y_lr
+  make: Tesla
+  model: Model Y
+  variant: Long Range AWD
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 1990
+  frontal_area_m2: 2.45
+  drag_coefficient_cd: 0.25
+  tire_class: suv
+  battery_usable_kwh: 75.0
+  ac_charging_kw: 11.5
+  dc_charging_kw: 250
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 250
+  - soc_percent: 10
+    power_kw: 250
+  - soc_percent: 20
+    power_kw: 250
+  - soc_percent: 30
+    power_kw: 240
+  - soc_percent: 50
+    power_kw: 200
+  - soc_percent: 70
+    power_kw: 140
+  - soc_percent: 80
+    power_kw: 90
+  - soc_percent: 90
+    power_kw: 42
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 17.1
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 17.2
+    source_ref: evdb
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+    evdb:
+      name: EV Database
+      url: https://ev-database.org
+      confidence: medium
+  length_mm: 4751
+  ground_clearance_mm: 167
+  drivetrain: awd
+  new_price_eur: 54990
+  trunk_volume_l: 854
+- id: tesla_model_s_lr
+  make: Tesla
+  model: Model S
+  variant: Long Range
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 2065
+  frontal_area_m2: 2.4
+  drag_coefficient_cd: 0.208
+  tire_class: standard
+  battery_usable_kwh: 95.0
+  ac_charging_kw: 11.5
+  dc_charging_kw: 250
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 250
+  - soc_percent: 10
+    power_kw: 250
+  - soc_percent: 20
+    power_kw: 250
+  - soc_percent: 30
+    power_kw: 240
+  - soc_percent: 50
+    power_kw: 200
+  - soc_percent: 70
+    power_kw: 140
+  - soc_percent: 80
+    power_kw: 90
+  - soc_percent: 90
+    power_kw: 42
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 16.0
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 16.5
+    source_ref: evdb
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+    evdb:
+      name: EV Database
+      url: https://ev-database.org
+      confidence: medium
+  length_mm: 4970
+  ground_clearance_mm: 117
+  drivetrain: awd
+  new_price_eur: 94990
+  trunk_volume_l: 793

@@ -1,129 +1,139 @@
-# Skoda vehicles
-# Last updated: 2026-05-23
-
 vehicles:
-  - id: skoda_enyaq_60
-    make: Skoda
-    model: Enyaq
-    variant: "60"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 1995
-    frontal_area_m2: 2.75
-    drag_coefficient_cd: 0.27
-    tire_class: suv
-    battery_usable_kwh: 58.0
-    ac_charging_kw: 11
-    dc_charging_kw: 125
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 125
-      - soc_percent: 10
-        power_kw: 125
-      - soc_percent: 20
-        power_kw: 125
-      - soc_percent: 30
-        power_kw: 120
-      - soc_percent: 50
-        power_kw: 102
-      - soc_percent: 70
-        power_kw: 70
-      - soc_percent: 80
-        power_kw: 45
-      - soc_percent: 90
-        power_kw: 22
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 16.3
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: skoda_enyaq_80
-    make: Skoda
-    model: Enyaq
-    variant: "80"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 2070
-    frontal_area_m2: 2.75
-    drag_coefficient_cd: 0.27
-    tire_class: suv
-    battery_usable_kwh: 77.0
-    ac_charging_kw: 11
-    dc_charging_kw: 135
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 135
-      - soc_percent: 10
-        power_kw: 135
-      - soc_percent: 20
-        power_kw: 135
-      - soc_percent: 30
-        power_kw: 130
-      - soc_percent: 50
-        power_kw: 110
-      - soc_percent: 70
-        power_kw: 80
-      - soc_percent: 80
-        power_kw: 50
-      - soc_percent: 90
-        power_kw: 25
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 16.9
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: skoda_elroq_60
-    make: Skoda
-    model: Elroq
-    variant: "60"
-    year_from: 2025
-    vehicle_type: ev
-    mass_kg: 1925
-    frontal_area_m2: 2.70
-    drag_coefficient_cd: 0.26
-    tire_class: suv
-    battery_usable_kwh: 63.0
-    ac_charging_kw: 11
-    dc_charging_kw: 145
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 145
-      - soc_percent: 10
-        power_kw: 145
-      - soc_percent: 20
-        power_kw: 145
-      - soc_percent: 30
-        power_kw: 140
-      - soc_percent: 50
-        power_kw: 118
-      - soc_percent: 70
-        power_kw: 82
-      - soc_percent: 80
-        power_kw: 50
-      - soc_percent: 90
-        power_kw: 25
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.3
-    wltp_consumption_kwh_100km:
-      value: 15.3
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
+- id: skoda_enyaq_60
+  make: Skoda
+  model: Enyaq
+  variant: '60'
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 1995
+  frontal_area_m2: 2.75
+  drag_coefficient_cd: 0.27
+  tire_class: suv
+  battery_usable_kwh: 58.0
+  ac_charging_kw: 11
+  dc_charging_kw: 125
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 125
+  - soc_percent: 10
+    power_kw: 125
+  - soc_percent: 20
+    power_kw: 125
+  - soc_percent: 30
+    power_kw: 120
+  - soc_percent: 50
+    power_kw: 102
+  - soc_percent: 70
+    power_kw: 70
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 90
+    power_kw: 22
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 16.3
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4649
+  ground_clearance_mm: 186
+  drivetrain: rwd
+  new_price_eur: 41990
+  trunk_volume_l: 585
+- id: skoda_enyaq_80
+  make: Skoda
+  model: Enyaq
+  variant: '80'
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 2070
+  frontal_area_m2: 2.75
+  drag_coefficient_cd: 0.27
+  tire_class: suv
+  battery_usable_kwh: 77.0
+  ac_charging_kw: 11
+  dc_charging_kw: 135
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 135
+  - soc_percent: 10
+    power_kw: 135
+  - soc_percent: 20
+    power_kw: 135
+  - soc_percent: 30
+    power_kw: 130
+  - soc_percent: 50
+    power_kw: 110
+  - soc_percent: 70
+    power_kw: 80
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 16.9
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4649
+  ground_clearance_mm: 186
+  drivetrain: rwd
+  new_price_eur: 47490
+  trunk_volume_l: 585
+- id: skoda_elroq_60
+  make: Skoda
+  model: Elroq
+  variant: '60'
+  year_from: 2025
+  vehicle_type: ev
+  mass_kg: 1925
+  frontal_area_m2: 2.7
+  drag_coefficient_cd: 0.26
+  tire_class: suv
+  battery_usable_kwh: 63.0
+  ac_charging_kw: 11
+  dc_charging_kw: 145
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 145
+  - soc_percent: 10
+    power_kw: 145
+  - soc_percent: 20
+    power_kw: 145
+  - soc_percent: 30
+    power_kw: 140
+  - soc_percent: 50
+    power_kw: 118
+  - soc_percent: 70
+    power_kw: 82
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.3
+  wltp_consumption_kwh_100km:
+    value: 15.3
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4488
+  ground_clearance_mm: 178
+  drivetrain: rwd
+  new_price_eur: 33990
+  trunk_volume_l: 470

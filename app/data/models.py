@@ -36,6 +36,12 @@ class TireClass(StrEnum):
     van_truck = "van_truck"
 
 
+class DrivetrainType(StrEnum):
+    fwd = "fwd"
+    rwd = "rwd"
+    awd = "awd"
+
+
 C_RR_LOOKUP: dict[TireClass, float] = {
     TireClass.eco_lrr: 0.007,
     TireClass.standard: 0.009,
@@ -97,6 +103,12 @@ class Vehicle(BaseModel):
 
     image: str | None = None
     image_attribution: str | None = None
+
+    length_mm: float | None = None
+    ground_clearance_mm: float | None = None
+    drivetrain: DrivetrainType | None = None
+    new_price_eur: float | None = None
+    trunk_volume_l: float | None = None
 
     source_refs: dict[str, SourceRef] = Field(default_factory=dict)
     notes: str | None = None

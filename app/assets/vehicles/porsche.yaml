@@ -1,87 +1,93 @@
-# Porsche vehicles
-# Last updated: 2026-05-23
-
 vehicles:
-  - id: porsche_taycan_4s
-    make: Porsche
-    model: Taycan
-    variant: "4S"
-    year_from: 2020
-    vehicle_type: ev
-    mass_kg: 2295
-    frontal_area_m2: 2.40
-    drag_coefficient_cd: 0.22
-    tire_class: sport
-    battery_usable_kwh: 79.2
-    ac_charging_kw: 11
-    dc_charging_kw: 270
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 270
-      - soc_percent: 10
-        power_kw: 270
-      - soc_percent: 20
-        power_kw: 270
-      - soc_percent: 30
-        power_kw: 260
-      - soc_percent: 50
-        power_kw: 220
-      - soc_percent: 70
-        power_kw: 150
-      - soc_percent: 80
-        power_kw: 95
-      - soc_percent: 90
-        power_kw: 45
-      - soc_percent: 100
-        power_kw: 11
-    has_heat_pump: true
-    hvac_cop_heat: 2.3
-    wltp_consumption_kwh_100km:
-      value: 20.5
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: porsche_macan_ev_4
-    make: Porsche
-    model: Macan Electric
-    variant: "4"
-    year_from: 2024
-    vehicle_type: ev
-    mass_kg: 2355
-    frontal_area_m2: 2.70
-    drag_coefficient_cd: 0.25
-    tire_class: suv
-    battery_usable_kwh: 95.0
-    ac_charging_kw: 11
-    dc_charging_kw: 270
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 270
-      - soc_percent: 10
-        power_kw: 270
-      - soc_percent: 20
-        power_kw: 270
-      - soc_percent: 30
-        power_kw: 260
-      - soc_percent: 50
-        power_kw: 220
-      - soc_percent: 70
-        power_kw: 150
-      - soc_percent: 80
-        power_kw: 95
-      - soc_percent: 90
-        power_kw: 45
-      - soc_percent: 100
-        power_kw: 11
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 19.5
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
+- id: porsche_taycan_4s
+  make: Porsche
+  model: Taycan
+  variant: 4S
+  year_from: 2020
+  vehicle_type: ev
+  mass_kg: 2295
+  frontal_area_m2: 2.4
+  drag_coefficient_cd: 0.22
+  tire_class: sport
+  battery_usable_kwh: 79.2
+  ac_charging_kw: 11
+  dc_charging_kw: 270
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 270
+  - soc_percent: 10
+    power_kw: 270
+  - soc_percent: 20
+    power_kw: 270
+  - soc_percent: 30
+    power_kw: 260
+  - soc_percent: 50
+    power_kw: 220
+  - soc_percent: 70
+    power_kw: 150
+  - soc_percent: 80
+    power_kw: 95
+  - soc_percent: 90
+    power_kw: 45
+  - soc_percent: 100
+    power_kw: 11
+  has_heat_pump: true
+  hvac_cop_heat: 2.3
+  wltp_consumption_kwh_100km:
+    value: 20.5
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4963
+  ground_clearance_mm: 127
+  drivetrain: awd
+  new_price_eur: 109600
+  trunk_volume_l: 407
+- id: porsche_macan_ev_4
+  make: Porsche
+  model: Macan Electric
+  variant: '4'
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 2355
+  frontal_area_m2: 2.7
+  drag_coefficient_cd: 0.25
+  tire_class: suv
+  battery_usable_kwh: 95.0
+  ac_charging_kw: 11
+  dc_charging_kw: 270
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 270
+  - soc_percent: 10
+    power_kw: 270
+  - soc_percent: 20
+    power_kw: 270
+  - soc_percent: 30
+    power_kw: 260
+  - soc_percent: 50
+    power_kw: 220
+  - soc_percent: 70
+    power_kw: 150
+  - soc_percent: 80
+    power_kw: 95
+  - soc_percent: 90
+    power_kw: 45
+  - soc_percent: 100
+    power_kw: 11
+  has_heat_pump: true
+  hvac_cop_heat: 2.5
+  wltp_consumption_kwh_100km:
+    value: 19.5
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4784
+  ground_clearance_mm: 176
+  drivetrain: awd
+  new_price_eur: 84000
+  trunk_volume_l: 540

@@ -1,354 +1,392 @@
-# Volkswagen vehicles (EV + ICE reference)
-# Last updated: 2026-05-23
-
 vehicles:
-  - id: vw_id3_pro
-    make: Volkswagen
-    model: ID.3
-    variant: "Pro 58 kWh"
-    year_from: 2020
-    vehicle_type: ev
-    mass_kg: 1820
-    frontal_area_m2: 2.60
-    drag_coefficient_cd: 0.267
-    tire_class: standard
-    battery_usable_kwh: 58.0
-    ac_charging_kw: 11
-    dc_charging_kw: 120
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 120
-      - soc_percent: 10
-        power_kw: 120
-      - soc_percent: 20
-        power_kw: 120
-      - soc_percent: 30
-        power_kw: 115
-      - soc_percent: 50
-        power_kw: 100
-      - soc_percent: 70
-        power_kw: 70
-      - soc_percent: 80
-        power_kw: 45
-      - soc_percent: 90
-        power_kw: 22
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 15.4
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: vw_id3_pro_s
-    make: Volkswagen
-    model: ID.3
-    variant: "Pro S 77 kWh"
-    year_from: 2022
-    vehicle_type: ev
-    mass_kg: 1925
-    frontal_area_m2: 2.60
-    drag_coefficient_cd: 0.267
-    tire_class: standard
-    battery_usable_kwh: 77.0
-    ac_charging_kw: 11
-    dc_charging_kw: 135
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 135
-      - soc_percent: 10
-        power_kw: 135
-      - soc_percent: 20
-        power_kw: 135
-      - soc_percent: 30
-        power_kw: 130
-      - soc_percent: 50
-        power_kw: 110
-      - soc_percent: 70
-        power_kw: 80
-      - soc_percent: 80
-        power_kw: 50
-      - soc_percent: 90
-        power_kw: 25
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 15.9
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: vw_id4_pro
-    make: Volkswagen
-    model: ID.4
-    variant: "Pro 77 kWh"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 2124
-    frontal_area_m2: 2.75
-    drag_coefficient_cd: 0.28
-    tire_class: suv
-    battery_usable_kwh: 77.0
-    ac_charging_kw: 11
-    dc_charging_kw: 135
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 135
-      - soc_percent: 10
-        power_kw: 135
-      - soc_percent: 20
-        power_kw: 135
-      - soc_percent: 30
-        power_kw: 130
-      - soc_percent: 50
-        power_kw: 110
-      - soc_percent: 70
-        power_kw: 80
-      - soc_percent: 80
-        power_kw: 50
-      - soc_percent: 90
-        power_kw: 25
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 17.2
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: vw_id4_sr
-    make: Volkswagen
-    model: ID.4
-    variant: "City 52 kWh"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 1970
-    frontal_area_m2: 2.75
-    drag_coefficient_cd: 0.28
-    tire_class: suv
-    battery_usable_kwh: 52.0
-    ac_charging_kw: 11
-    dc_charging_kw: 100
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 100
-      - soc_percent: 10
-        power_kw: 100
-      - soc_percent: 20
-        power_kw: 100
-      - soc_percent: 30
-        power_kw: 95
-      - soc_percent: 50
-        power_kw: 80
-      - soc_percent: 70
-        power_kw: 55
-      - soc_percent: 80
-        power_kw: 35
-      - soc_percent: 90
-        power_kw: 18
-      - soc_percent: 100
-        power_kw: 6
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 16.5
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: vw_id5_pro
-    make: Volkswagen
-    model: ID.5
-    variant: "Pro 77 kWh"
-    year_from: 2022
-    vehicle_type: ev
-    mass_kg: 2175
-    frontal_area_m2: 2.65
-    drag_coefficient_cd: 0.26
-    tire_class: suv
-    battery_usable_kwh: 77.0
-    ac_charging_kw: 11
-    dc_charging_kw: 135
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 135
-      - soc_percent: 10
-        power_kw: 135
-      - soc_percent: 20
-        power_kw: 135
-      - soc_percent: 30
-        power_kw: 130
-      - soc_percent: 50
-        power_kw: 110
-      - soc_percent: 70
-        power_kw: 80
-      - soc_percent: 80
-        power_kw: 50
-      - soc_percent: 90
-        power_kw: 25
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 16.4
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: vw_id7_pro
-    make: Volkswagen
-    model: ID.7
-    variant: "Pro 77 kWh"
-    year_from: 2024
-    vehicle_type: ev
-    mass_kg: 2160
-    frontal_area_m2: 2.60
-    drag_coefficient_cd: 0.237
-    tire_class: eco_lrr
-    battery_usable_kwh: 77.0
-    ac_charging_kw: 11
-    dc_charging_kw: 170
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 170
-      - soc_percent: 10
-        power_kw: 170
-      - soc_percent: 20
-        power_kw: 170
-      - soc_percent: 30
-        power_kw: 165
-      - soc_percent: 50
-        power_kw: 140
-      - soc_percent: 70
-        power_kw: 100
-      - soc_percent: 80
-        power_kw: 65
-      - soc_percent: 90
-        power_kw: 30
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: true
-    hvac_cop_heat: 2.3
-    wltp_consumption_kwh_100km:
-      value: 15.3
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: vw_id_buzz
-    make: Volkswagen
-    model: ID. Buzz
-    variant: "Pro 77 kWh"
-    year_from: 2024
-    vehicle_type: ev
-    mass_kg: 2315
-    frontal_area_m2: 3.40
-    drag_coefficient_cd: 0.29
-    tire_class: van_truck
-    battery_usable_kwh: 77.0
-    ac_charging_kw: 11
-    dc_charging_kw: 170
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 170
-      - soc_percent: 10
-        power_kw: 170
-      - soc_percent: 20
-        power_kw: 170
-      - soc_percent: 30
-        power_kw: 165
-      - soc_percent: 50
-        power_kw: 140
-      - soc_percent: 70
-        power_kw: 100
-      - soc_percent: 80
-        power_kw: 65
-      - soc_percent: 90
-        power_kw: 30
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: true
-    hvac_cop_heat: 2.2
-    wltp_consumption_kwh_100km:
-      value: 19.8
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: vw_golf_20_tdi
-    make: Volkswagen
-    model: Golf
-    variant: "2.0 TDI (Mk8)"
-    year_from: 2020
-    vehicle_type: ice
-    mass_kg: 1380
-    frontal_area_m2: 2.30
-    drag_coefficient_cd: 0.275
-    tire_class: standard
-    fuel_type: diesel
-    real_consumption_l_100km:
-      value: 5.0
-      source_ref: demo
-    source_refs:
-      demo:
-        name: "Demo estimate"
-        confidence: low
-
-  - id: vw_golf_20_tsi
-    make: Volkswagen
-    model: Golf
-    variant: "2.0 TSI (Mk8)"
-    year_from: 2020
-    vehicle_type: ice
-    mass_kg: 1355
-    frontal_area_m2: 2.30
-    drag_coefficient_cd: 0.275
-    tire_class: standard
-    fuel_type: gasoline
-    real_consumption_l_100km:
-      value: 6.5
-      source_ref: demo
-    source_refs:
-      demo:
-        name: "Demo estimate"
-        confidence: low
-
-  - id: vw_crafter_35
-    make: Volkswagen
-    model: Crafter
-    variant: "35 L2H2"
-    year_from: 2017
-    vehicle_type: van
-    mass_kg: 2150
-    frontal_area_m2: 4.20
-    drag_coefficient_cd: 0.40
-    tire_class: van_truck
-    fuel_type: diesel
-    real_consumption_l_100km:
-      value: 9.5
-      source_ref: demo
-    source_refs:
-      demo:
-        name: "Demo estimate"
-        confidence: low
+- id: vw_id3_pro
+  make: Volkswagen
+  model: ID.3
+  variant: Pro 58 kWh
+  year_from: 2020
+  vehicle_type: ev
+  mass_kg: 1820
+  frontal_area_m2: 2.6
+  drag_coefficient_cd: 0.267
+  tire_class: standard
+  battery_usable_kwh: 58.0
+  ac_charging_kw: 11
+  dc_charging_kw: 120
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 120
+  - soc_percent: 10
+    power_kw: 120
+  - soc_percent: 20
+    power_kw: 120
+  - soc_percent: 30
+    power_kw: 115
+  - soc_percent: 50
+    power_kw: 100
+  - soc_percent: 70
+    power_kw: 70
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 90
+    power_kw: 22
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 15.4
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4261
+  ground_clearance_mm: 150
+  drivetrain: rwd
+  new_price_eur: 39990
+  trunk_volume_l: 385
+- id: vw_id3_pro_s
+  make: Volkswagen
+  model: ID.3
+  variant: Pro S 77 kWh
+  year_from: 2022
+  vehicle_type: ev
+  mass_kg: 1925
+  frontal_area_m2: 2.6
+  drag_coefficient_cd: 0.267
+  tire_class: standard
+  battery_usable_kwh: 77.0
+  ac_charging_kw: 11
+  dc_charging_kw: 135
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 135
+  - soc_percent: 10
+    power_kw: 135
+  - soc_percent: 20
+    power_kw: 135
+  - soc_percent: 30
+    power_kw: 130
+  - soc_percent: 50
+    power_kw: 110
+  - soc_percent: 70
+    power_kw: 80
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 15.9
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4261
+  ground_clearance_mm: 150
+  drivetrain: rwd
+  new_price_eur: 46490
+  trunk_volume_l: 385
+- id: vw_id4_pro
+  make: Volkswagen
+  model: ID.4
+  variant: Pro 77 kWh
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 2124
+  frontal_area_m2: 2.75
+  drag_coefficient_cd: 0.28
+  tire_class: suv
+  battery_usable_kwh: 77.0
+  ac_charging_kw: 11
+  dc_charging_kw: 135
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 135
+  - soc_percent: 10
+    power_kw: 135
+  - soc_percent: 20
+    power_kw: 135
+  - soc_percent: 30
+    power_kw: 130
+  - soc_percent: 50
+    power_kw: 110
+  - soc_percent: 70
+    power_kw: 80
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 17.2
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4584
+  ground_clearance_mm: 174
+  drivetrain: rwd
+  new_price_eur: 44490
+  trunk_volume_l: 543
+- id: vw_id4_sr
+  make: Volkswagen
+  model: ID.4
+  variant: City 52 kWh
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 1970
+  frontal_area_m2: 2.75
+  drag_coefficient_cd: 0.28
+  tire_class: suv
+  battery_usable_kwh: 52.0
+  ac_charging_kw: 11
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 10
+    power_kw: 100
+  - soc_percent: 20
+    power_kw: 100
+  - soc_percent: 30
+    power_kw: 95
+  - soc_percent: 50
+    power_kw: 80
+  - soc_percent: 70
+    power_kw: 55
+  - soc_percent: 80
+    power_kw: 35
+  - soc_percent: 90
+    power_kw: 18
+  - soc_percent: 100
+    power_kw: 6
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 16.5
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4584
+  ground_clearance_mm: 174
+  drivetrain: rwd
+  new_price_eur: 39990
+  trunk_volume_l: 543
+- id: vw_id5_pro
+  make: Volkswagen
+  model: ID.5
+  variant: Pro 77 kWh
+  year_from: 2022
+  vehicle_type: ev
+  mass_kg: 2175
+  frontal_area_m2: 2.65
+  drag_coefficient_cd: 0.26
+  tire_class: suv
+  battery_usable_kwh: 77.0
+  ac_charging_kw: 11
+  dc_charging_kw: 135
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 135
+  - soc_percent: 10
+    power_kw: 135
+  - soc_percent: 20
+    power_kw: 135
+  - soc_percent: 30
+    power_kw: 130
+  - soc_percent: 50
+    power_kw: 110
+  - soc_percent: 70
+    power_kw: 80
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 16.4
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4599
+  ground_clearance_mm: 174
+  drivetrain: rwd
+  new_price_eur: 46490
+  trunk_volume_l: 549
+- id: vw_id7_pro
+  make: Volkswagen
+  model: ID.7
+  variant: Pro 77 kWh
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 2160
+  frontal_area_m2: 2.6
+  drag_coefficient_cd: 0.237
+  tire_class: eco_lrr
+  battery_usable_kwh: 77.0
+  ac_charging_kw: 11
+  dc_charging_kw: 170
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 170
+  - soc_percent: 10
+    power_kw: 170
+  - soc_percent: 20
+    power_kw: 170
+  - soc_percent: 30
+    power_kw: 165
+  - soc_percent: 50
+    power_kw: 140
+  - soc_percent: 70
+    power_kw: 100
+  - soc_percent: 80
+    power_kw: 65
+  - soc_percent: 90
+    power_kw: 30
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.3
+  wltp_consumption_kwh_100km:
+    value: 15.3
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4961
+  ground_clearance_mm: 145
+  drivetrain: rwd
+  new_price_eur: 53490
+  trunk_volume_l: 532
+- id: vw_id_buzz
+  make: Volkswagen
+  model: ID. Buzz
+  variant: Pro 77 kWh
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 2315
+  frontal_area_m2: 3.4
+  drag_coefficient_cd: 0.29
+  tire_class: van_truck
+  battery_usable_kwh: 77.0
+  ac_charging_kw: 11
+  dc_charging_kw: 170
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 170
+  - soc_percent: 10
+    power_kw: 170
+  - soc_percent: 20
+    power_kw: 170
+  - soc_percent: 30
+    power_kw: 165
+  - soc_percent: 50
+    power_kw: 140
+  - soc_percent: 70
+    power_kw: 100
+  - soc_percent: 80
+    power_kw: 65
+  - soc_percent: 90
+    power_kw: 30
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.2
+  wltp_consumption_kwh_100km:
+    value: 19.8
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4712
+  ground_clearance_mm: 164
+  drivetrain: rwd
+  new_price_eur: 57990
+  trunk_volume_l: 1121
+- id: vw_golf_20_tdi
+  make: Volkswagen
+  model: Golf
+  variant: 2.0 TDI (Mk8)
+  year_from: 2020
+  vehicle_type: ice
+  mass_kg: 1380
+  frontal_area_m2: 2.3
+  drag_coefficient_cd: 0.275
+  tire_class: standard
+  fuel_type: diesel
+  real_consumption_l_100km:
+    value: 5.0
+    source_ref: demo
+  source_refs:
+    demo:
+      name: Demo estimate
+      confidence: low
+  length_mm: 4284
+  ground_clearance_mm: 142
+  drivetrain: fwd
+  new_price_eur: 35440
+  trunk_volume_l: 381
+- id: vw_golf_20_tsi
+  make: Volkswagen
+  model: Golf
+  variant: 2.0 TSI (Mk8)
+  year_from: 2020
+  vehicle_type: ice
+  mass_kg: 1355
+  frontal_area_m2: 2.3
+  drag_coefficient_cd: 0.275
+  tire_class: standard
+  fuel_type: gasoline
+  real_consumption_l_100km:
+    value: 6.5
+    source_ref: demo
+  source_refs:
+    demo:
+      name: Demo estimate
+      confidence: low
+  length_mm: 4284
+  ground_clearance_mm: 142
+  drivetrain: fwd
+  new_price_eur: 33730
+  trunk_volume_l: 381
+- id: vw_crafter_35
+  make: Volkswagen
+  model: Crafter
+  variant: 35 L2H2
+  year_from: 2017
+  vehicle_type: van
+  mass_kg: 2150
+  frontal_area_m2: 4.2
+  drag_coefficient_cd: 0.4
+  tire_class: van_truck
+  fuel_type: diesel
+  real_consumption_l_100km:
+    value: 9.5
+    source_ref: demo
+  source_refs:
+    demo:
+      name: Demo estimate
+      confidence: low
+  length_mm: 5986
+  ground_clearance_mm: 180
+  drivetrain: fwd
+  new_price_eur: 46800
+  trunk_volume_l: 9300

@@ -1,171 +1,185 @@
-# Polestar vehicles
-# Last updated: 2026-05-23
-
 vehicles:
-  - id: polestar_2_std
-    make: Polestar
-    model: "2"
-    variant: "Standard Range"
-    year_from: 2020
-    vehicle_type: ev
-    mass_kg: 2070
-    frontal_area_m2: 2.50
-    drag_coefficient_cd: 0.24
-    tire_class: standard
-    battery_usable_kwh: 67.0
-    ac_charging_kw: 11
-    dc_charging_kw: 130
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 130
-      - soc_percent: 10
-        power_kw: 130
-      - soc_percent: 20
-        power_kw: 130
-      - soc_percent: 30
-        power_kw: 125
-      - soc_percent: 50
-        power_kw: 105
-      - soc_percent: 70
-        power_kw: 72
-      - soc_percent: 80
-        power_kw: 45
-      - soc_percent: 90
-        power_kw: 22
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.3
-    wltp_consumption_kwh_100km:
-      value: 17.5
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: polestar_2_lr
-    make: Polestar
-    model: "2"
-    variant: "Long Range Dual Motor"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 2185
-    frontal_area_m2: 2.50
-    drag_coefficient_cd: 0.24
-    tire_class: standard
-    battery_usable_kwh: 78.0
-    ac_charging_kw: 11
-    dc_charging_kw: 155
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 155
-      - soc_percent: 10
-        power_kw: 155
-      - soc_percent: 20
-        power_kw: 155
-      - soc_percent: 30
-        power_kw: 150
-      - soc_percent: 50
-        power_kw: 128
-      - soc_percent: 70
-        power_kw: 88
-      - soc_percent: 80
-        power_kw: 55
-      - soc_percent: 90
-        power_kw: 27
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.3
-    wltp_consumption_kwh_100km:
-      value: 19.0
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: polestar_3_lr
-    make: Polestar
-    model: "3"
-    variant: "Long Range Dual Motor"
-    year_from: 2024
-    vehicle_type: ev
-    mass_kg: 2540
-    frontal_area_m2: 2.80
-    drag_coefficient_cd: 0.27
-    tire_class: suv
-    battery_usable_kwh: 107.0
-    ac_charging_kw: 11
-    dc_charging_kw: 200
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 200
-      - soc_percent: 10
-        power_kw: 200
-      - soc_percent: 20
-        power_kw: 200
-      - soc_percent: 30
-        power_kw: 195
-      - soc_percent: 50
-        power_kw: 165
-      - soc_percent: 70
-        power_kw: 115
-      - soc_percent: 80
-        power_kw: 70
-      - soc_percent: 90
-        power_kw: 32
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 20.2
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: polestar_4_sr
-    make: Polestar
-    model: "4"
-    variant: "Single Motor"
-    year_from: 2024
-    vehicle_type: ev
-    mass_kg: 2030
-    frontal_area_m2: 2.60
-    drag_coefficient_cd: 0.26
-    tire_class: standard
-    battery_usable_kwh: 80.0
-    ac_charging_kw: 11
-    dc_charging_kw: 170
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 170
-      - soc_percent: 10
-        power_kw: 170
-      - soc_percent: 20
-        power_kw: 170
-      - soc_percent: 30
-        power_kw: 165
-      - soc_percent: 50
-        power_kw: 140
-      - soc_percent: 70
-        power_kw: 100
-      - soc_percent: 80
-        power_kw: 65
-      - soc_percent: 90
-        power_kw: 30
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: true
-    hvac_cop_heat: 2.5
-    wltp_consumption_kwh_100km:
-      value: 17.2
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
+- id: polestar_2_std
+  make: Polestar
+  model: '2'
+  variant: Standard Range
+  year_from: 2020
+  vehicle_type: ev
+  mass_kg: 2070
+  frontal_area_m2: 2.5
+  drag_coefficient_cd: 0.24
+  tire_class: standard
+  battery_usable_kwh: 67.0
+  ac_charging_kw: 11
+  dc_charging_kw: 130
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 130
+  - soc_percent: 10
+    power_kw: 130
+  - soc_percent: 20
+    power_kw: 130
+  - soc_percent: 30
+    power_kw: 125
+  - soc_percent: 50
+    power_kw: 105
+  - soc_percent: 70
+    power_kw: 72
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 90
+    power_kw: 22
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.3
+  wltp_consumption_kwh_100km:
+    value: 17.5
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4606
+  ground_clearance_mm: 141
+  drivetrain: fwd
+  new_price_eur: 48400
+  trunk_volume_l: 405
+- id: polestar_2_lr
+  make: Polestar
+  model: '2'
+  variant: Long Range Dual Motor
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 2185
+  frontal_area_m2: 2.5
+  drag_coefficient_cd: 0.24
+  tire_class: standard
+  battery_usable_kwh: 78.0
+  ac_charging_kw: 11
+  dc_charging_kw: 155
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 155
+  - soc_percent: 10
+    power_kw: 155
+  - soc_percent: 20
+    power_kw: 155
+  - soc_percent: 30
+    power_kw: 150
+  - soc_percent: 50
+    power_kw: 128
+  - soc_percent: 70
+    power_kw: 88
+  - soc_percent: 80
+    power_kw: 55
+  - soc_percent: 90
+    power_kw: 27
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.3
+  wltp_consumption_kwh_100km:
+    value: 19.0
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4606
+  ground_clearance_mm: 141
+  drivetrain: awd
+  new_price_eur: 53400
+  trunk_volume_l: 405
+- id: polestar_3_lr
+  make: Polestar
+  model: '3'
+  variant: Long Range Dual Motor
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 2540
+  frontal_area_m2: 2.8
+  drag_coefficient_cd: 0.27
+  tire_class: suv
+  battery_usable_kwh: 107.0
+  ac_charging_kw: 11
+  dc_charging_kw: 200
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 200
+  - soc_percent: 10
+    power_kw: 200
+  - soc_percent: 20
+    power_kw: 200
+  - soc_percent: 30
+    power_kw: 195
+  - soc_percent: 50
+    power_kw: 165
+  - soc_percent: 70
+    power_kw: 115
+  - soc_percent: 80
+    power_kw: 70
+  - soc_percent: 90
+    power_kw: 32
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.5
+  wltp_consumption_kwh_100km:
+    value: 20.2
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4900
+  ground_clearance_mm: 165
+  drivetrain: awd
+  new_price_eur: 85000
+  trunk_volume_l: 484
+- id: polestar_4_sr
+  make: Polestar
+  model: '4'
+  variant: Single Motor
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 2030
+  frontal_area_m2: 2.6
+  drag_coefficient_cd: 0.26
+  tire_class: standard
+  battery_usable_kwh: 80.0
+  ac_charging_kw: 11
+  dc_charging_kw: 170
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 170
+  - soc_percent: 10
+    power_kw: 170
+  - soc_percent: 20
+    power_kw: 170
+  - soc_percent: 30
+    power_kw: 165
+  - soc_percent: 50
+    power_kw: 140
+  - soc_percent: 70
+    power_kw: 100
+  - soc_percent: 80
+    power_kw: 65
+  - soc_percent: 90
+    power_kw: 30
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.5
+  wltp_consumption_kwh_100km:
+    value: 17.2
+    source_ref: wltp
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  length_mm: 4840
+  ground_clearance_mm: 165
+  drivetrain: rwd
+  new_price_eur: 57500
+  trunk_volume_l: 526
