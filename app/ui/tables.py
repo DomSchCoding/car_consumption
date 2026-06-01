@@ -321,13 +321,13 @@ def build_vehicle_detail_html(v: Vehicle) -> str:
     html = '<div style="font-family:system-ui, sans-serif;">'
 
     # Inline CSS for tabular detail layout
-    html += '<style>'
-    html += '.detail-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0;}'
-    html += '.detail-label{font-weight:600;color:#555;font-size:0.88em;min-width:180px;flex-shrink:0;}'
-    html += '.detail-value{text-align:right;font-size:0.88em;color:#333;font-weight:500;}'
-    html += '.detail-header{font-weight:700;font-size:1em;color:#333;padding:8px 0 4px 0;border-bottom:2px solid #e0e0e0;margin-bottom:4px;}'
-    html += '.missing-tag{font-size:0.72em;color:#EF553B;margin-left:4px;}'
-    html += '</style>'
+    html += "<style>"
+    html += ".detail-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0;}"
+    html += ".detail-label{font-weight:600;color:#555;font-size:0.88em;min-width:180px;flex-shrink:0;}"
+    html += ".detail-value{text-align:right;font-size:0.88em;color:#333;font-weight:500;}"
+    html += ".detail-header{font-weight:700;font-size:1em;color:#333;padding:8px 0 4px 0;border-bottom:2px solid #e0e0e0;margin-bottom:4px;}"
+    html += ".missing-tag{font-size:0.72em;color:#EF553B;margin-left:4px;}"
+    html += "</style>"
 
     html += f'<div class="detail-card" style="{_DC} display:flex; gap:20px; align-items:flex-start;">'
     if has_image:

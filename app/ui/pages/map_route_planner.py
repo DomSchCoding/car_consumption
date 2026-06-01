@@ -498,12 +498,10 @@ def map_route_page() -> None:
                     ui.label("⚠️ No vehicles selected").style(
                         "font-size:1.1em; font-weight:700; color:#FFA15A; margin-bottom:8px;"
                     )
-                    ui.label("Go to the COMPARE tab and select vehicles first.").style(
-                        "font-size:0.9em; color:#666;"
-                    )
-                    ui.button("Go to COMPARE", on_click=lambda: ui.run_javascript("window.location.hash = 'tab-compare'")).props(
-                        "color=primary outline"
-                    ).style("margin-top:12px;")
+                    ui.label("Go to the COMPARE tab and select vehicles first.").style("font-size:0.9em; color:#666;")
+                    ui.button(
+                        "Go to COMPARE", on_click=lambda: ui.run_javascript("window.location.hash = 'tab-compare'")
+                    ).props("color=primary outline").style("margin-top:12px;")
             return
 
         params = PhysicsParams()
@@ -527,7 +525,7 @@ def map_route_page() -> None:
             try:
                 # Debug: Check segments
                 if not commute.route.segments:
-                    ui.notify(f"⚠️ Route has 0 segments!", type="warning", position="top")
+                    ui.notify("⚠️ Route has 0 segments!", type="warning", position="top")
                     continue
                 result = commute_energy(
                     v,
@@ -546,6 +544,7 @@ def map_route_page() -> None:
                 )
             except Exception as e:
                 import traceback
+
                 ui.notify(f"❌ Energy calculation failed: {e}", type="negative", position="top", timeout=10000)
                 traceback.print_exc()
 

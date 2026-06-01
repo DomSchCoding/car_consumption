@@ -7,9 +7,9 @@ Images are stored as app/assets/images/{vehicle_id}.jpg with a max width of 400p
 import json
 import sys
 import time
-import urllib.request
-import urllib.parse
 import urllib.error
+import urllib.parse
+import urllib.request
 from pathlib import Path
 
 ASSETS_DIR = Path(__file__).resolve().parent.parent / "app" / "assets"
@@ -18,7 +18,6 @@ VEHICLES_DIR = ASSETS_DIR / "vehicles"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from app.data.models import Vehicle
 from app.data.repository import VehicleRepository
 
 WIKI_API = "https://en.wikipedia.org/w/api.php"
@@ -227,13 +226,13 @@ def main() -> None:
                     "attribution": attribution,
                     "file": str(dest.name),
                 }
-                print(f"    -> downloaded")
+                print("    -> downloaded")
             else:
                 results[v.id] = {"status": "download_failed", "attribution": None}
-                print(f"    -> download FAILED")
+                print("    -> download FAILED")
         else:
             results[v.id] = {"status": "no_image_found", "attribution": None}
-            print(f"    -> no image found")
+            print("    -> no image found")
 
         time.sleep(RATE_LIMIT)
 

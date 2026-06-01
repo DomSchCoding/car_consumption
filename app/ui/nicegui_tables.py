@@ -259,18 +259,16 @@ def render_ranking_list(
 
                 # Consumption value with slim progress bar underneath
                 with ui.column().style("align-items:flex-end; gap:2px; min-width:80px;"):
-                    ui.label(f"{val:.1f} kWh").style(
-                        "font-size:0.85em; font-weight:700; color:" + color + ";"
-                    )
+                    ui.label(f"{val:.1f} kWh").style("font-size:0.85em; font-weight:700; color:" + color + ";")
                     # Slim progress bar - only 80px wide
-                    with ui.element("div").style("width:80px; height:6px; background:#e0e0e0; border-radius:3px; overflow:hidden;"):
+                    with ui.element("div").style(
+                        "width:80px; height:6px; background:#e0e0e0; border-radius:3px; overflow:hidden;"
+                    ):
                         ui.element("div").style(
                             f"width:{100 - pct:.0f}%; height:100%; background:{color}; border-radius:3px;"
                         )
                     if rng is not None:
-                        ui.label(f"{rng:.0f} km").style(
-                            "font-size:0.75em; color:#888; font-weight:500;"
-                        )
+                        ui.label(f"{rng:.0f} km").style("font-size:0.75em; color:#888; font-weight:500;")
 
     # Footer
     cap_pct = battery_capacity_factor(params.temperature_c) * 100
