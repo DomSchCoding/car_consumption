@@ -1,0 +1,84 @@
+vehicles:
+- id: smart_1_pro_plus
+  make: Smart
+  model: '#1'
+  variant: Pro+
+  year_from: 2023
+  vehicle_type: ev
+  mass_kg: 1820
+  frontal_area_m2: 2.44
+  drag_coefficient_cd: 0.29
+  tire_class: suv
+  battery_usable_kwh: 62.0
+  ac_charging_kw: 22
+  dc_charging_kw: 150
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 150
+  - soc_percent: 10
+    power_kw: 150
+  - soc_percent: 30
+    power_kw: 140
+  - soc_percent: 50
+    power_kw: 110
+  - soc_percent: 70
+    power_kw: 75
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: true
+  hvac_cop_heat: 3.0
+  wltp_consumption_kwh_100km:
+    value: 16.8
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 18.0
+    source_ref: evdb
+  length_mm: 4270
+  ground_clearance_mm: 160
+  drivetrain: rwd
+  new_price_eur: 41490
+  trunk_volume_l: 323
+- id: smart_3_premium
+  make: Smart
+  model: '#3'
+  variant: Premium
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 1910
+  frontal_area_m2: 2.5
+  drag_coefficient_cd: 0.27
+  tire_class: suv
+  battery_usable_kwh: 62.0
+  ac_charging_kw: 22
+  dc_charging_kw: 150
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 150
+  - soc_percent: 10
+    power_kw: 150
+  - soc_percent: 30
+    power_kw: 140
+  - soc_percent: 50
+    power_kw: 110
+  - soc_percent: 70
+    power_kw: 75
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: true
+  hvac_cop_heat: 3.0
+  wltp_consumption_kwh_100km:
+    value: 17.1
+    source_ref: wltp
+  length_mm: 4400
+  ground_clearance_mm: 165
+  drivetrain: rwd
+  new_price_eur: 44990
+  trunk_volume_l: 370

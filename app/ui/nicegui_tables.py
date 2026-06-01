@@ -20,6 +20,7 @@ from app.data.repository import VehicleRepository
 from app.ui.components.vehicle_selector import (
     get_vehicle_c_rr,
     make_vehicle_label,
+    passes_vehicle_filters,
     tire_class_label,
 )
 
@@ -148,9 +149,12 @@ def render_ranking_list(
     use_per_vehicle_tires: bool,
     repo: VehicleRepository,
     sort_by_range: bool = False,
+    vehicle_filters: dict | None = None,
 ) -> None:
     """Render fleet ranking using NiceGUI list + linear progress."""
     all_vehicles = repo.get_all()
+    if vehicle_filters:
+        all_vehicles = [v for v in all_vehicles if passes_vehicle_filters(v, vehicle_filters)]
 
     entries: list[tuple[str, str, float, float | None]] = []
 
@@ -255,18 +259,16 @@ def render_ranking_list(
 
                 # Consumption value with slim progress bar underneath
                 with ui.column().style("align-items:flex-end; gap:2px; min-width:80px;"):
-                    ui.label(f"{val:.1f} kWh").style(
-                        "font-size:0.85em; font-weight:700; color:" + color + ";"
-                    )
+                    ui.label(f"{val:.1f} kWh").style("font-size:0.85em; font-weight:700; color:" + color + ";")
                     # Slim progress bar - only 80px wide
-                    with ui.element("div").style("width:80px; height:6px; background:#e0e0e0; border-radius:3px; overflow:hidden;"):
+                    with ui.element("div").style(
+                        "width:80px; height:6px; background:#e0e0e0; border-radius:3px; overflow:hidden;"
+                    ):
                         ui.element("div").style(
                             f"width:{100 - pct:.0f}%; height:100%; background:{color}; border-radius:3px;"
                         )
                     if rng is not None:
-                        ui.label(f"{rng:.0f} km").style(
-                            "font-size:0.75em; color:#888; font-weight:500;"
-                        )
+                        ui.label(f"{rng:.0f} km").style("font-size:0.75em; color:#888; font-weight:500;")
 
     # Footer
     cap_pct = battery_capacity_factor(params.temperature_c) * 100

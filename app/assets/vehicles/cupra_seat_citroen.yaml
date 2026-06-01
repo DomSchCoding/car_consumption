@@ -1,129 +1,378 @@
-# Cupra, Seat, Citroen vehicles
-# Last updated: 2026-05-23
-
 vehicles:
-  - id: cupra_tavascan_vz
-    make: Cupra
-    model: Tavascan
-    variant: "VZ"
-    year_from: 2024
-    vehicle_type: ev
-    mass_kg: 2230
-    frontal_area_m2: 2.70
-    drag_coefficient_cd: 0.26
-    tire_class: suv
-    battery_usable_kwh: 77.0
-    ac_charging_kw: 11
-    dc_charging_kw: 135
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 135
-      - soc_percent: 10
-        power_kw: 135
-      - soc_percent: 20
-        power_kw: 135
-      - soc_percent: 30
-        power_kw: 130
-      - soc_percent: 50
-        power_kw: 110
-      - soc_percent: 70
-        power_kw: 80
-      - soc_percent: 80
-        power_kw: 50
-      - soc_percent: 90
-        power_kw: 25
-      - soc_percent: 100
-        power_kw: 7
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 18.5
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: seat_mii_electric
-    make: Seat
-    model: Mii Electric
-    variant: ""
-    year_from: 2020
-    year_to: 2021
-    vehicle_type: ev
-    mass_kg: 1190
-    frontal_area_m2: 2.15
-    drag_coefficient_cd: 0.31
-    tire_class: standard
-    battery_usable_kwh: 32.3
-    ac_charging_kw: 7.4
-    dc_charging_kw: 40
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 40
-      - soc_percent: 10
-        power_kw: 40
-      - soc_percent: 20
-        power_kw: 40
-      - soc_percent: 30
-        power_kw: 38
-      - soc_percent: 50
-        power_kw: 32
-      - soc_percent: 70
-        power_kw: 22
-      - soc_percent: 80
-        power_kw: 14
-      - soc_percent: 90
-        power_kw: 8
-      - soc_percent: 100
-        power_kw: 4
-    has_heat_pump: false
-    wltp_consumption_kwh_100km:
-      value: 13.5
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: citroen_ec4_50
-    make: Citroen
-    model: e-C4
-    variant: "50 kWh"
-    year_from: 2021
-    vehicle_type: ev
-    mass_kg: 1555
-    frontal_area_m2: 2.45
-    drag_coefficient_cd: 0.28
-    tire_class: standard
-    battery_usable_kwh: 50.0
-    ac_charging_kw: 7.4
-    dc_charging_kw: 50
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 50
-      - soc_percent: 10
-        power_kw: 50
-      - soc_percent: 20
-        power_kw: 50
-      - soc_percent: 30
-        power_kw: 47
-      - soc_percent: 50
-        power_kw: 40
-      - soc_percent: 70
-        power_kw: 28
-      - soc_percent: 80
-        power_kw: 18
-      - soc_percent: 90
-        power_kw: 10
-      - soc_percent: 100
-        power_kw: 5
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 16.0
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
+- id: cupra_tavascan_vz
+  make: Cupra
+  model: Tavascan
+  variant: VZ
+  year_from: 2023
+  vehicle_type: ev
+  mass_kg: 2230
+  frontal_area_m2: 2.7
+  drag_coefficient_cd: 0.26
+  tire_class: suv
+  battery_usable_kwh: 77.0
+  ac_charging_kw: 11
+  dc_charging_kw: 135
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 135
+  - soc_percent: 10
+    power_kw: 135
+  - soc_percent: 20
+    power_kw: 135
+  - soc_percent: 30
+    power_kw: 130
+  - soc_percent: 50
+    power_kw: 110
+  - soc_percent: 70
+    power_kw: 80
+  - soc_percent: 80
+    power_kw: 50
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 7
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 18.5
+    source_ref: wltp
+  length_mm: 4475
+  ground_clearance_mm: 180
+  drivetrain: awd
+  new_price_eur: 63990
+  trunk_volume_l: 566
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: seat_mii_electric
+  make: Seat
+  model: Mii Electric
+  year_from: 2020
+  vehicle_type: ev
+  mass_kg: 1190
+  frontal_area_m2: 2.15
+  drag_coefficient_cd: 0.31
+  tire_class: standard
+  battery_usable_kwh: 32.3
+  ac_charging_kw: 7.4
+  dc_charging_kw: 40
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 13.5
+    source_ref: wltp
+  length_mm: 3531
+  ground_clearance_mm: 145
+  drivetrain: fwd
+  new_price_eur: 25990
+  trunk_volume_l: 280
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 40
+  - soc_percent: 10
+    power_kw: 40
+  - soc_percent: 20
+    power_kw: 40
+  - soc_percent: 30
+    power_kw: 38
+  - soc_percent: 50
+    power_kw: 32
+  - soc_percent: 70
+    power_kw: 22
+  - soc_percent: 80
+    power_kw: 14
+  - soc_percent: 90
+    power_kw: 8
+  - soc_percent: 100
+    power_kw: 4
+- id: citroen_ec4_50
+  make: Citroen
+  model: e-C4
+  variant: 50 kWh
+  year_from: 2022
+  vehicle_type: ev
+  mass_kg: 1555
+  frontal_area_m2: 2.45
+  drag_coefficient_cd: 0.28
+  tire_class: standard
+  battery_usable_kwh: 50.0
+  ac_charging_kw: 7.4
+  dc_charging_kw: 50
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 50
+  - soc_percent: 10
+    power_kw: 50
+  - soc_percent: 20
+    power_kw: 50
+  - soc_percent: 30
+    power_kw: 47
+  - soc_percent: 50
+    power_kw: 40
+  - soc_percent: 70
+    power_kw: 28
+  - soc_percent: 80
+    power_kw: 18
+  - soc_percent: 90
+    power_kw: 10
+  - soc_percent: 100
+    power_kw: 5
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 16.0
+    source_ref: wltp
+  length_mm: 4352
+  ground_clearance_mm: 152
+  drivetrain: fwd
+  new_price_eur: 40990
+  trunk_volume_l: 380
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: citroen_ec3_49
+  make: Citroen
+  model: e-C3
+  variant: 49 kWh
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 1390
+  frontal_area_m2: 2.2
+  drag_coefficient_cd: 0.31
+  tire_class: standard
+  battery_usable_kwh: 49.0
+  ac_charging_kw: 11
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 20
+    power_kw: 100
+  - soc_percent: 50
+    power_kw: 70
+  - soc_percent: 70
+    power_kw: 45
+  - soc_percent: 80
+    power_kw: 25
+  - soc_percent: 90
+    power_kw: 12
+  - soc_percent: 100
+    power_kw: 4
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 13.5
+    source_ref: wltp
+  length_mm: 4135
+  ground_clearance_mm: 150
+  drivetrain: fwd
+  new_price_eur: 28900
+  trunk_volume_l: 325
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: citroen_eberlingo
+  make: Citroen
+  model: e-Berlingo
+  variant: 50 kWh
+  year_from: 2021
+  vehicle_type: van
+  mass_kg: 1870
+  frontal_area_m2: 2.8
+  drag_coefficient_cd: 0.31
+  tire_class: van_truck
+  battery_usable_kwh: 50.0
+  ac_charging_kw: 11
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 20
+    power_kw: 100
+  - soc_percent: 50
+    power_kw: 70
+  - soc_percent: 70
+    power_kw: 45
+  - soc_percent: 80
+    power_kw: 25
+  - soc_percent: 90
+    power_kw: 12
+  - soc_percent: 100
+    power_kw: 4
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 18.0
+    source_ref: wltp
+  length_mm: 4548
+  ground_clearance_mm: 150
+  drivetrain: fwd
+  new_price_eur: 47600
+  trunk_volume_l: 3200
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: seat_arnor_55
+  make: Seat
+  model: Arno
+  variant: 55 kWh
+  year_from: 2025
+  vehicle_type: ev
+  mass_kg: 1530
+  frontal_area_m2: 2.35
+  drag_coefficient_cd: 0.29
+  tire_class: suv
+  battery_usable_kwh: 55.0
+  ac_charging_kw: 11
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 20
+    power_kw: 100
+  - soc_percent: 50
+    power_kw: 70
+  - soc_percent: 70
+    power_kw: 45
+  - soc_percent: 80
+    power_kw: 25
+  - soc_percent: 90
+    power_kw: 12
+  - soc_percent: 100
+    power_kw: 4
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 15.5
+    source_ref: wltp
+  length_mm: 4370
+  ground_clearance_mm: 175
+  drivetrain: fwd
+  new_price_eur: 36990
+  trunk_volume_l: 450
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: medium
+- id: citroen_ec3_44
+  make: Citroen
+  model: ë-C3
+  variant: 44 kWh
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 1416
+  frontal_area_m2: 2.3
+  drag_coefficient_cd: 0.3
+  tire_class: eco_lrr
+  battery_usable_kwh: 44.0
+  ac_charging_kw: 7.4
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 10
+    power_kw: 100
+  - soc_percent: 30
+    power_kw: 90
+  - soc_percent: 50
+    power_kw: 70
+  - soc_percent: 70
+    power_kw: 50
+  - soc_percent: 80
+    power_kw: 35
+  - soc_percent: 90
+    power_kw: 18
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 14.3
+    source_ref: wltp
+  length_mm: 3997
+  ground_clearance_mm: 145
+  drivetrain: fwd
+  new_price_eur: 23300
+  trunk_volume_l: 310
+- id: citroen_eberlingo_50
+  make: Citroen
+  model: ë-Berlingo
+  variant: 50 kWh
+  year_from: 2021
+  vehicle_type: ev
+  mass_kg: 1728
+  frontal_area_m2: 2.68
+  drag_coefficient_cd: 0.32
+  tire_class: standard
+  battery_usable_kwh: 50.0
+  ac_charging_kw: 7.4
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 10
+    power_kw: 100
+  - soc_percent: 30
+    power_kw: 90
+  - soc_percent: 50
+    power_kw: 70
+  - soc_percent: 70
+    power_kw: 50
+  - soc_percent: 80
+    power_kw: 35
+  - soc_percent: 90
+    power_kw: 18
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 18.9
+    source_ref: wltp
+  length_mm: 4403
+  ground_clearance_mm: 155
+  drivetrain: fwd
+  new_price_eur: 35490
+  trunk_volume_l: 775
+- id: alfa_junior_elettrica
+  make: Alfa Romeo
+  model: Junior
+  variant: Elettrica 54 kWh
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 1530
+  frontal_area_m2: 2.28
+  drag_coefficient_cd: 0.29
+  tire_class: eco_lrr
+  battery_usable_kwh: 54.0
+  ac_charging_kw: 7.4
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 10
+    power_kw: 100
+  - soc_percent: 30
+    power_kw: 90
+  - soc_percent: 50
+    power_kw: 70
+  - soc_percent: 70
+    power_kw: 50
+  - soc_percent: 80
+    power_kw: 35
+  - soc_percent: 90
+    power_kw: 18
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: false
+  wltp_consumption_kwh_100km:
+    value: 15.6
+    source_ref: wltp
+  length_mm: 4170
+  ground_clearance_mm: 155
+  drivetrain: fwd
+  new_price_eur: 30900
+  trunk_volume_l: 400

@@ -8,6 +8,7 @@ from app.data.models import PhysicsParams
 from app.data.repository import VehicleRepository, load_fuel_constants
 from app.ui.charts import VEHICLE_COLORS, build_chart, export_chart_png
 from app.ui.components.vehicle_selector import (
+    get_filter_ranges,
     get_filtered_makes,
     get_filtered_models,
     make_vehicle_label,
@@ -67,6 +68,7 @@ def index(sort: str = "") -> None:
 
         def _go_to_route() -> None:
             ui.navigate.to("/route")
+
         route_tab.on("click", _go_to_route)
 
         dashboard_panels = ui.tab_panels(dashboard_tabs, value="compare").style("width:100%;")
@@ -82,23 +84,29 @@ def index(sort: str = "") -> None:
             ):
                 # Left: Title + filter chips
                 with ui.row().style("align-items:center; gap:10px; flex-wrap:wrap;"):
-                    ui.label("🚗 Vehicle Selection").style(
-                        "font-weight:700; font-size:0.95em; white-space:nowrap;"
-                    )
+                    ui.label("🚗 Vehicle Selection").style("font-weight:700; font-size:0.95em; white-space:nowrap;")
                     # EV/ICE as toggle chips instead of checkboxes
-                    ev_toggle = ui.button(
-                        "⚡ EV" if SESSION["ev_checked"] else "EV",
-                        on_click=None,
-                    ).props("flat dense" if not SESSION["ev_checked"] else "unelevated dense color=primary").style(
-                        "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
-                        + (" background:#636EFA; color:white;" if SESSION["ev_checked"] else " color:#888;")
+                    ev_toggle = (
+                        ui.button(
+                            "⚡ EV" if SESSION["ev_checked"] else "EV",
+                            on_click=None,
+                        )
+                        .props("flat dense" if not SESSION["ev_checked"] else "unelevated dense color=primary")
+                        .style(
+                            "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
+                            + (" background:#636EFA; color:white;" if SESSION["ev_checked"] else " color:#888;")
+                        )
                     )
-                    ice_toggle = ui.button(
-                        "⛽ ICE" if SESSION["ice_checked"] else "ICE",
-                        on_click=None,
-                    ).props("flat dense" if not SESSION["ice_checked"] else "unelevated dense color=negative").style(
-                        "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
-                        + (" background:#EF553B; color:white;" if SESSION["ice_checked"] else " color:#888;")
+                    ice_toggle = (
+                        ui.button(
+                            "⛽ ICE" if SESSION["ice_checked"] else "ICE",
+                            on_click=None,
+                        )
+                        .props("flat dense" if not SESSION["ice_checked"] else "unelevated dense color=negative")
+                        .style(
+                            "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
+                            + (" background:#EF553B; color:white;" if SESSION["ice_checked"] else " color:#888;")
+                        )
                     )
                     # Hidden checkboxes — keep compatibility with existing code
                     ev_cb = ui.checkbox("EV", value=SESSION["ev_checked"]).style("display:none;")
@@ -111,11 +119,11 @@ def index(sort: str = "") -> None:
                         if key == "ev":
                             btn.text = "⚡ EV" if active else "EV"
                             btn.props("unelevated dense color=primary" if active else "flat dense")
-                            btn.style(f"background:#636EFA; color:white;" if active else "color:#888;")
+                            btn.style("background:#636EFA; color:white;" if active else "color:#888;")
                         else:
                             btn.text = "⛽ ICE" if active else "ICE"
                             btn.props("unelevated dense color=negative" if active else "flat dense")
-                            btn.style(f"background:#EF553B; color:white;" if active else "color:#888;")
+                            btn.style("background:#EF553B; color:white;" if active else "color:#888;")
                         on_filter_change()  # NiceGUI on_value_change does NOT fire on programmatic value set
 
                     ev_toggle.on_click(lambda: _sync_toggle(ev_toggle, ev_cb, "ev"))
@@ -164,17 +172,25 @@ def index(sort: str = "") -> None:
                         label="Speed",
                     ).style("width:140px;")
                     # EV/ICE toggle chips for ranking
-                    ranking_ev_toggle = ui.button(
-                        "⚡ EV" if SESSION["ranking_ev"] else "EV",
-                    ).props("flat dense" if not SESSION["ranking_ev"] else "unelevated dense color=primary").style(
-                        "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
-                        + (" background:#636EFA; color:white;" if SESSION["ranking_ev"] else " color:#888;")
+                    ranking_ev_toggle = (
+                        ui.button(
+                            "⚡ EV" if SESSION["ranking_ev"] else "EV",
+                        )
+                        .props("flat dense" if not SESSION["ranking_ev"] else "unelevated dense color=primary")
+                        .style(
+                            "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
+                            + (" background:#636EFA; color:white;" if SESSION["ranking_ev"] else " color:#888;")
+                        )
                     )
-                    ranking_ice_toggle = ui.button(
-                        "⛽ ICE" if SESSION["ranking_ice"] else "ICE",
-                    ).props("flat dense" if not SESSION["ranking_ice"] else "unelevated dense color=negative").style(
-                        "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
-                        + (" background:#EF553B; color:white;" if SESSION["ranking_ice"] else " color:#888;")
+                    ranking_ice_toggle = (
+                        ui.button(
+                            "⛽ ICE" if SESSION["ranking_ice"] else "ICE",
+                        )
+                        .props("flat dense" if not SESSION["ranking_ice"] else "unelevated dense color=negative")
+                        .style(
+                            "min-width:60px; font-size:0.82em; border-radius:20px; text-transform:none; cursor:pointer;"
+                            + (" background:#EF553B; color:white;" if SESSION["ranking_ice"] else " color:#888;")
+                        )
                     )
                     sort_btn = (
                         ui.button(
@@ -195,15 +211,248 @@ def index(sort: str = "") -> None:
                         if key == "ranking_ev":
                             btn.text = "⚡ EV" if active else "EV"
                             btn.props("unelevated dense color=primary" if active else "flat dense")
-                            btn.style(f"background:#636EFA; color:white;" if active else "color:#888;")
+                            btn.style("background:#636EFA; color:white;" if active else "color:#888;")
                         else:
                             btn.text = "⛽ ICE" if active else "ICE"
                             btn.props("unelevated dense color=negative" if active else "flat dense")
-                            btn.style(f"background:#EF553B; color:white;" if active else "color:#888;")
+                            btn.style("background:#EF553B; color:white;" if active else "color:#888;")
                         update_ranking()  # NiceGUI on_value_change does NOT fire on programmatic value set
 
-                    ranking_ev_toggle.on_click(lambda: _sync_ranking_toggle(ranking_ev_toggle, ranking_ev_cb, "ranking_ev"))
-                    ranking_ice_toggle.on_click(lambda: _sync_ranking_toggle(ranking_ice_toggle, ranking_ice_cb, "ranking_ice"))
+                    ranking_ev_toggle.on_click(
+                        lambda: _sync_ranking_toggle(ranking_ev_toggle, ranking_ev_cb, "ranking_ev")
+                    )
+                    ranking_ice_toggle.on_click(
+                        lambda: _sync_ranking_toggle(ranking_ice_toggle, ranking_ice_cb, "ranking_ice")
+                    )
+
+                # --- VEHICLE FILTERS (collapsible) ---
+                _franges = get_filter_ranges(REPO)
+
+                def _filter_val(key: str):
+                    return SESSION.get(key)
+
+                def _update_filter_num(key: str, value):
+                    SESSION[key] = value if value else None
+                    update_ranking()
+
+                with ui.expansion("🔍 Vehicle Filters", icon="filter_list").style("width:100%; margin-bottom:8px;"):
+                    with ui.row().style("gap:16px; flex-wrap:wrap; padding:8px 0;"):
+                        # Weight
+                        with ui.column().style("gap:2px; min-width:140px;"):
+                            ui.label("Weight (kg)").style("font-size:0.78em; font-weight:600; color:#666;")
+                            _wmin, _wmax = _franges.get("weight", (None, None))
+                            with ui.row().style("gap:4px;"):
+                                filter_weight_min = (
+                                    ui.number(
+                                        "Min",
+                                        value=SESSION["filter_weight_min"],
+                                        min=int(_wmin or 0),
+                                        max=int(_wmax or 99999),
+                                        step=100,
+                                        format="%.0f",
+                                    )
+                                    .style("width:80px;")
+                                    .props("dense outlined")
+                                )
+                                filter_weight_max = (
+                                    ui.number(
+                                        "Max",
+                                        value=SESSION["filter_weight_max"],
+                                        min=int(_wmin or 0),
+                                        max=int(_wmax or 99999),
+                                        step=100,
+                                        format="%.0f",
+                                    )
+                                    .style("width:80px;")
+                                    .props("dense outlined")
+                                )
+
+                        # Length
+                        with ui.column().style("gap:2px; min-width:140px;"):
+                            ui.label("Length (mm)").style("font-size:0.78em; font-weight:600; color:#666;")
+                            _lmin, _lmax = _franges.get("length", (None, None))
+                            with ui.row().style("gap:4px;"):
+                                filter_length_min = (
+                                    ui.number(
+                                        "Min",
+                                        value=SESSION["filter_length_min"],
+                                        min=int(_lmin or 0),
+                                        max=int(_lmax or 99999),
+                                        step=100,
+                                        format="%.0f",
+                                    )
+                                    .style("width:80px;")
+                                    .props("dense outlined")
+                                )
+                                filter_length_max = (
+                                    ui.number(
+                                        "Max",
+                                        value=SESSION["filter_length_max"],
+                                        min=int(_lmin or 0),
+                                        max=int(_lmax or 99999),
+                                        step=100,
+                                        format="%.0f",
+                                    )
+                                    .style("width:80px;")
+                                    .props("dense outlined")
+                                )
+
+                        # Ground clearance
+                        with ui.column().style("gap:2px; min-width:140px;"):
+                            ui.label("Clearance (mm)").style("font-size:0.78em; font-weight:600; color:#666;")
+                            _cmin, _cmax = _franges.get("clearance", (None, None))
+                            with ui.row().style("gap:4px;"):
+                                filter_clearance_min = (
+                                    ui.number(
+                                        "Min",
+                                        value=SESSION["filter_clearance_min"],
+                                        min=int(_cmin or 0),
+                                        max=int(_cmax or 99999),
+                                        step=5,
+                                        format="%.0f",
+                                    )
+                                    .style("width:80px;")
+                                    .props("dense outlined")
+                                )
+                                filter_clearance_max = (
+                                    ui.number(
+                                        "Max",
+                                        value=SESSION["filter_clearance_max"],
+                                        min=int(_cmin or 0),
+                                        max=int(_cmax or 99999),
+                                        step=5,
+                                        format="%.0f",
+                                    )
+                                    .style("width:80px;")
+                                    .props("dense outlined")
+                                )
+
+                    with ui.row().style("gap:16px; flex-wrap:wrap; padding:8px 0;"):
+                        # Drivetrain
+                        with ui.column().style("gap:2px; min-width:140px;"):
+                            ui.label("Drivetrain").style("font-size:0.78em; font-weight:600; color:#666;")
+                            _dt_selected = SESSION["filter_drivetrain"]
+                            with ui.row().style("gap:4px;"):
+                                dt_fwd_btn = (
+                                    ui.button(
+                                        "FWD" if "fwd" in _dt_selected else "FWD",
+                                    )
+                                    .props(
+                                        "flat dense" if "fwd" not in _dt_selected else "unelevated dense color=primary"
+                                    )
+                                    .style(
+                                        "font-size:0.78em; min-width:46px; border-radius:16px;"
+                                        + (
+                                            " background:#1976D2; color:white;"
+                                            if "fwd" in _dt_selected
+                                            else " color:#888;"
+                                        )
+                                    )
+                                )
+                                dt_rwd_btn = (
+                                    ui.button(
+                                        "RWD",
+                                    )
+                                    .props(
+                                        "flat dense" if "rwd" not in _dt_selected else "unelevated dense color=primary"
+                                    )
+                                    .style(
+                                        "font-size:0.78em; min-width:46px; border-radius:16px;"
+                                        + (
+                                            " background:#1976D2; color:white;"
+                                            if "rwd" in _dt_selected
+                                            else " color:#888;"
+                                        )
+                                    )
+                                )
+                                dt_awd_btn = (
+                                    ui.button(
+                                        "AWD",
+                                    )
+                                    .props(
+                                        "flat dense" if "awd" not in _dt_selected else "unelevated dense color=primary"
+                                    )
+                                    .style(
+                                        "font-size:0.78em; min-width:46px; border-radius:16px;"
+                                        + (
+                                            " background:#1976D2; color:white;"
+                                            if "awd" in _dt_selected
+                                            else " color:#888;"
+                                        )
+                                    )
+                                )
+
+                        # Price
+                        with ui.column().style("gap:2px; min-width:140px;"):
+                            ui.label("Price (EUR)").style("font-size:0.78em; font-weight:600; color:#666;")
+                            _pmin, _pmax = _franges.get("price", (None, None))
+                            with ui.row().style("gap:4px;"):
+                                filter_price_min = (
+                                    ui.number(
+                                        "Min",
+                                        value=SESSION["filter_price_min"],
+                                        min=int(_pmin or 0),
+                                        max=int(_pmax or 999999),
+                                        step=5000,
+                                        format="%.0f",
+                                    )
+                                    .style("width:90px;")
+                                    .props("dense outlined")
+                                )
+                                filter_price_max = (
+                                    ui.number(
+                                        "Max",
+                                        value=SESSION["filter_price_max"],
+                                        min=int(_pmin or 0),
+                                        max=int(_pmax or 999999),
+                                        step=5000,
+                                        format="%.0f",
+                                    )
+                                    .style("width:90px;")
+                                    .props("dense outlined")
+                                )
+
+                        # Trunk volume
+                        with ui.column().style("gap:2px; min-width:140px;"):
+                            ui.label("Trunk (L)").style("font-size:0.78em; font-weight:600; color:#666;")
+                            _tmin, _tmax = _franges.get("trunk", (None, None))
+                            with ui.row().style("gap:4px;"):
+                                filter_trunk_min = (
+                                    ui.number(
+                                        "Min",
+                                        value=SESSION["filter_trunk_min"],
+                                        min=int(_tmin or 0),
+                                        max=int(_tmax or 99999),
+                                        step=50,
+                                        format="%.0f",
+                                    )
+                                    .style("width:80px;")
+                                    .props("dense outlined")
+                                )
+                                filter_trunk_max = (
+                                    ui.number(
+                                        "Max",
+                                        value=SESSION["filter_trunk_max"],
+                                        min=int(_tmin or 0),
+                                        max=int(_tmax or 99999),
+                                        step=50,
+                                        format="%.0f",
+                                    )
+                                    .style("width:80px;")
+                                    .props("dense outlined")
+                                )
+
+                        # Reset button
+                        with ui.column().style("justify-content:flex-end;"):
+                            reset_filters_btn = (
+                                ui.button(
+                                    "Reset filters",
+                                    icon="restart_alt",
+                                )
+                                .props("flat dense")
+                                .style("font-size:0.78em; color:#EF553B;")
+                            )
+
                 ranking_container = ui.element("div").style("width:100%;")
 
         # --- SETTINGS TAB ---
@@ -461,6 +710,23 @@ def index(sort: str = "") -> None:
         params.eta_charging = charging_eff_input.value
         params.temperature_c = float(temp_input.value)
         speed = speed_ranking_select.value if speed_ranking_select.value else SPEED_OPTIONS[2]
+        # Build filter dict from SESSION
+        vfilters: dict = {
+            k: SESSION[k]
+            for k in (
+                "filter_length_min",
+                "filter_length_max",
+                "filter_weight_min",
+                "filter_weight_max",
+                "filter_clearance_min",
+                "filter_clearance_max",
+                "filter_drivetrain",
+                "filter_price_min",
+                "filter_price_max",
+                "filter_trunk_min",
+                "filter_trunk_max",
+            )
+        }
         ranking_container.clear()
         with ranking_container:
             render_ranking_list(
@@ -473,6 +739,7 @@ def index(sort: str = "") -> None:
                 use_per_tire_cb.value,
                 REPO,
                 bool(SESSION["ranking_sort"]),
+                vehicle_filters=vfilters,
             )
 
     def on_filter_change() -> None:
@@ -493,6 +760,69 @@ def index(sort: str = "") -> None:
     ranking_ev_cb.on_value_change(lambda _: (SESSION.update(ranking_ev=ranking_ev_cb.value), update_ranking()))
     ranking_ice_cb.on_value_change(lambda _: (SESSION.update(ranking_ice=ranking_ice_cb.value), update_ranking()))
     speed_ranking_select.on_value_change(lambda _: update_ranking())
+
+    # --- Filter event handlers ---
+    def _on_filter_num(key: str, value) -> None:
+        SESSION[key] = value if value else None
+        update_ranking()
+
+    filter_weight_min.on_value_change(lambda e: _on_filter_num("filter_weight_min", e.value))
+    filter_weight_max.on_value_change(lambda e: _on_filter_num("filter_weight_max", e.value))
+    filter_length_min.on_value_change(lambda e: _on_filter_num("filter_length_min", e.value))
+    filter_length_max.on_value_change(lambda e: _on_filter_num("filter_length_max", e.value))
+    filter_clearance_min.on_value_change(lambda e: _on_filter_num("filter_clearance_min", e.value))
+    filter_clearance_max.on_value_change(lambda e: _on_filter_num("filter_clearance_max", e.value))
+    filter_price_min.on_value_change(lambda e: _on_filter_num("filter_price_min", e.value))
+    filter_price_max.on_value_change(lambda e: _on_filter_num("filter_price_max", e.value))
+    filter_trunk_min.on_value_change(lambda e: _on_filter_num("filter_trunk_min", e.value))
+    filter_trunk_max.on_value_change(lambda e: _on_filter_num("filter_trunk_max", e.value))
+
+    def _toggle_drivetrain(dt_val: str, btn) -> None:
+        sel: list[str] = SESSION.get("filter_drivetrain", [])  # type: ignore[assignment]
+        if dt_val in sel:
+            sel.remove(dt_val)
+            btn.props("flat dense")
+            btn.style("font-size:0.78em; min-width:46px; border-radius:16px; color:#888;")
+        else:
+            sel.append(dt_val)
+            btn.props("unelevated dense color=primary")
+            btn.style("font-size:0.78em; min-width:46px; border-radius:16px; background:#1976D2; color:white;")
+        update_ranking()
+
+    dt_fwd_btn.on_click(lambda: _toggle_drivetrain("fwd", dt_fwd_btn))
+    dt_rwd_btn.on_click(lambda: _toggle_drivetrain("rwd", dt_rwd_btn))
+    dt_awd_btn.on_click(lambda: _toggle_drivetrain("awd", dt_awd_btn))
+
+    def _reset_filters() -> None:
+        SESSION["filter_length_min"] = None
+        SESSION["filter_length_max"] = None
+        SESSION["filter_weight_min"] = None
+        SESSION["filter_weight_max"] = None
+        SESSION["filter_clearance_min"] = None
+        SESSION["filter_clearance_max"] = None
+        SESSION["filter_drivetrain"] = []
+        SESSION["filter_price_min"] = None
+        SESSION["filter_price_max"] = None
+        SESSION["filter_trunk_min"] = None
+        SESSION["filter_trunk_max"] = None
+        # Reset UI inputs
+        filter_weight_min.set_value(None)
+        filter_weight_max.set_value(None)
+        filter_length_min.set_value(None)
+        filter_length_max.set_value(None)
+        filter_clearance_min.set_value(None)
+        filter_clearance_max.set_value(None)
+        filter_price_min.set_value(None)
+        filter_price_max.set_value(None)
+        filter_trunk_min.set_value(None)
+        filter_trunk_max.set_value(None)
+        # Reset drivetrain buttons
+        for btn in (dt_fwd_btn, dt_rwd_btn, dt_awd_btn):
+            btn.props("flat dense")
+            btn.style("font-size:0.78em; min-width:46px; border-radius:16px; color:#888;")
+        update_ranking()
+
+    reset_filters_btn.on_click(_reset_filters)
 
     rho_input.on_value_change(lambda _: update())
     crr_input.on_value_change(lambda _: update())

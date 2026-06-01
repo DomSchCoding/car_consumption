@@ -1,0 +1,87 @@
+vehicles:
+- id: lexus_ux300e
+  make: Lexus
+  model: UX 300e
+  variant: Electric
+  year_from: 2020
+  vehicle_type: ev
+  mass_kg: 1900
+  frontal_area_m2: 2.38
+  drag_coefficient_cd: 0.29
+  tire_class: suv
+  battery_usable_kwh: 54.3
+  ac_charging_kw: 6.6
+  dc_charging_kw: 50
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 50
+  - soc_percent: 10
+    power_kw: 50
+  - soc_percent: 30
+    power_kw: 48
+  - soc_percent: 50
+    power_kw: 40
+  - soc_percent: 70
+    power_kw: 30
+  - soc_percent: 80
+    power_kw: 22
+  - soc_percent: 90
+    power_kw: 12
+  - soc_percent: 100
+    power_kw: 5
+  has_heat_pump: true
+  hvac_cop_heat: 3.0
+  wltp_consumption_kwh_100km:
+    value: 16.8
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 18.0
+    source_ref: evdb
+  length_mm: 4495
+  ground_clearance_mm: 160
+  drivetrain: fwd
+  new_price_eur: 47900
+  trunk_volume_l: 367
+- id: lexus_rz450e
+  make: Lexus
+  model: RZ 450e
+  variant: Direct4 AWD
+  year_from: 2023
+  vehicle_type: ev
+  mass_kg: 2110
+  frontal_area_m2: 2.58
+  drag_coefficient_cd: 0.27
+  tire_class: suv
+  battery_usable_kwh: 71.4
+  ac_charging_kw: 11
+  dc_charging_kw: 150
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 150
+  - soc_percent: 10
+    power_kw: 150
+  - soc_percent: 30
+    power_kw: 140
+  - soc_percent: 50
+    power_kw: 110
+  - soc_percent: 70
+    power_kw: 80
+  - soc_percent: 80
+    power_kw: 55
+  - soc_percent: 90
+    power_kw: 28
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: true
+  hvac_cop_heat: 3.5
+  wltp_consumption_kwh_100km:
+    value: 18.3
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 20.0
+    source_ref: evdb
+  length_mm: 4805
+  ground_clearance_mm: 175
+  drivetrain: awd
+  new_price_eur: 67000
+  trunk_volume_l: 522

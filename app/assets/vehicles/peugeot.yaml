@@ -1,129 +1,183 @@
-# Peugeot vehicles
-# Last updated: 2026-05-23
-
 vehicles:
-  - id: peugeot_e208_50
-    make: Peugeot
-    model: e-208
-    variant: "50 kWh"
-    year_from: 2020
-    vehicle_type: ev
-    mass_kg: 1455
-    frontal_area_m2: 2.30
-    drag_coefficient_cd: 0.29
-    tire_class: standard
-    battery_usable_kwh: 50.0
-    ac_charging_kw: 7.4
-    dc_charging_kw: 50
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 50
-      - soc_percent: 10
-        power_kw: 50
-      - soc_percent: 20
-        power_kw: 50
-      - soc_percent: 30
-        power_kw: 47
-      - soc_percent: 50
-        power_kw: 40
-      - soc_percent: 70
-        power_kw: 28
-      - soc_percent: 80
-        power_kw: 18
-      - soc_percent: 90
-        power_kw: 10
-      - soc_percent: 100
-        power_kw: 5
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 15.5
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: peugeot_e308_54
-    make: Peugeot
-    model: e-308
-    variant: "54 kWh"
-    year_from: 2023
-    vehicle_type: ev
-    mass_kg: 1630
-    frontal_area_m2: 2.40
-    drag_coefficient_cd: 0.27
-    tire_class: standard
-    battery_usable_kwh: 54.0
-    ac_charging_kw: 11
-    dc_charging_kw: 100
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 100
-      - soc_percent: 10
-        power_kw: 100
-      - soc_percent: 20
-        power_kw: 100
-      - soc_percent: 30
-        power_kw: 95
-      - soc_percent: 50
-        power_kw: 80
-      - soc_percent: 70
-        power_kw: 55
-      - soc_percent: 80
-        power_kw: 35
-      - soc_percent: 90
-        power_kw: 18
-      - soc_percent: 100
-        power_kw: 6
-    has_heat_pump: true
-    hvac_cop_heat: 2.0
-    wltp_consumption_kwh_100km:
-      value: 15.5
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
-
-  - id: peugeot_e3008_98
-    make: Peugeot
-    model: e-3008
-    variant: "98 kWh Long Range"
-    year_from: 2024
-    vehicle_type: ev
-    mass_kg: 2080
-    frontal_area_m2: 2.70
-    drag_coefficient_cd: 0.27
-    tire_class: suv
-    battery_usable_kwh: 98.0
-    ac_charging_kw: 11
-    dc_charging_kw: 170
-    dc_charging_curve:
-      - soc_percent: 0
-        power_kw: 170
-      - soc_percent: 10
-        power_kw: 170
-      - soc_percent: 20
-        power_kw: 170
-      - soc_percent: 30
-        power_kw: 165
-      - soc_percent: 50
-        power_kw: 140
-      - soc_percent: 70
-        power_kw: 100
-      - soc_percent: 80
-        power_kw: 65
-      - soc_percent: 90
-        power_kw: 30
-      - soc_percent: 100
-        power_kw: 8
-    has_heat_pump: true
-    hvac_cop_heat: 2.2
-    wltp_consumption_kwh_100km:
-      value: 17.5
-      source_ref: wltp
-    source_refs:
-      wltp:
-        name: "WLTP official"
-        confidence: high
+- id: peugeot_e208_50
+  make: Peugeot
+  model: e-208
+  variant: 50 kWh
+  year_from: 2020
+  vehicle_type: ev
+  mass_kg: 1455
+  frontal_area_m2: 2.3
+  drag_coefficient_cd: 0.29
+  tire_class: standard
+  battery_usable_kwh: 50.0
+  ac_charging_kw: 7.4
+  dc_charging_kw: 50
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 50
+  - soc_percent: 10
+    power_kw: 50
+  - soc_percent: 20
+    power_kw: 50
+  - soc_percent: 30
+    power_kw: 47
+  - soc_percent: 50
+    power_kw: 40
+  - soc_percent: 70
+    power_kw: 28
+  - soc_percent: 80
+    power_kw: 18
+  - soc_percent: 90
+    power_kw: 10
+  - soc_percent: 100
+    power_kw: 5
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 15.5
+    source_ref: wltp
+  length_mm: 4060
+  ground_clearance_mm: 140
+  drivetrain: fwd
+  new_price_eur: 35990
+  trunk_volume_l: 311
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+- id: peugeot_e308_54
+  make: Peugeot
+  model: e-308
+  variant: 54 kWh
+  year_from: 2022
+  vehicle_type: ev
+  mass_kg: 1630
+  frontal_area_m2: 2.4
+  drag_coefficient_cd: 0.27
+  tire_class: standard
+  battery_usable_kwh: 54.0
+  ac_charging_kw: 11
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 10
+    power_kw: 100
+  - soc_percent: 20
+    power_kw: 100
+  - soc_percent: 30
+    power_kw: 95
+  - soc_percent: 50
+    power_kw: 80
+  - soc_percent: 70
+    power_kw: 55
+  - soc_percent: 80
+    power_kw: 35
+  - soc_percent: 90
+    power_kw: 18
+  - soc_percent: 100
+    power_kw: 6
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 15.5
+    source_ref: wltp
+  length_mm: 4496
+  ground_clearance_mm: 138
+  drivetrain: fwd
+  new_price_eur: 43990
+  trunk_volume_l: 400
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  notes: 'IMAGE NEEDS UPDATE: Same image as e-3008. e-308 is a hatchback, e-3008 is an SUV — visually distinct.'
+- id: peugeot_e3008_98
+  make: Peugeot
+  model: e-3008
+  variant: 98 kWh Long Range
+  year_from: 2023
+  vehicle_type: ev
+  mass_kg: 2080
+  frontal_area_m2: 2.7
+  drag_coefficient_cd: 0.27
+  tire_class: suv
+  battery_usable_kwh: 98.0
+  ac_charging_kw: 11
+  dc_charging_kw: 170
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 170
+  - soc_percent: 10
+    power_kw: 170
+  - soc_percent: 20
+    power_kw: 170
+  - soc_percent: 30
+    power_kw: 165
+  - soc_percent: 50
+    power_kw: 140
+  - soc_percent: 70
+    power_kw: 100
+  - soc_percent: 80
+    power_kw: 65
+  - soc_percent: 90
+    power_kw: 30
+  - soc_percent: 100
+    power_kw: 8
+  has_heat_pump: true
+  hvac_cop_heat: 2.2
+  wltp_consumption_kwh_100km:
+    value: 17.5
+    source_ref: wltp
+  length_mm: 4520
+  ground_clearance_mm: 180
+  drivetrain: fwd
+  new_price_eur: 59990
+  trunk_volume_l: 480
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high
+  notes: 'IMAGE NEEDS UPDATE: Same image as e-308. e-3008 is an SUV, e-308 is a hatchback — visually distinct.'
+- id: peugeot_e2008_50
+  make: Peugeot
+  model: e-2008
+  variant: 50 kWh
+  year_from: 2020
+  vehicle_type: ev
+  mass_kg: 1485
+  frontal_area_m2: 2.35
+  drag_coefficient_cd: 0.3
+  tire_class: standard
+  battery_usable_kwh: 50.0
+  ac_charging_kw: 11
+  dc_charging_kw: 100
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 100
+  - soc_percent: 20
+    power_kw: 100
+  - soc_percent: 50
+    power_kw: 75
+  - soc_percent: 70
+    power_kw: 50
+  - soc_percent: 80
+    power_kw: 30
+  - soc_percent: 90
+    power_kw: 15
+  - soc_percent: 100
+    power_kw: 5
+  has_heat_pump: true
+  hvac_cop_heat: 2.0
+  wltp_consumption_kwh_100km:
+    value: 15.0
+    source_ref: wltp
+  length_mm: 4150
+  ground_clearance_mm: 165
+  drivetrain: fwd
+  new_price_eur: 37990
+  trunk_volume_l: 350
+  source_refs:
+    wltp:
+      name: WLTP official
+      confidence: high

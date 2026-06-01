@@ -50,9 +50,7 @@ def nav_bar() -> None:
 
     with ui.element("div").classes("app-nav"):
         # Title - links to dashboard
-        ui.link("🚗 Vehicle Consumption Analyzer", "/").classes(
-            "app-nav-title"
-        ).style("cursor:pointer;")
+        ui.link("🚗 Vehicle Consumption Analyzer", "/").classes("app-nav-title").style("cursor:pointer;")
 
         # Nav links
         with ui.element("div").classes("app-nav-links"):

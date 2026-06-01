@@ -19,6 +19,7 @@ from app.data.models import (
 )
 from app.data.repository import VehicleRepository
 from app.ui.components.vehicle_selector import (
+    get_drivetrain_label,
     get_vehicle_c_rr,
     make_vehicle_label,
     tire_class_label,
@@ -321,13 +322,13 @@ def build_vehicle_detail_html(v: Vehicle) -> str:
     html = '<div style="font-family:system-ui, sans-serif;">'
 
     # Inline CSS for tabular detail layout
-    html += '<style>'
-    html += '.detail-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0;}'
-    html += '.detail-label{font-weight:600;color:#555;font-size:0.88em;min-width:180px;flex-shrink:0;}'
-    html += '.detail-value{text-align:right;font-size:0.88em;color:#333;font-weight:500;}'
-    html += '.detail-header{font-weight:700;font-size:1em;color:#333;padding:8px 0 4px 0;border-bottom:2px solid #e0e0e0;margin-bottom:4px;}'
-    html += '.missing-tag{font-size:0.72em;color:#EF553B;margin-left:4px;}'
-    html += '</style>'
+    html += "<style>"
+    html += ".detail-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0;}"
+    html += ".detail-label{font-weight:600;color:#555;font-size:0.88em;min-width:180px;flex-shrink:0;}"
+    html += ".detail-value{text-align:right;font-size:0.88em;color:#333;font-weight:500;}"
+    html += ".detail-header{font-weight:700;font-size:1em;color:#333;padding:8px 0 4px 0;border-bottom:2px solid #e0e0e0;margin-bottom:4px;}"
+    html += ".missing-tag{font-size:0.72em;color:#EF553B;margin-left:4px;}"
+    html += "</style>"
 
     html += f'<div class="detail-card" style="{_DC} display:flex; gap:20px; align-items:flex-start;">'
     if has_image:
@@ -364,6 +365,17 @@ def build_vehicle_detail_html(v: Vehicle) -> str:
         ("Drag Coefficient (Cd)", f"{v.drag_coefficient_cd:.3f}", q["drag_coefficient_cd"]),
         ("CdA", f"{v.cda_m2:.4f} m²", True),
     ]
+    # New vehicle dimension/spec fields
+    if v.length_mm is not None:
+        rows.append(("Length", f"{v.length_mm:.0f} mm", True))
+    if v.ground_clearance_mm is not None:
+        rows.append(("Ground Clearance", f"{v.ground_clearance_mm:.0f} mm", True))
+    if v.drivetrain is not None:
+        rows.append(("Drivetrain", get_drivetrain_label(v), True))
+    if v.new_price_eur is not None:
+        rows.append(("MSRP (new)", f"€{v.new_price_eur:,.0f}", True))
+    if v.trunk_volume_l is not None:
+        rows.append(("Trunk Volume", f"{v.trunk_volume_l:.0f} L", True))
     if v.vehicle_type == VehicleType.ev:
         if v.battery_usable_kwh:
             rows.append(("Battery", f"{v.battery_usable_kwh:.1f} kWh", q.get("battery_usable_kwh", True)))

@@ -1,0 +1,84 @@
+vehicles:
+- id: mini_cooper_se_24
+  make: Mini
+  model: Cooper SE
+  variant: Electric
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 1600
+  frontal_area_m2: 2.14
+  drag_coefficient_cd: 0.28
+  tire_class: standard
+  battery_usable_kwh: 40.7
+  ac_charging_kw: 11
+  dc_charging_kw: 95
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 95
+  - soc_percent: 10
+    power_kw: 95
+  - soc_percent: 30
+    power_kw: 85
+  - soc_percent: 50
+    power_kw: 65
+  - soc_percent: 70
+    power_kw: 45
+  - soc_percent: 80
+    power_kw: 30
+  - soc_percent: 90
+    power_kw: 15
+  - soc_percent: 100
+    power_kw: 5
+  has_heat_pump: true
+  hvac_cop_heat: 3.0
+  wltp_consumption_kwh_100km:
+    value: 14.2
+    source_ref: wltp
+  real_consumption_kwh_100km:
+  - value: 15.0
+    source_ref: evdb
+  length_mm: 3858
+  ground_clearance_mm: 130
+  drivetrain: fwd
+  new_price_eur: 31900
+  trunk_volume_l: 211
+- id: mini_countryman_se
+  make: Mini
+  model: Countryman
+  variant: SE ALL4
+  year_from: 2024
+  vehicle_type: ev
+  mass_kg: 2105
+  frontal_area_m2: 2.52
+  drag_coefficient_cd: 0.28
+  tire_class: suv
+  battery_usable_kwh: 64.7
+  ac_charging_kw: 11
+  dc_charging_kw: 130
+  dc_charging_curve:
+  - soc_percent: 0
+    power_kw: 130
+  - soc_percent: 10
+    power_kw: 130
+  - soc_percent: 30
+    power_kw: 120
+  - soc_percent: 50
+    power_kw: 95
+  - soc_percent: 70
+    power_kw: 65
+  - soc_percent: 80
+    power_kw: 45
+  - soc_percent: 90
+    power_kw: 25
+  - soc_percent: 100
+    power_kw: 10
+  has_heat_pump: true
+  hvac_cop_heat: 3.0
+  wltp_consumption_kwh_100km:
+    value: 17.3
+    source_ref: wltp
+  length_mm: 4433
+  ground_clearance_mm: 165
+  drivetrain: awd
+  new_price_eur: 46500
+  trunk_volume_l: 460
