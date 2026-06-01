@@ -40,6 +40,7 @@ vehicles:
     wltp:
       name: WLTP official
       confidence: high
+  notes: 'NOTE: Same image as 500e 24 kWh. Both are 500e but 42 kWh is larger battery — check if visually identical.'
 - id: fiat_500e_24
   make: Fiat
   model: 500e
@@ -66,6 +67,7 @@ vehicles:
     wltp:
       name: WLTP official
       confidence: high
+  notes: 'NOTE: Same image as 500e 42 kWh. Both are 500e but 24 kWh is mild-hybrid/BEV variant — check if visually identical.'
 - id: fiat_600e_42
   make: Fiat
   model: 600e

@@ -31,7 +31,8 @@ vehicles:
   drivetrain: fwd
   new_price_eur: 33800
   trunk_volume_l: 345
-  notes: 'IMAGE NEEDS UPDATE: VFL and FL use same image, need distinct images'
+  notes: 'IMAGE NEEDS UPDATE: VFL and FL use same image, need distinct images IMAGE NEEDS UPDATE: Same image as Ioniq 38 (FL).
+    VFL has different front/grille design.'
   source_refs:
     wltp:
       name: WLTP official
@@ -73,7 +74,8 @@ vehicles:
   drivetrain: fwd
   new_price_eur: 37500
   trunk_volume_l: 345
-  notes: 'IMAGE NEEDS UPDATE: VFL and FL use same image, need distinct images'
+  notes: 'IMAGE NEEDS UPDATE: VFL and FL use same image, need distinct images IMAGE NEEDS UPDATE: Same image as Ioniq 28 (VFL).
+    FL has different front/grille design.'
   source_refs:
     wltp:
       name: WLTP official
@@ -269,6 +271,7 @@ vehicles:
     wltp:
       name: WLTP official
       confidence: high
+  notes: 'IMAGE NEEDS UPDATE: All Kona EV variants share same image. VFL has different front design than FL.'
 - id: hyundai_kona_ev_64
   make: Hyundai
   model: Kona Electric
@@ -306,6 +309,7 @@ vehicles:
     wltp:
       name: WLTP official
       confidence: high
+  notes: 'IMAGE NEEDS UPDATE: Same as Kona EV 39 (VFL). Should show VFL design.'
 - id: hyundai_kona_ev_fl_48
   make: Hyundai
   model: Kona Electric
@@ -343,6 +347,7 @@ vehicles:
     wltp:
       name: WLTP official
       confidence: high
+  notes: 'IMAGE NEEDS UPDATE: Same image as VFL Kona. FL has redesigned front (closed grille).'
 - id: hyundai_kona_ev_fl_65
   make: Hyundai
   model: Kona Electric
@@ -380,6 +385,7 @@ vehicles:
     wltp:
       name: WLTP official
       confidence: high
+  notes: 'IMAGE NEEDS UPDATE: Same image as VFL Kona. FL has redesigned front (closed grille).'
 - id: hyundai_kona_ev_48_n
   make: Hyundai
   model: Kona Electric
@@ -416,6 +422,7 @@ vehicles:
     wltp:
       name: WLTP official
       confidence: high
+  notes: 'IMAGE NEEDS UPDATE: Same as other Kona EV variants. N-line has different bumpers.'
 - id: hyundai_kona_ev_65_n
   make: Hyundai
   model: Kona Electric
@@ -452,6 +459,7 @@ vehicles:
     wltp:
       name: WLTP official
       confidence: high
+  notes: 'IMAGE NEEDS UPDATE: Same as other Kona EV variants. N-line has different bumpers.'
 - id: hyundai_ioniq5_n
   make: Hyundai
   model: Ioniq 5 N
