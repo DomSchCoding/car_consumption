@@ -85,3 +85,101 @@ def get_filtered_models(repo: VehicleRepository, make: str, show_ev: bool, show_
         if show_ice and v.vehicle_type != VehicleType.ev:
             result.append(v)
     return result
+
+
+def passes_vehicle_filters(v: Vehicle, filters: dict) -> bool:
+    """Check if a vehicle passes all active filter criteria (AND logic).
+
+    Args:
+        v: Vehicle to check.
+        filters: Dict with filter values from SESSION.
+
+    Returns:
+        True if vehicle passes all active filters.
+    """
+    # Length filter
+    lo = filters.get("filter_length_min")
+    hi = filters.get("filter_length_max")
+    if v.length_mm is not None:
+        if lo is not None and v.length_mm < lo:
+            return False
+        if hi is not None and v.length_mm > hi:
+            return False
+    elif lo is not None or hi is not None:
+        return False  # data missing but filter active
+
+    # Weight filter
+    lo = filters.get("filter_weight_min")
+    hi = filters.get("filter_weight_max")
+    if lo is not None and v.mass_kg < lo:
+        return False
+    if hi is not None and v.mass_kg > hi:
+        return False
+
+    # Ground clearance filter
+    lo = filters.get("filter_clearance_min")
+    hi = filters.get("filter_clearance_max")
+    if v.ground_clearance_mm is not None:
+        if lo is not None and v.ground_clearance_mm < lo:
+            return False
+        if hi is not None and v.ground_clearance_mm > hi:
+            return False
+    elif lo is not None or hi is not None:
+        return False
+
+    # Drivetrain filter
+    selected = filters.get("filter_drivetrain", [])
+    if selected and v.drivetrain is not None:
+        if v.drivetrain.value not in selected:
+            return False
+    elif selected and v.drivetrain is None:
+        return False
+
+    # Price filter
+    lo = filters.get("filter_price_min")
+    hi = filters.get("filter_price_max")
+    if v.new_price_eur is not None:
+        if lo is not None and v.new_price_eur < lo:
+            return False
+        if hi is not None and v.new_price_eur > hi:
+            return False
+    elif lo is not None or hi is not None:
+        return False
+
+    # Trunk volume filter
+    lo = filters.get("filter_trunk_min")
+    hi = filters.get("filter_trunk_max")
+    if v.trunk_volume_l is not None:
+        if lo is not None and v.trunk_volume_l < lo:
+            return False
+        if hi is not None and v.trunk_volume_l > hi:
+            return False
+    elif lo is not None or hi is not None:
+        return False
+
+    return True
+
+
+def get_drivetrain_label(v: Vehicle) -> str:
+    """Return human-readable drivetrain label."""
+    if v.drivetrain is None:
+        return "n/a"
+    labels = {"fwd": "FWD", "rwd": "RWD", "awd": "AWD"}
+    return labels.get(v.drivetrain.value, v.drivetrain.value)
+
+
+def get_filter_ranges(repo: VehicleRepository) -> dict[str, tuple[float | None, float | None]]:
+    """Get min/max values for filter fields across the fleet."""
+    all_v = repo.get_all()
+
+    def _range(field: str) -> tuple[float | None, float | None]:
+        vals = [getattr(v, field) for v in all_v if getattr(v, field, None) is not None]
+        return (min(vals), max(vals)) if vals else (None, None)
+
+    return {
+        "length": _range("length_mm"),
+        "weight": (min(v.mass_kg for v in all_v), max(v.mass_kg for v in all_v)),
+        "clearance": _range("ground_clearance_mm"),
+        "price": _range("new_price_eur"),
+        "trunk": _range("trunk_volume_l"),
+    }

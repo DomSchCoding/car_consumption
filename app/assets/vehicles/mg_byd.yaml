@@ -1,227 +1,206 @@
+# MG, BYD vehicles
+# Last updated: 2026-06-01
+
 vehicles:
-- id: mg4_excite_51
-  make: MG
-  model: MG4
-  variant: Excite 51 kWh
-  year_from: 2022
-  vehicle_type: ev
-  mass_kg: 1615
-  frontal_area_m2: 2.4
-  drag_coefficient_cd: 0.27
-  tire_class: standard
-  battery_usable_kwh: 51.0
-  ac_charging_kw: 7.4
-  dc_charging_kw: 84
-  dc_charging_curve:
-  - soc_percent: 0
-    power_kw: 84
-  - soc_percent: 10
-    power_kw: 84
-  - soc_percent: 20
-    power_kw: 84
-  - soc_percent: 30
-    power_kw: 80
-  - soc_percent: 50
-    power_kw: 68
-  - soc_percent: 70
-    power_kw: 48
-  - soc_percent: 80
-    power_kw: 30
-  - soc_percent: 90
-    power_kw: 16
-  - soc_percent: 100
-    power_kw: 6
-  has_heat_pump: false
-  wltp_consumption_kwh_100km:
-    value: 15.8
-    source_ref: wltp
-  source_refs:
-    wltp:
-      name: WLTP official
-      confidence: high
-  length_mm: 4287
-  ground_clearance_mm: 150
-  drivetrain: rwd
-  new_price_eur: 28990
-  trunk_volume_l: 363
-- id: mg4_trophy_64
-  make: MG
-  model: MG4
-  variant: Trophy 64 kWh
-  year_from: 2022
-  vehicle_type: ev
-  mass_kg: 1690
-  frontal_area_m2: 2.4
-  drag_coefficient_cd: 0.27
-  tire_class: standard
-  battery_usable_kwh: 64.0
-  ac_charging_kw: 7.4
-  dc_charging_kw: 117
-  dc_charging_curve:
-  - soc_percent: 0
-    power_kw: 117
-  - soc_percent: 10
-    power_kw: 117
-  - soc_percent: 20
-    power_kw: 117
-  - soc_percent: 30
-    power_kw: 112
-  - soc_percent: 50
-    power_kw: 95
-  - soc_percent: 70
-    power_kw: 66
-  - soc_percent: 80
-    power_kw: 42
-  - soc_percent: 90
-    power_kw: 22
-  - soc_percent: 100
-    power_kw: 7
-  has_heat_pump: false
-  wltp_consumption_kwh_100km:
-    value: 16.3
-    source_ref: wltp
-  source_refs:
-    wltp:
-      name: WLTP official
-      confidence: high
-  length_mm: 4287
-  ground_clearance_mm: 150
-  drivetrain: rwd
-  new_price_eur: 34990
-  trunk_volume_l: 363
-- id: byd_seal_design
-  make: BYD
-  model: Seal
-  variant: Design RWD
-  year_from: 2023
-  vehicle_type: ev
-  mass_kg: 2085
-  frontal_area_m2: 2.4
-  drag_coefficient_cd: 0.219
-  tire_class: standard
-  battery_usable_kwh: 82.5
-  ac_charging_kw: 11
-  dc_charging_kw: 150
-  dc_charging_curve:
-  - soc_percent: 0
-    power_kw: 150
-  - soc_percent: 10
-    power_kw: 150
-  - soc_percent: 20
-    power_kw: 150
-  - soc_percent: 30
-    power_kw: 145
-  - soc_percent: 50
-    power_kw: 122
-  - soc_percent: 70
-    power_kw: 85
-  - soc_percent: 80
-    power_kw: 52
-  - soc_percent: 90
-    power_kw: 26
-  - soc_percent: 100
-    power_kw: 7
-  has_heat_pump: true
-  hvac_cop_heat: 2.5
-  wltp_consumption_kwh_100km:
-    value: 15.5
-    source_ref: wltp
-  source_refs:
-    wltp:
-      name: WLTP official
-      confidence: high
-  length_mm: 4800
-  ground_clearance_mm: 125
-  drivetrain: rwd
-  new_price_eur: 44990
-  trunk_volume_l: 400
-- id: byd_atto3
-  make: BYD
-  model: Atto 3
-  variant: Extended Range
-  year_from: 2022
-  vehicle_type: ev
-  mass_kg: 1860
-  frontal_area_m2: 2.6
-  drag_coefficient_cd: 0.29
-  tire_class: suv
-  battery_usable_kwh: 60.5
-  ac_charging_kw: 7.4
-  dc_charging_kw: 70
-  dc_charging_curve:
-  - soc_percent: 0
-    power_kw: 70
-  - soc_percent: 10
-    power_kw: 70
-  - soc_percent: 20
-    power_kw: 70
-  - soc_percent: 30
-    power_kw: 67
-  - soc_percent: 50
-    power_kw: 56
-  - soc_percent: 70
-    power_kw: 39
-  - soc_percent: 80
-    power_kw: 25
-  - soc_percent: 90
-    power_kw: 14
-  - soc_percent: 100
-    power_kw: 5
-  has_heat_pump: false
-  wltp_consumption_kwh_100km:
-    value: 17.5
-    source_ref: wltp
-  source_refs:
-    wltp:
-      name: WLTP official
-      confidence: high
-  length_mm: 4455
-  ground_clearance_mm: 155
-  drivetrain: fwd
-  new_price_eur: 37990
-  trunk_volume_l: 440
-- id: byd_dolphin
-  make: BYD
-  model: Dolphin
-  variant: Comfort
-  year_from: 2023
-  vehicle_type: ev
-  mass_kg: 1530
-  frontal_area_m2: 2.35
-  drag_coefficient_cd: 0.28
-  tire_class: standard
-  battery_usable_kwh: 44.9
-  ac_charging_kw: 7.4
-  dc_charging_kw: 60
-  dc_charging_curve:
-  - soc_percent: 0
-    power_kw: 60
-  - soc_percent: 10
-    power_kw: 60
-  - soc_percent: 20
-    power_kw: 60
-  - soc_percent: 30
-    power_kw: 57
-  - soc_percent: 50
-    power_kw: 48
-  - soc_percent: 70
-    power_kw: 34
-  - soc_percent: 80
-    power_kw: 22
-  - soc_percent: 90
-    power_kw: 12
-  - soc_percent: 100
-    power_kw: 5
-  has_heat_pump: false
-  wltp_consumption_kwh_100km:
-    value: 14.5
-    source_ref: wltp
-  source_refs:
-    wltp:
-      name: WLTP official
-      confidence: high
-  length_mm: 4150
-  ground_clearance_mm: 145
-  drivetrain: fwd
-  new_price_eur: 29990
-  trunk_volume_l: 345
+  - id: mg4_excite_51
+    make: MG
+    model: MG4
+    variant: "Excite 51 kWh"
+    year_from: 2022
+    vehicle_type: ev
+    mass_kg: 1635
+    frontal_area_m2: 2.25
+    drag_coefficient_cd: 0.27
+    tire_class: standard
+    battery_usable_kwh: 51.0
+    ac_charging_kw: 11
+    dc_charging_kw: 102
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 102
+      - soc_percent: 20
+        power_kw: 102
+      - soc_percent: 50
+        power_kw: 75
+      - soc_percent: 70
+        power_kw: 50
+      - soc_percent: 80
+        power_kw: 30
+      - soc_percent: 90
+        power_kw: 15
+      - soc_percent: 100
+        power_kw: 5
+    has_heat_pump: true
+    hvac_cop_heat: 2.0
+    wltp_consumption_kwh_100km:
+      value: 14.5
+      source_ref: wltp
+    length_mm: 4299
+    ground_clearance_mm: 145
+    drivetrain: rwd
+    new_price_eur: 32990
+    trunk_volume_l: 360
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+
+  - id: mg4_trophy_64
+    make: MG
+    model: MG4
+    variant: "Trophy 64 kWh"
+    year_from: 2022
+    vehicle_type: ev
+    mass_kg: 1715
+    frontal_area_m2: 2.25
+    drag_coefficient_cd: 0.27
+    tire_class: standard
+    battery_usable_kwh: 64.0
+    ac_charging_kw: 11
+    dc_charging_kw: 102
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 102
+      - soc_percent: 20
+        power_kw: 102
+      - soc_percent: 50
+        power_kw: 75
+      - soc_percent: 70
+        power_kw: 50
+      - soc_percent: 80
+        power_kw: 30
+      - soc_percent: 90
+        power_kw: 15
+      - soc_percent: 100
+        power_kw: 5
+    has_heat_pump: true
+    hvac_cop_heat: 2.0
+    wltp_consumption_kwh_100km:
+      value: 15.0
+      source_ref: wltp
+    length_mm: 4299
+    ground_clearance_mm: 145
+    drivetrain: rwd
+    new_price_eur: 39990
+    trunk_volume_l: 360
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+
+  - id: byd_seal_design
+    make: BYD
+    model: Seal
+    variant: "Design RWD"
+    year_from: 2023
+    vehicle_type: ev
+    mass_kg: 1945
+    frontal_area_m2: 2.35
+    drag_coefficient_cd: 0.22
+    tire_class: standard
+    battery_usable_kwh: 82.5
+    ac_charging_kw: 11
+    dc_charging_kw: 150
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 150
+      - soc_percent: 20
+        power_kw: 150
+      - soc_percent: 50
+        power_kw: 110
+      - soc_percent: 70
+        power_kw: 70
+      - soc_percent: 80
+        power_kw: 40
+      - soc_percent: 90
+        power_kw: 20
+      - soc_percent: 100
+        power_kw: 8
+    has_heat_pump: true
+    hvac_cop_heat: 2.0
+    wltp_consumption_kwh_100km:
+      value: 14.5
+      source_ref: wltp
+    length_mm: 4800
+    ground_clearance_mm: 130
+    drivetrain: rwd
+    new_price_eur: 42990
+    trunk_volume_l: 400
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+
+  - id: byd_atto3
+    make: BYD
+    model: Atto 3
+    variant: "Extended Range"
+    year_from: 2022
+    vehicle_type: ev
+    mass_kg: 1825
+    frontal_area_m2: 2.55
+    drag_coefficient_cd: 0.29
+    tire_class: suv
+    battery_usable_kwh: 60.5
+    ac_charging_kw: 11
+    dc_charging_kw: 88
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 88
+      - soc_percent: 50
+        power_kw: 70
+      - soc_percent: 80
+        power_kw: 40
+      - soc_percent: 100
+        power_kw: 12
+    has_heat_pump: true
+    hvac_cop_heat: 2.0
+    wltp_consumption_kwh_100km:
+      value: 15.5
+      source_ref: wltp
+    length_mm: 4455
+    ground_clearance_mm: 170
+    drivetrain: fwd
+    new_price_eur: 39990
+    trunk_volume_l: 415
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high
+
+  - id: byd_dolphin
+    make: BYD
+    model: Dolphin
+    variant: "Comfort"
+    year_from: 2022
+    vehicle_type: ev
+    mass_kg: 1495
+    frontal_area_m2: 2.15
+    drag_coefficient_cd: 0.28
+    tire_class: standard
+    battery_usable_kwh: 44.0
+    ac_charging_kw: 11
+    dc_charging_kw: 62
+    dc_charging_curve:
+      - soc_percent: 0
+        power_kw: 62
+      - soc_percent: 50
+        power_kw: 50
+      - soc_percent: 80
+        power_kw: 30
+      - soc_percent: 100
+        power_kw: 10
+    has_heat_pump: true
+    hvac_cop_heat: 2.0
+    wltp_consumption_kwh_100km:
+      value: 13.0
+      source_ref: wltp
+    length_mm: 4290
+    ground_clearance_mm: 140
+    drivetrain: fwd
+    new_price_eur: 31990
+    trunk_volume_l: 345
+    source_refs:
+      wltp:
+        name: "WLTP official"
+        confidence: high

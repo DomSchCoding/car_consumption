@@ -20,6 +20,7 @@ from app.data.repository import VehicleRepository
 from app.ui.components.vehicle_selector import (
     get_vehicle_c_rr,
     make_vehicle_label,
+    passes_vehicle_filters,
     tire_class_label,
 )
 
@@ -148,9 +149,12 @@ def render_ranking_list(
     use_per_vehicle_tires: bool,
     repo: VehicleRepository,
     sort_by_range: bool = False,
+    vehicle_filters: dict | None = None,
 ) -> None:
     """Render fleet ranking using NiceGUI list + linear progress."""
     all_vehicles = repo.get_all()
+    if vehicle_filters:
+        all_vehicles = [v for v in all_vehicles if passes_vehicle_filters(v, vehicle_filters)]
 
     entries: list[tuple[str, str, float, float | None]] = []
 
