@@ -173,7 +173,7 @@ def render_vehicle_detail(v: Vehicle) -> None:
                             ui.label(src.name).style("font-weight:600;")
                             _confidence_badge(src.confidence)
                         if src.url:
-                            ui.link("link ↗", src.url).new_tab().props("color=primary")
+                            ui.link("link ↗", src.url, new_tab=True).props("color=primary")
                     with ui.column().classes("w-full gap-1"):
                         if src.field_names:
                             ui.label("Fields: " + ", ".join(src.field_names)).classes("detail-sub")
