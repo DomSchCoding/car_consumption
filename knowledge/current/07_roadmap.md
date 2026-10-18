@@ -63,4 +63,6 @@
 
 ## Current priorities
 
-Phase C complete. Next: Phase D (ORS with API key) or Phase E (better physics).
+Phase C complete. UI redesign (see `08_ui_redesign_plan.md`) phases 1-4 complete;
+phase 5 (vehicle detail as NiceGUI cards) and phase 6 (responsive/mobile layout)
+are next. After that: Phase D (ORS with API key) or Phase E (better physics).

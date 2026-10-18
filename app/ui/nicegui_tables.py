@@ -116,16 +116,23 @@ def render_consumption_table(
 
     # Build aggrid: first column = "spec", rest = vehicles
     columns: list[dict] = [
-        {"field": "spec", "headerName": "", "minWidth": 110, "pinned": "left",
-         "cellStyle": {"fontWeight": "600", "color": "#555"}},
+        {
+            "field": "spec",
+            "headerName": "",
+            "minWidth": 110,
+            "pinned": "left",
+            "cellStyle": {"fontWeight": "600", "color": "#555"},
+        },
     ]
     for i, d in enumerate(vdata):
-        columns.append({
-            "field": f"v{i}",
-            "headerName": d["name"],
-            "minWidth": 130,
-            "cellStyle": {"textAlign": "center"},
-        })
+        columns.append(
+            {
+                "field": f"v{i}",
+                "headerName": d["name"],
+                "minWidth": 130,
+                "cellStyle": {"textAlign": "center"},
+            }
+        )
 
     rows: list[dict] = []
     for label, key, hint in row_defs:

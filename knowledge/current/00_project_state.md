@@ -1,6 +1,6 @@
 # 00 - Project State
 
-*Stand: 2026-05-23*
+*Stand: 2026-10-18*
 
 ## Repository structure
 
@@ -26,13 +26,17 @@ app/
   ui/
     charts.py
     state.py
-    tables.py
+    tables.py                HTML detail cards, SPEED_OPTIONS, IMAGES_DIR
+    layout.py                Shared page layout (top nav, title, dark-mode)
+    theme.py                 Central CSS tokens, light/dark palette
+    nicegui_tables.py        Native NiceGUI table/ranking renderers
     components/
       __init__.py
-      vehicle_selector.py
+      vehicle_selector.py    Reusable vehicle selection + filter helpers
       map_widget.py             NiceGUI Leaflet wrapper (Python layer API)
       route_controls.py
       route_summary.py
+      route_results.py       Map-route energy results (tabs, responsive)
     pages/
       __init__.py
       route_planner.py          manual/expert route planner (/route/manual)
@@ -66,6 +70,8 @@ app/
   assets/
     sample_vehicles.yaml
     fuel_constants.yaml
+    vehicles/                     per-brand vehicle YAMLs (24 files, 131 vehicles)
+    images/                       vehicle images (~94 jpg)
   .cache/
     routes/                     cached provider route responses (gitignored)
     geocode/                    cached geocoding responses (gitignored)
@@ -102,7 +108,11 @@ AGENTS.md
 - OSRM routing provider (cached, parsing) in `app/services/osrm_routing.py`
 - Open-Meteo elevation (rate-limited, cached, resampling) in `app/services/elevation.py`
 - Live route chain: geocode → OSRM route → elevation enrichment in `app/services/routing.py`
-- NiceGUI dashboard with vehicle comparison, consumption curves, and ranking
+- NiceGUI dashboard with tabs: Compare, Table (rotated: vehicles as columns, mobile-friendly), Ranking, Settings
+- Fleet ranking with collapsible filters (weight, length, ground clearance, drivetrain, price, trunk volume; AND logic)
+- Ranking entries link to `/vehicle/{vid}`; detail page has "Back to Ranking" link
+- Shared page layout + central theme (light/dark) used by all pages
+- 131 vehicles in 24 brand YAMLs (`app/assets/vehicles/`) plus `sample_vehicles.yaml`; 94 vehicle images
 - Manual route planner page at `/route/manual` with segment editor
 - Map route planner page at `/route` with demo + live provider selector
 - NiceGUI Leaflet map with polyline, markers, fit-bounds (Python layer API)
