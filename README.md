@@ -337,7 +337,7 @@ Route provider caches are stored in `.cache/` (gitignored).
 
 ## Planned Features
 
-- Responsive/mobile layout (UI redesign phase 6, see `knowledge/current/08_ui_redesign_plan.md`)
+- Vehicle detail page as native NiceGUI cards (UI redesign phase 5, see `knowledge/current/08_ui_redesign_plan.md`)
 - OpenRouteService live routing provider
 - Better speed and stop estimation from route data
 - Bearing-based wind projection

@@ -14,7 +14,7 @@ _ROUTE_LAYERS_KEY = "_route_layers"
 
 
 def create_route_map(center: tuple[float, float] = (48.2, 16.37), zoom: int = 10) -> ui.leaflet:
-    leaflet = ui.leaflet(center=center, zoom=zoom).classes("w-full").style("height: 400px; border-radius: 8px;")
+    leaflet = ui.leaflet(center=center, zoom=zoom).classes("w-full route-map").style("border-radius: 8px;")
     leaflet._route_layers = []
     return leaflet
 

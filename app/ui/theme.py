@@ -218,7 +218,52 @@ body {
     text-decoration: underline;
 }
 
-/* ── Responsive ─────────────────────────────────────────────────────────── */
+/* ── Responsive Layout Primitives ───────────────────────────────────────── */
+.compare-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+}
+
+.compare-selector-card {
+    min-width: 280px;
+    max-width: 320px;
+    flex: 1;
+}
+
+.compare-chart-card {
+    flex: 3;
+    min-width: 400px;
+}
+
+.chart-container {
+    width: 100%;
+    min-height: 420px;
+}
+
+.route-map {
+    height: 400px;
+}
+
+/* Tablet: stack the compare layout vertically, keep other two-column areas */
+@media (max-width: 900px) {
+    .compare-row {
+        flex-direction: column;
+    }
+
+    .compare-selector-card {
+        min-width: 0;
+        max-width: none;
+    }
+
+    .compare-chart-card {
+        min-width: 0;
+    }
+}
+
+/* ── Responsive (mobile) ────────────────────────────────────────────────── */
 @media (max-width: 768px) {
     .app-page-container {
         padding: 8px;
@@ -249,6 +294,26 @@ body {
 
     .app-summary-card {
         min-width: 100px;
+    }
+
+    .chart-container {
+        min-height: 300px;
+    }
+
+    .route-map {
+        height: 300px;
+    }
+
+    /* Vehicle detail: image on top, specs below */
+    .detail-card {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .detail-img {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 3 / 2;
     }
 }
 """

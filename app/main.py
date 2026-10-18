@@ -133,8 +133,8 @@ def index(sort: str = "") -> None:
                     ev_toggle.on_click(lambda: _sync_toggle(ev_toggle, ev_cb, "ev"))
                     ice_toggle.on_click(lambda: _sync_toggle(ice_toggle, ice_cb, "ice"))
 
-            with ui.row().style("width:100%; gap:16px; flex-wrap:wrap; align-items:stretch;"):
-                with ui.card().style("min-width:280px; max-width:320px; flex:1; padding:16px;"):
+            with ui.row().classes("compare-row"):
+                with ui.card().classes("compare-selector-card").style("padding:16px;"):
                     make_select = ui.select([], label="Make", with_input=True).style("width:100%;")
                     make_select.visible = False
 
@@ -152,8 +152,8 @@ def index(sort: str = "") -> None:
                         "max-height:180px; overflow-y:auto; gap:2px; width:100%;"
                     )
 
-                with ui.card().style("flex:3; min-width:400px; padding:16px;"):
-                    chart_container = ui.element("div").style("width:100%; min-height:420px;")
+                with ui.card().classes("compare-chart-card").style("padding:16px;"):
+                    chart_container = ui.element("div").classes("chart-container")
 
         # --- TABLE TAB ---
         with dashboard_panels, ui.tab_panel("table"):

@@ -87,6 +87,9 @@ Komplettes UI-Redesign mit konsistentem Layout, zentralem Theme, NiceGUI-nativen
 - [x] Phase 4: Route Planner (2026-05-26)
 - [ ] Phase 5: Vehicle Detail — new spec fields (length, clearance, drivetrain, price, trunk)
       shown on detail page (merged 2026-10-18); card/grid refactoring still open
-- [ ] Phase 6: Responsive — clickable ranking, table header fix and rotated
-      (mobile-first) consumption table merged 2026-10-18; remaining
-      mobile/tablet layout work still open
+- [x] Phase 6: Responsive (2026-10-18) — CSS media queries centralized in
+      `theme.py` (used instead of `ui.query()`, keeps all styles in one place):
+      compare layout stacks vertically below 900px, vehicle detail card stacks
+      with full-width image below 768px, map height 300px and chart min-height
+      300px on mobile. Earlier mobile steps (clickable ranking, table header
+      fix, rotated consumption table) were merged 2026-10-18.

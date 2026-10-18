@@ -339,7 +339,7 @@ def build_vehicle_detail_html(v: Vehicle) -> str:
     html += f'<div class="detail-card" style="{_DC} display:flex; gap:20px; align-items:flex-start;">'
     if has_image:
         html += (
-            f'<div style="flex-shrink:0; width:240px; height:160px; '
+            f'<div class="detail-img" style="flex-shrink:0; width:240px; height:160px; '
             f"background:#f5f5f5; border-radius:8px; overflow:hidden; "
             f'display:flex; align-items:center; justify-content:center;">'
             f'<img src="/images/{v.id}.jpg" '
