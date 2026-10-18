@@ -43,6 +43,10 @@ def vehicle_detail(vid: str) -> None:
         return
 
     with page_layout(f"🚗 {make_vehicle_label(v)}", show_back=True):
+        ui.link("← Back to Ranking", "/").style(
+            "display:inline-block; margin-bottom:12px; font-size:0.85em; "
+            "color:#636EFA; text-decoration:none; cursor:pointer;"
+        )
         ui.html(build_vehicle_detail_html(v))
 
 
@@ -695,8 +699,7 @@ def index(sort: str = "") -> None:
             ui.plotly(fig).style("width:100%; height:450px;")
 
         table_container.clear()
-        with table_container, ui.card().style("padding:16px;"):
-            ui.label("📋 Consumption Table").style("font-weight:700; font-size:0.95em; margin-bottom:8px;")
+        with table_container:
             render_consumption_table(vehicles, params, FUEL_CONST, ice_thermal_eff.value, use_per_tire_cb.value)
 
         update_ranking()

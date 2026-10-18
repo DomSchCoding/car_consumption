@@ -32,33 +32,26 @@ def render_consumption_table(
     ice_thermal_eff: float,
     use_per_vehicle_tires: bool,
 ) -> None:
-    """Render consumption table using NiceGUI aggrid."""
+    """Render consumption table — vehicles as columns, specs as rows (mobile-friendly)."""
+    if not vehicles:
+        with ui.column().style("align-items:center; padding:40px; color:#999;"):
+            ui.label("No vehicles selected")
+        return
+
     speeds = [50, 80, 100, 130]
     has_ev = any(v.vehicle_type == VehicleType.ev for v in vehicles)
-
     cap_factor = battery_capacity_factor(params.temperature_c)
 
-    columns: list[dict] = [
-        {"field": "name", "headerName": "Vehicle", "minWidth": 160},
-        {"field": "vtype", "headerName": "Type", "minWidth": 60},
-        {"field": "cda", "headerName": "CdA", "minWidth": 60},
-        {"field": "tire", "headerName": "Tire", "minWidth": 100},
-    ]
-    for s in speeds:
-        columns.append({"field": f"cons_{s}", "headerName": f"{s} km/h", "minWidth": 120})
-        columns.append({"field": f"range_{s}", "headerName": "km", "minWidth": 70})
-    columns.append({"field": "charge", "headerName": "DC ⚡", "minWidth": 80})
-
-    rows: list[dict] = []
+    # Pre-compute all values per vehicle
+    vdata: list[dict] = []
     for v in vehicles:
         c_rr = get_vehicle_c_rr(v, params.c_rr, use_per_vehicle_tires)
-        row: dict[str, str] = {
+        d: dict = {
             "name": make_vehicle_label(v),
             "vtype": v.vehicle_type.value.upper(),
             "cda": f"{v.cda_m2:.2f}",
             "tire": f"{tire_class_label(v)} ({c_rr:.3f})",
         }
-
         if v.vehicle_type == VehicleType.ev:
             hp = v.has_heat_pump if v.has_heat_pump is not None else False
             cop = v.hvac_cop_heat if v.hvac_cop_heat is not None else None
@@ -81,14 +74,14 @@ def render_consumption_table(
                     eta_drivetrain=params.eta_drivetrain,
                 )
                 wall_kwh = bc.total_battery_kwh_per_100km / params.eta_charging
-                row[f"cons_{s}"] = f"{bc.total_battery_kwh_per_100km:.1f} ({wall_kwh:.1f})"
+                d[f"cons_{s}"] = f"{bc.total_battery_kwh_per_100km:.1f} ({wall_kwh:.1f})"
                 if effective_battery:
                     rng = effective_battery / bc.total_battery_kwh_per_100km * 100
-                    row[f"range_{s}"] = f"{rng:.0f} km"
+                    d[f"range_{s}"] = f"{rng:.0f} km"
                 else:
-                    row[f"range_{s}"] = "-"
+                    d[f"range_{s}"] = "-"
             ct = v.charge_time_20_80_min
-            row["charge"] = f"{ct:.0f} min" if ct is not None else "-"
+            d["charge"] = f"{ct:.0f} min" if ct is not None else "-"
         else:
             l_100 = v.real_consumption_l_100km
             if l_100:
@@ -100,29 +93,56 @@ def render_consumption_table(
                 chem = l_100.value * kwh_per_l
                 wheel = chem * ice_thermal_eff
                 for s in speeds:
-                    row[f"cons_{s}"] = f"{chem:.0f}/{wheel:.0f}"
-                    row[f"range_{s}"] = "-"
+                    d[f"cons_{s}"] = f"{chem:.0f}/{wheel:.0f}"
+                    d[f"range_{s}"] = "-"
             else:
                 for s in speeds:
-                    row[f"cons_{s}"] = "N/A"
-                    row[f"range_{s}"] = "-"
-            row["charge"] = "-"
+                    d[f"cons_{s}"] = "N/A"
+                    d[f"range_{s}"] = "-"
+            d["charge"] = "-"
+        vdata.append(d)
 
+    # Build row definitions: (label, key, style_hint)
+    row_defs: list[tuple[str, str, str]] = [
+        ("Type", "vtype", "badge"),
+        ("CdA (m²)", "cda", "normal"),
+        ("Tire", "tire", "normal"),
+    ]
+    for s in speeds:
+        row_defs.append((f"{s} km/h", f"cons_{s}", "consumption"))
+        row_defs.append(("  Range", f"range_{s}", "range"))
+    if has_ev:
+        row_defs.append(("DC 20→80%", "charge", "charge"))
+
+    # Build aggrid: first column = "spec", rest = vehicles
+    columns: list[dict] = [
+        {"field": "spec", "headerName": "", "minWidth": 110, "pinned": "left",
+         "cellStyle": {"fontWeight": "600", "color": "#555"}},
+    ]
+    for i, d in enumerate(vdata):
+        columns.append({
+            "field": f"v{i}",
+            "headerName": d["name"],
+            "minWidth": 130,
+            "cellStyle": {"textAlign": "center"},
+        })
+
+    rows: list[dict] = []
+    for label, key, hint in row_defs:
+        row: dict = {"spec": label.strip(), "_hint": hint}
+        for i, d in enumerate(vdata):
+            row[f"v{i}"] = d.get(key, "-")
         rows.append(row)
-
-    if not rows:
-        with ui.column().style("align-items:center; padding:40px; color:#999;"):
-            ui.label("No vehicles selected")
-        return
 
     ui.aggrid(
         options={
             "columnDefs": columns,
             "rowData": rows,
-            "rowHeight": 36,
-            "headerHeight": 32,
+            "rowHeight": 34,
+            "headerHeight": 36,
             "suppressRowClickSelection": True,
             "domLayout": "normal",
+            "suppressHorizontalScroll": False,
         },
     ).style("width:100%; font-size:0.82em;")
 
@@ -156,7 +176,7 @@ def render_ranking_list(
     if vehicle_filters:
         all_vehicles = [v for v in all_vehicles if passes_vehicle_filters(v, vehicle_filters)]
 
-    entries: list[tuple[str, str, float, float | None]] = []
+    entries: list[tuple[str, str, str, float, float | None]] = []
 
     for v in sorted(all_vehicles, key=lambda x: (x.make, x.model)):
         c_rr = get_vehicle_c_rr(v, params.c_rr, use_per_vehicle_tires)
@@ -183,7 +203,7 @@ def render_ranking_list(
             cap = battery_capacity_factor(params.temperature_c)
             effective_battery = v.battery_usable_kwh * cap if v.battery_usable_kwh else None
             rng = (effective_battery / val * 100) if effective_battery else None
-            entries.append((make_vehicle_label(v), "EV", val, rng))
+            entries.append((v.id, make_vehicle_label(v), "EV", val, rng))
         elif show_ice and v.vehicle_type != VehicleType.ev:
             l_100 = v.real_consumption_l_100km
             if l_100:
@@ -194,19 +214,19 @@ def render_ranking_list(
                 )
                 chem = l_100.value * kwh_per_l
                 val = chem * ice_thermal_eff
-                entries.append((make_vehicle_label(v), "ICE", val, None))
+                entries.append((v.id, make_vehicle_label(v), "ICE", val, None))
 
     if sort_by_range:
-        entries.sort(key=lambda x: -(x[3] if x[3] is not None else float("-inf")))
+        entries.sort(key=lambda x: -(x[4] if x[4] is not None else float("-inf")))
     else:
-        entries.sort(key=lambda x: x[2])
+        entries.sort(key=lambda x: x[3])
 
     if not entries:
         with ui.column().style("padding:40px; text-align:center; color:#999;"):
             ui.label("No vehicles match the selected filters")
         return
 
-    vals = [e[2] for e in entries]
+    vals = [e[3] for e in entries]
     max_val = max(vals)
     min_val = min(vals)
     range_val = max_val - min_val if max_val != min_val else 1.0
@@ -230,7 +250,7 @@ def render_ranking_list(
             ui.html(cons_label).style("min-width:65px; text-align:right;")
             ui.html(rng_label).style("min-width:65px; text-align:right;")
 
-        for rank, (name, vtype, val, rng) in enumerate(entries, 1):
+        for rank, (vid, name, vtype, val, rng) in enumerate(entries, 1):
             pct = ((val - min_val) / range_val) * 100
             color = "#00CC96" if vtype == "EV" else "#EF553B"
             badge_bg = "#00CC9622" if vtype == "EV" else "#EF553B22"
@@ -251,10 +271,11 @@ def render_ranking_list(
                     f"background:{badge_bg}; color:{badge_color};"
                 )
 
-                # Vehicle name - always visible, takes remaining space
-                ui.label(name).style(
+                # Vehicle name - clickable link to detail page
+                ui.link(name, f"/vehicle/{vid}").style(
                     "flex:1; min-width:120px; font-size:0.9em; font-weight:600; "
-                    "white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"
+                    "white-space:nowrap; overflow:hidden; text-overflow:ellipsis; "
+                    "text-decoration:none; color:inherit; cursor:pointer;"
                 )
 
                 # Consumption value with slim progress bar underneath
