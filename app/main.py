@@ -35,7 +35,7 @@ STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 app.add_static_files("/images", str(IMAGES_DIR))
 app.add_static_files("/static", str(STATIC_DIR))
-ui.add_head_html('<link rel="icon" type="image/png" href="/static/logo.png">')
+ui.add_head_html('<link rel="icon" type="image/png" href="/static/logo.png">', shared=True)
 
 
 @ui.page("/vehicle/{vid}")
