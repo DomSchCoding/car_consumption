@@ -45,12 +45,9 @@ def _completeness(v: Vehicle) -> float:
 
 def _confidence_badge(level) -> ui.element:
     color = CONFIDENCE_COLORS.get(getattr(level, "value", str(level)), "#888")
-    return (
-        ui.label(getattr(level, "value", str(level)))
-        .style(
-            f"background:{color}22; color:{color}; border:1px solid {color}44; "
-            "border-radius:8px; padding:0 6px; font-size:0.72em; font-weight:600;"
-        )
+    return ui.label(getattr(level, "value", str(level))).style(
+        f"background:{color}22; color:{color}; border:1px solid {color}44; "
+        "border-radius:8px; padding:0 6px; font-size:0.72em; font-weight:600;"
     )
 
 
@@ -81,16 +78,14 @@ def render_vehicle_detail(v: Vehicle) -> None:
     # ── Header card ──────────────────────────────────────────────────────
     with ui.card().classes("q-card detail-card").style("gap:16px; align-items:flex-start;"):
         if has_image:
-            ui.image(f"/images/{v.id}.jpg").classes("detail-img").style(
-                "object-fit:contain; background:#f5f5f5;"
-            )
+            ui.image(f"/images/{v.id}.jpg").classes("detail-img").style("object-fit:contain; background:#f5f5f5;")
         with ui.column().classes("gap-1 min-w-0 flex-grow"):
             ui.label(make_vehicle_label(v)).style("font-size:1.35em; font-weight:800;")
             ui.label(f"{v.make} · {v.vehicle_type.value.upper()}").classes("detail-sub")
             with ui.row().classes("items-center gap-2"):
-                ui.linear_progress(value=completeness / 100).props(
-                    "rounded size=sm color=primary"
-                ).style("width:140px;")
+                ui.linear_progress(value=completeness / 100).props("rounded size=sm color=primary").style(
+                    "width:140px;"
+                )
                 ui.label(f"Data completeness: {completeness:.0f}%").classes("detail-sub")
             years = _year_span(v)
             if years:
