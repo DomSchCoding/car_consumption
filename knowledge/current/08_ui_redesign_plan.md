@@ -85,8 +85,12 @@ Komplettes UI-Redesign mit konsistentem Layout, zentralem Theme, NiceGUI-nativen
 - [x] Phase 2: Dashboard Redesign (2026-05-26)
 - [x] Phase 3: NiceGUI Tables (2026-05-26)
 - [x] Phase 4: Route Planner (2026-05-26)
-- [ ] Phase 5: Vehicle Detail — new spec fields (length, clearance, drivetrain, price, trunk)
-      shown on detail page (merged 2026-10-18); card/grid refactoring still open
+- [x] Phase 5: Vehicle Detail (2026-10-18) — native NiceGUI renderer
+      `app/ui/components/vehicle_detail.py` (cards, 2-col grid that wraps to
+      1 col on mobile, sources as expandable list items, theme-aware colors,
+      dark mode). New spec fields (length, clearance, drivetrain, price, trunk)
+      shown as well. Legacy HTML renderer `build_vehicle_detail_html` kept for
+      backward compatibility and its tests.
 - [x] Phase 6: Responsive (2026-10-18) — CSS media queries centralized in
       `theme.py` (used instead of `ui.query()`, keeps all styles in one place):
       compare layout stacks vertically below 900px, vehicle detail card stacks

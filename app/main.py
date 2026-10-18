@@ -7,6 +7,7 @@ from nicegui import app, ui
 from app.data.models import PhysicsParams
 from app.data.repository import VehicleRepository, load_fuel_constants
 from app.ui.charts import VEHICLE_COLORS, build_chart, export_chart_png
+from app.ui.components.vehicle_detail import render_vehicle_detail
 from app.ui.components.vehicle_selector import (
     get_filter_ranges,
     get_filtered_makes,
@@ -23,7 +24,6 @@ from app.ui.state import SESSION
 from app.ui.tables import (
     IMAGES_DIR,
     SPEED_OPTIONS,
-    build_vehicle_detail_html,
 )
 
 REPO = VehicleRepository()
@@ -47,7 +47,7 @@ def vehicle_detail(vid: str) -> None:
             "display:inline-block; margin-bottom:12px; font-size:0.85em; "
             "color:#636EFA; text-decoration:none; cursor:pointer;"
         )
-        ui.html(build_vehicle_detail_html(v))
+        render_vehicle_detail(v)
 
 
 @ui.page("/")

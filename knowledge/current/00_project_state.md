@@ -37,6 +37,7 @@ app/
       route_controls.py
       route_summary.py
       route_results.py       Map-route energy results (tabs, responsive)
+      vehicle_detail.py      Native NiceGUI vehicle detail page renderer
     pages/
       __init__.py
       route_planner.py          manual/expert route planner (/route/manual)
