@@ -59,12 +59,16 @@ app/
   ui/
     charts.py                # Plotly chart construction
     state.py                 # Session state management
-    tables.py                # HTML table construction
+    tables.py                # HTML detail cards, SPEED_OPTIONS, IMAGES_DIR
+    layout.py                # Shared page layout (nav, title, dark mode)
+    theme.py                 # Central CSS tokens, light/dark palette
+    nicegui_tables.py        # Native NiceGUI table/ranking renderers
     components/
-      vehicle_selector.py    # Reusable vehicle selection component
+      vehicle_selector.py    # Reusable vehicle selection + filter helpers
       map_widget.py          # NiceGUI Leaflet map helpers
       route_controls.py      # Route search form component
       route_summary.py       # Route result cards and tables
+      route_results.py       # Map-route energy results (tabs, responsive)
     pages/
       route_planner.py       # Manual/expert route planner (/route/manual)
       map_route_planner.py   # Map-based route planner (/route)
@@ -260,19 +264,18 @@ The route model extends the basic physics with:
 | kWh/100 mi | kWh/100 km | / 1.609344 |
 | kWh/100 km | kWh/100 mi | * 1.609344 |
 
-## Sample Vehicles
+## Vehicle Data
 
-The included `sample_vehicles.yaml` contains demo data for:
+The app ships with **131 vehicles** in per-brand YAML files under
+`app/assets/vehicles/` (24 brand files: Audi, BMW, Mercedes, Tesla, VW, ...
+including PHEVs and ICE references) plus the original demo set in
+`sample_vehicles.yaml` (Hyundai Ioniq 28, Tesla Model 3 RWD, VW ID.3 Pro,
+VW ID. Buzz, VW Golf 2.0 TDI, VW Crafter 35). Vehicle images live in
+`app/assets/images/`.
 
-- **Hyundai Ioniq 28 kWh** - Compact, efficient EV
-- **Tesla Model 3 RWD** - Mid-size efficient sedan
-- **VW ID.3 Pro** - Compact EV, higher frontal area
-- **VW ID. Buzz** - Electric van/bus, large frontal area
-- **VW Golf 2.0 TDI** - Diesel ICE reference
-- **VW Crafter 35** - Delivery van reference
-
-Values without verified sources are marked as "demo" and should be treated as
-conservative estimates.
+Filterable ranking fields include weight, length, ground clearance, drivetrain,
+new price (EUR) and trunk volume. Values without verified sources are marked
+as "demo" and should be treated as conservative estimates.
 
 ## Configuration
 
@@ -334,6 +337,7 @@ Route provider caches are stored in `.cache/` (gitignored).
 
 ## Planned Features
 
+- Responsive/mobile layout (UI redesign phase 6, see `knowledge/current/08_ui_redesign_plan.md`)
 - OpenRouteService live routing provider
 - Better speed and stop estimation from route data
 - Bearing-based wind projection

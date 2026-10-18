@@ -1,6 +1,6 @@
 # AGENTS.md - car_consumption
 
-Stand: 2026-05-23
+Stand: 2026-10-18
 
 ## Project overview
 
@@ -43,6 +43,7 @@ knowledge/current/04_route_map_feature.md user flow, providers, data model, cach
 knowledge/current/05_ui_ux.md            pages, layouts, charts, wording, progressive disclosure
 knowledge/current/06_testing_strategy.md  test layers, fixtures, regression, DoD
 knowledge/current/07_roadmap.md          phases A-G and prioritized implementation order
+knowledge/current/08_ui_redesign_plan.md UI redesign phases 1-6 (1-4 done, see its progress section)
 ```
 
 ## Mandatory agent principles

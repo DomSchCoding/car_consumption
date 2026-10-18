@@ -85,5 +85,8 @@ Komplettes UI-Redesign mit konsistentem Layout, zentralem Theme, NiceGUI-nativen
 - [x] Phase 2: Dashboard Redesign (2026-05-26)
 - [x] Phase 3: NiceGUI Tables (2026-05-26)
 - [x] Phase 4: Route Planner (2026-05-26)
-- [ ] Phase 5: Vehicle Detail
-- [ ] Phase 6: Responsive
+- [ ] Phase 5: Vehicle Detail — new spec fields (length, clearance, drivetrain, price, trunk)
+      shown on detail page (merged 2026-10-18); card/grid refactoring still open
+- [ ] Phase 6: Responsive — clickable ranking, table header fix and rotated
+      (mobile-first) consumption table merged 2026-10-18; remaining
+      mobile/tablet layout work still open
