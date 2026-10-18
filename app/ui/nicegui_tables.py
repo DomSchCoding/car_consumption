@@ -242,7 +242,7 @@ def render_ranking_list(
         # Header
         with ui.row().style(
             "align-items:center; gap:10px; padding:6px 8px; "
-            "border-bottom:2px solid #e0e0e0; font-size:0.78em; font-weight:600; color:#888;"
+            "border-bottom:2px solid #e2e8f0; font-size:0.78em; font-weight:600; color:#94a3b8;"
         ):
             ui.label("").style("min-width:24px;")
             ui.label("").style("min-width:28px;")
@@ -259,24 +259,15 @@ def render_ranking_list(
 
         for rank, (vid, name, vtype, val, rng) in enumerate(entries, 1):
             pct = ((val - min_val) / range_val) * 100
-            color = "#00CC96" if vtype == "EV" else "#EF553B"
-            badge_bg = "#00CC9622" if vtype == "EV" else "#EF553B22"
-            badge_color = "#00CC96" if vtype == "EV" else "#EF553B"
+            is_ev = vtype == "EV"
 
-            with ui.element("div").style(
-                "display:flex; align-items:center; gap:8px; padding:8px 10px; "
-                "border-bottom:1px solid #f0f0f0; border-radius:6px; margin-bottom:4px; "
-                "background:#fafafa; flex-wrap:wrap;"
-            ):
-                # Rank + badge row
-                ui.label(f"#{rank}").style(
-                    "min-width:28px; color:#666; font-size:0.78em; font-weight:700; text-align:center;"
-                )
-                ui.html(vtype).style(
-                    f"min-width:28px; font-size:0.7em; font-weight:700; "
-                    f"padding:2px 6px; border-radius:4px; text-align:center; "
-                    f"background:{badge_bg}; color:{badge_color};"
-                )
+            with ui.element("div").classes("rank-row"):
+                # Rank + badge row (top 3 with medal colors)
+                rank_classes = "rank-medal"
+                if rank <= 3:
+                    rank_classes += f" rank-medal-{rank}"
+                ui.label(f"#{rank}").classes(rank_classes).style("font-size:0.85em;")
+                ui.label(vtype).classes("rank-badge" + (" rank-badge-ev" if is_ev else " rank-badge-ice"))
 
                 # Vehicle name - clickable link to detail page
                 ui.link(name, f"/vehicle/{vid}").style(
@@ -287,16 +278,18 @@ def render_ranking_list(
 
                 # Consumption value with slim progress bar underneath
                 with ui.column().style("align-items:flex-end; gap:2px; min-width:80px;"):
-                    ui.label(f"{val:.1f} kWh").style("font-size:0.85em; font-weight:700; color:" + color + ";")
+                    value_class = "rank-value-ev" if is_ev else "rank-value-ice"
+                    ui.label(f"{val:.1f} kWh").classes(value_class).style("font-size:0.85em; font-weight:700;")
                     # Slim progress bar - only 80px wide
+                    fill = "#16a34a" if is_ev else "#dc2626"
                     with ui.element("div").style(
-                        "width:80px; height:6px; background:#e0e0e0; border-radius:3px; overflow:hidden;"
+                        "width:80px; height:6px; background:#e2e8f0; border-radius:3px; overflow:hidden;"
                     ):
                         ui.element("div").style(
-                            f"width:{100 - pct:.0f}%; height:100%; background:{color}; border-radius:3px;"
+                            f"width:{100 - pct:.0f}%; height:100%; background:{fill}; border-radius:3px;"
                         )
                     if rng is not None:
-                        ui.label(f"{rng:.0f} km").style("font-size:0.75em; color:#888; font-weight:500;")
+                        ui.label(f"{rng:.0f} km").style("font-size:0.75em; color:#94a3b8; font-weight:500;")
 
     # Footer
     cap_pct = battery_capacity_factor(params.temperature_c) * 100

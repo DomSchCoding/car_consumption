@@ -70,6 +70,13 @@ def _year_span(v: Vehicle) -> str:
     return s
 
 
+def _section_header(title: str, icon: str) -> None:
+    """Card section header with an accent icon chip."""
+    with ui.row().classes("section-header"):
+        ui.icon(icon).classes("section-icon")
+        ui.label(title)
+
+
 def render_vehicle_detail(v: Vehicle) -> None:
     """Render the full vehicle detail page content natively."""
     completeness = _completeness(v)
@@ -95,7 +102,7 @@ def render_vehicle_detail(v: Vehicle) -> None:
     with ui.row().classes("detail-grid w-full items-stretch"):
         # Specifications
         with ui.card().classes("q-card detail-card detail-col"):
-            ui.label("Specifications").classes("detail-header")
+            _section_header("Specifications", "tune")
             rows: list[tuple[str, str, bool]] = [
                 ("Mass", f"{v.mass_kg:.0f} kg", True),
                 ("Frontal Area", f"{v.frontal_area_m2:.2f} m²", True),
@@ -139,7 +146,7 @@ def render_vehicle_detail(v: Vehicle) -> None:
 
         # Consumption
         with ui.card().classes("q-card detail-card detail-col"):
-            ui.label("Consumption Data").classes("detail-header")
+            _section_header("Consumption Data", "speed")
             if v.vehicle_type == VehicleType.ev:
                 if v.wltp_consumption_kwh_100km:
                     _spec_row("WLTP", f"{v.wltp_consumption_kwh_100km.value:.1f} kWh/100km")
@@ -157,7 +164,7 @@ def render_vehicle_detail(v: Vehicle) -> None:
 
     # ── Sources (expandable list items) ──────────────────────────────────
     with ui.card().classes("q-card detail-card"):
-        ui.label("Sources").classes("detail-header")
+        _section_header("Sources", "source")
         if v.source_refs:
             for _key, src in v.source_refs.items():
                 with ui.expansion().props("dense") as exp:
@@ -183,5 +190,5 @@ def render_vehicle_detail(v: Vehicle) -> None:
     # ── Notes ────────────────────────────────────────────────────────────
     if v.notes:
         with ui.card().classes("q-card detail-card"):
-            ui.label("Notes").classes("detail-header")
+            _section_header("Notes", "sticky_note_2")
             ui.label(v.notes).classes("detail-notes")

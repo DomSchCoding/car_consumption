@@ -49,14 +49,16 @@ def nav_bar() -> None:
     _inject_css()
 
     with ui.element("div").classes("app-nav"):
-        # Title - links to dashboard
-        ui.link("🚗 Vehicle Consumption Analyzer", "/").classes("app-nav-title").style("cursor:pointer;")
+        # Brand: app logo + wordmark, links to dashboard
+        with ui.link("/").classes("app-nav-brand"):
+            ui.image("/static/logo.png").classes("app-nav-brand-icon").style("object-fit:cover;")
+            ui.label("Vehicle Consumption Analyzer").classes("app-nav-title")
 
-        # Nav links
+        # Nav links (pill style with icons)
         with ui.element("div").classes("app-nav-links"):
-            ui.link("Dashboard", "/").classes("app-nav-link")
-            ui.link("Route Planner", "/route").classes("app-nav-link")
-            ui.link("Manual Route", "/route/manual").classes("app-nav-link")
+            ui.link("Dashboard", "/").classes("app-nav-link").props("icon=space_dashboard")
+            ui.link("Route Planner", "/route").classes("app-nav-link").props("icon=map")
+            ui.link("Manual Route", "/route/manual").classes("app-nav-link").props("icon=calculate")
 
             # Dark mode toggle
             ui.button(

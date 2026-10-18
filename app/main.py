@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from nicegui import app, ui
 
-from app.data.models import PhysicsParams
+from app.data.models import PhysicsParams, VehicleType
 from app.data.repository import VehicleRepository, load_fuel_constants
 from app.ui.charts import VEHICLE_COLORS, build_chart, export_chart_png
 from app.ui.components.vehicle_detail import render_vehicle_detail
@@ -29,8 +31,11 @@ from app.ui.tables import (
 REPO = VehicleRepository()
 FUEL_CONST = load_fuel_constants()
 MAX_COMPARE = 8
+STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 app.add_static_files("/images", str(IMAGES_DIR))
+app.add_static_files("/static", str(STATIC_DIR))
+ui.add_head_html('<link rel="icon" type="image/png" href="/static/logo.png">')
 
 
 @ui.page("/vehicle/{vid}")
@@ -60,15 +65,46 @@ def index(sort: str = "") -> None:
     params = PhysicsParams()
     selected_ids = SESSION["selected"]
 
-    with page_layout("⚡ Vehicle Consumption Analyzer"):
+    with page_layout("Dashboard"):
+        # Fleet overview stat strip
+        fleet = REPO.get_all()
+        evs = [v for v in fleet if v.vehicle_type == VehicleType.ev]
+        ev_share = (len(evs) / len(fleet) * 100) if fleet else 0.0
+        wltp_vals = [v.wltp_consumption_kwh_100km.value for v in evs if v.wltp_consumption_kwh_100km]
+        avg_wltp = sum(wltp_vals) / len(wltp_vals) if wltp_vals else None
+        prices = [v.new_price_eur for v in fleet if v.new_price_eur is not None]
+
+        with ui.row().classes("app-stat-strip"):
+            with ui.element("div").classes("app-stat"):
+                ui.icon("directions_car").classes("app-stat-icon")
+                with ui.column().style("gap:0;"):
+                    ui.label(str(len(fleet))).classes("app-stat-value")
+                    ui.label("vehicles in fleet").classes("app-stat-label")
+            with ui.element("div").classes("app-stat"):
+                ui.icon("electric_car").classes("app-stat-icon")
+                with ui.column().style("gap:0;"):
+                    ui.label(f"{ev_share:.0f}%").classes("app-stat-value")
+                    ui.label("electric share").classes("app-stat-label")
+            with ui.element("div").classes("app-stat"):
+                ui.icon("speed").classes("app-stat-icon")
+                with ui.column().style("gap:0;"):
+                    ui.label(f"{avg_wltp:.1f} kWh/100km" if avg_wltp else "–").classes("app-stat-value")
+                    ui.label("avg WLTP (EVs)").classes("app-stat-label")
+            with ui.element("div").classes("app-stat"):
+                ui.icon("payments").classes("app-stat-icon")
+                with ui.column().style("gap:0;"):
+                    price_str = f"€{min(prices) // 1000}–{max(prices) // 1000}k" if prices else "–"
+                    ui.label(price_str).classes("app-stat-value")
+                    ui.label("new price range").classes("app-stat-label")
+
         dashboard_tabs = ui.tabs().props("dense").style("margin-bottom:0;")
         with dashboard_tabs:
-            ui.tab("compare", label="📊 Compare")
-            ui.tab("table", label="📋 Table")
-            ui.tab("ranking", label="🏆 Ranking")
-            ui.tab("settings", label="⚙️ Settings")
+            ui.tab("compare", label="Compare", icon="bar_chart")
+            ui.tab("table", label="Table", icon="table_rows")
+            ui.tab("ranking", label="Ranking", icon="emoji_events")
+            ui.tab("settings", label="Settings", icon="settings")
             # Route tab — navigates to /route on click
-            route_tab = ui.tab("route", label="🗺️ Route Planner")
+            route_tab = ui.tab("route", label="Route Planner", icon="map")
 
         def _go_to_route() -> None:
             ui.navigate.to("/route")
@@ -80,15 +116,12 @@ def index(sort: str = "") -> None:
         # --- COMPARE TAB ---
         with dashboard_panels, ui.tab_panel("compare"):
             # Header bar with title, filters, and controls
-            with ui.element("div").style(
-                "display:flex; align-items:center; justify-content:space-between; "
-                "gap:12px; padding:12px 16px; margin-bottom:12px; "
-                "background:linear-gradient(135deg, #f8f9fc 0%, #f0f2f8 100%); "
-                "border-radius:12px; flex-wrap:wrap; border:1px solid #e8e8f0;"
-            ):
+            with ui.element("div").classes("app-filter-bar"):
                 # Left: Title + filter chips
                 with ui.row().style("align-items:center; gap:10px; flex-wrap:wrap;"):
-                    ui.label("🚗 Vehicle Selection").style("font-weight:700; font-size:0.95em; white-space:nowrap;")
+                    with ui.row().classes("section-header").style("margin-bottom:0;"):
+                        ui.icon("directions_car").classes("section-icon")
+                        ui.label("Vehicle Selection")
                     # EV/ICE as toggle chips instead of checkboxes
                     ev_toggle = (
                         ui.button(
