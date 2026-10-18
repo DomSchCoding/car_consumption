@@ -247,6 +247,66 @@ body {
     height: 400px;
 }
 
+/* ── Vehicle Detail (native) ────────────────────────────────────────────── */
+.detail-grid {
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
+.detail-col {
+    flex: 1 1 340px;
+    min-width: 0;
+}
+
+.detail-img {
+    width: 240px;
+    height: 160px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.detail-row {
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-label {
+    font-weight: 600;
+    font-size: 0.88em;
+    opacity: 0.75;
+}
+
+.detail-value {
+    font-size: 0.88em;
+    font-weight: 500;
+}
+
+.detail-header {
+    font-weight: 700;
+    font-size: 1em;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 6px;
+}
+
+.detail-sub {
+    font-size: 0.82em;
+    opacity: 0.65;
+}
+
+.detail-missing {
+    font-size: 0.72em;
+    color: #EF553B;
+}
+
+.detail-notes {
+    font-size: 0.88em;
+    opacity: 0.8;
+}
+
 /* Tablet: stack the compare layout vertically, keep other two-column areas */
 @media (max-width: 900px) {
     .compare-row {
@@ -398,6 +458,18 @@ body.dark-mode {
 
 .dark-mode .q-expansion {
     background: #1a1a30 !important;
+}
+
+.dark-mode .detail-row {
+    border-bottom-color: #333348;
+}
+
+.dark-mode .detail-header {
+    border-bottom-color: #333348;
+}
+
+.dark-mode .detail-img {
+    background: #252540 !important;
 }
 
 .dark-mode .q-input,

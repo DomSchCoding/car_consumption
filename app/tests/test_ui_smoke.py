@@ -72,6 +72,11 @@ class TestUITablesImport:
 
         assert callable(build_vehicle_detail_html)
 
+    def test_render_vehicle_detail_importable(self) -> None:
+        from app.ui.components.vehicle_detail import render_vehicle_detail
+
+        assert callable(render_vehicle_detail)
+
     def test_speed_options_importable(self) -> None:
         from app.ui.tables import SPEED_OPTIONS
 
