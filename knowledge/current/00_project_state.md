@@ -28,7 +28,7 @@ app/
     state.py
     tables.py                HTML detail cards, SPEED_OPTIONS, IMAGES_DIR
     layout.py                Shared page layout (top nav, title, dark-mode)
-    theme.py                 Central CSS tokens, light/dark palette
+    theme.py                 Central design system: tokens, palettes, CSS classes
     nicegui_tables.py        Native NiceGUI table/ranking renderers
     components/
       __init__.py
@@ -120,6 +120,9 @@ AGENTS.md
 - Chart export to PNG
 - Dark mode
 - ICE comparison (chemical vs wheel energy)
+- Design system refresh (2026-10-18): modern calm slate/indigo theme, icon-driven
+  navigation + tabs, dashboard fleet stat strip, ranking medals, native vehicle
+  detail with expandable sources; all tokens in `theme.py` (see `09_design_system.md`)
 
 ## Live provider pipeline (when enabled)
 

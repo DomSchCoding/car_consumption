@@ -44,6 +44,7 @@ knowledge/current/05_ui_ux.md            pages, layouts, charts, wording, progre
 knowledge/current/06_testing_strategy.md  test layers, fixtures, regression, DoD
 knowledge/current/07_roadmap.md          phases A-G and prioritized implementation order
 knowledge/current/08_ui_redesign_plan.md UI redesign phases 1-6 (1-4 done, see its progress section)
+knowledge/current/09_design_system.md   design tokens, palettes, classes, icon rules
 ```
 
 ## Mandatory agent principles
